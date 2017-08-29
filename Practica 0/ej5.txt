@@ -22,4 +22,17 @@ f) if row[r] = 0 & a < b then g(r)
 
 IfExp (??? (VarExp (SubscriptVar (SimpleVar "row") (SimpleVar "r")) Pos) (OpExp (SimpleVar "a") LtOp (SimpleVar "b"))) (CallExp "g" [SimpleVar "r"] Pos) Nothing Pos
 
+||| ¿Todos los fragmentos pueden ser parte de un programa válido? |||
+---------------------------------------------------------------------
+No todos los fragmentos pueden ser parte de un programa válido.
+
+||| ¿Por qué hay un problema al copiar directamente el fragmento e)? |||
+------------------------------------------------------------------------
+Hay un problema al copiar directamente el fragmento e) debido a que no se cumple la premisa de que todo programa en tiger
+devuelve un entero.
+
+||| ¿Qué error detecta ahora el compilador? |||
+-----------------------------------------------
+No sabemos pos estamos en Haskell y no sabemos qué hay que comentar!
+
 
