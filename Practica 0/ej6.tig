@@ -1,0 +1,9 @@
+/* a) ¿Cómo carancho es en Haskell? */
+
+/* b) VarExp (SubscriptVar (SimpleVar "a") (IntExp 7 0)) 0 
+
+a[7] */ 
+
+/* c) AssignExp ((SimpleVar "a") (NilExp 0) 0) 0
+
+a := nil */
