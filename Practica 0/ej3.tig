@@ -1,43 +1,44 @@
 let 
-  type tree = {key: int, children: treelist}
-  type treelist = {hd: tree, tl: treelist}
+  type tree = {key:int, children:treelist}
+  type treelist = {hd:tree, tl:treelist}
   
   /*isBin*/
   function isBin(t:tree):int =
-   if t = nil then 1 else 
-                        if lengthT(t.children)<= 2 then isBinTl(t.children) else 0
+    if t = nil then 1 else 
+      if lengthT(t.children) <= 2 then isBinTl(t.children) else 0 
                         
-   /*definicion de isBinTl: funcion isBin caso de treelist*/
-   function isBinTl(t:treelist):int =
+  /*definicion de isBinTl: funcion isBin caso de treelist*/
+  function isBinTl(t:treelist):int =
     if t = nil then 1 else (isBin(t.hd) & isBinTl(t.tl)) 
+
   /*definicion de lengthT*/
   function lengthT(t:treelist):int =
-   if t = nil then 0 else 1 + lengthT(t.tl)
+    if t = nil then 0 else 1 + lengthT(t.tl)
    
-   /*isBComplete*/
- function isBComplete(t:tree):int =
-  if t = nil then 1 else 
-                       if lengthT(t.children) = 2 then isBCompleteTl(t.children) else 0
+  /*isBComplete*/
+  function isBComplete(t:tree):int =
+    if t = nil then 1 else 
+      if lengthT(t.children) = 2 then isBCompleteTl(t.children) else 0
                        
   /*definicion de isBCompleteTl: funcion isBComplete caso de treelist*/
-   function isBCompleteTl(t:treelist):int =
+  function isBCompleteTl(t:treelist):int =
     if t = nil then 1 else (isBComplete(t.hd) & isBCompleteTl(t.tl))
     
-   /*pintInOrder*/
+  /*printInOrder*/
   function printInOrder(t:tree) =
-   if t = nil then print("No hay valores en el arbol\n") else (print("t.key"); prInOrder(t.children))
+    if t = nil then print("No hay valores en el arbol\n") else (print("t.key"); prInOrder(t.children))
    
-   /*definicion de printInOrder caso treelist*/
-   function prInOrder(t:treelist) =
-   if t = nil then print("fin arbol\n") else (prInOrder(t.tl); print(" "); printInOrder(t.hd))
+  /*definicion de printInOrder caso treelist*/
+  function prInOrder(t:treelist) =
+    if t = nil then print("fin arbol\n") else (prInOrder(t.tl); print(" "); printInOrder(t.hd))
    
-   /*printPosOrder*/
+  /*printPosOrder*/
   function printPosOrder(t:tree) =
-   if t = nil then print("No hay valores en el arbol\n") else (prPosOrder(t.children); print("t.key"))
+    if t = nil then print("No hay valores en el arbol\n") else (prPosOrder(t.children); print("t.key"))
    
-   /*definicion de printPosOrder para treelist*/
-   function prPosOrder(t:treelist) =
-    if t = nil then print("fin arbol\n") else (prPosOrder(t.tl);print("sep") ; printPosOrder(t.hd))
+  /*definicion de printPosOrder para treelist*/
+  function prPosOrder(t:treelist) =
+    if t = nil then print("fin arbol\n") else (prPosOrder(t.tl);print("sep"); printPosOrder(t.hd))
 in
-  (0;0)
+  0
 end  
