@@ -4,11 +4,11 @@ import TigerSres
 import TigerTips
 
 -- >> ¿Los tipos son para tiger, digamos en minúsculas?
--- >> ¿Qué es RW y RO?
+-- >> ¿Qué es RW y RO? Los RW son ints "normales", los RO son para los índices del for
 -- >> ¿Unique lo ponemos como otro tipo distinto a Int?
 -- >> ¿Formato de los arrays, alguna sugerencia?
--- >> ¿Para qué es el Unique del Record?
--- >> ¿Qué es un RefRecord?
+-- >> ¿Para qué es el Unique del Record? Para diferenciar tipos por nombre
+-- >> ¿Qué es un RefRecord? 
 -- >> ¿Qué es un TTipo?
 printEnv :: EnvEntry -> Doc
 printEnv (Var ve)                = printTipo ve

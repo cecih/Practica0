@@ -1,4 +1,9 @@
-/* a) ¿Cómo carancho es en Haskell? */
+/* a) ArrayExp :: Symbol -> Exp -> Exp -> Pos -> Exp
+ * ArrayExp "a" (IntExp 10 0) (IntExp 5 0) 0
+ * 
+ * a[10] of 5
+ * 
+ * ¿Cómo carancho es en Haskell? */
 
 /* b) VarExp (SubscriptVar (SimpleVar "a") (IntExp 7 0)) 0 
 
