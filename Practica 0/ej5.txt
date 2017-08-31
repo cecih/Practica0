@@ -1,0 +1,38 @@
+a) a := 10
+
+AssignExp (SimpleVar "a") (IntExp 10 Pos) Pos
+
+b) for i := 0 to c do print (".")
+
+ForExp  "i" (Just False) (IntExp 0 Pos) (VarExp (SimpleVar "c") Pos) (CallExp "print" [StringExp "." Pos] Pos)
+
+c) f[a+1].data[0]
+
+SubscriptVar (FieldVar (SubscriptVar (SimpleVar "f") (OpExp (VarExp (SimpleVar "a") Pos) PlusOp (IntExp 1 Pos) Pos)) "data") (IntExp 0 Pos)
+
+d) let var f := 10 in f(f, f); f end
+
+LetExp [VarDec "f" Nothing Nothing (IntExp 10 Pos) Pos] (SeqExp [CallExp "f" [VarExp (SimpleVar "f") Pos, VarExp (SimpleVar "f") Post] Pos, VarExp (SimpleVar "f")]) Pos
+
+e) type lista = {item:int, resto:lista}
+
+TypeDec [("lista", RecordTy [("item", Nothing, NameTy "int"), ("lista", Nothing, NameTy "lista")],Pos)]
+
+f) if row[r] = 0 & a < b then g(r)
+
+IfExp (IfExp (VarExp (SubscriptVar (SimpleVar "row") (SimpleVar "r")) Pos) (OpExp (SimpleVar "a") LtOp (SimpleVar "b")) (IntExp 0 Pos) Pos) (CallExp "g" [SimpleVar "r"] Pos) Nothing Pos
+
+||| ¿Todos los fragmentos pueden ser parte de un programa válido? |||
+---------------------------------------------------------------------
+No todos los fragmentos pueden ser parte de un programa válido.
+
+||| ¿Por qué hay un problema al copiar directamente el fragmento e)? |||
+------------------------------------------------------------------------
+Hay un problema al copiar directamente el fragmento e) debido a que no se cumple la premisa de que todo programa en tiger
+devuelve un entero. Ademas, el fragmento de e) es una declaracion de tipos.
+
+||| ¿Qué error detecta ahora el compilador? |||
+-----------------------------------------------
+No sabemos pos estamos en Haskell y no sabemos qué hay que comentar!
+
+
