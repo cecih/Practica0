@@ -1,0 +1,4 @@
+[submodule "TigerHaskell"]
+	path = TigerHaskell
+	url = https://git.dcc.fceia.unr.edu.ar/Compiladores/TigerHaskell
+	branch = master
