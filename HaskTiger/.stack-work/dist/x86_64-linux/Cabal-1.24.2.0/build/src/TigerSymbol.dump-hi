@@ -1,0 +1,159 @@
+
+==================== FINAL INTERFACE ====================
+2017-09-02 01:26:59.434356 UTC
+
+interface HaskTiger-0.1.0.0-8sS9j76S4uUE6NaT8hRlFo:TigerSymbol 8002
+  interface hash: d3bf2fdc9cb67c575cf326091cdf6a76
+  ABI hash: 30a4cb684a66b2ead73fe1b1abd03fe4
+  export-list hash: 4b06c7ad95fafc7678231d70d774f42b
+  orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
+  flag hash: ab396f11155bd696ab63895436e6f1df
+  sig of: Nothing
+  used TH splices: False
+  where
+exports:
+  TigerSymbol.addStr
+  Data.Text.append
+  Data.Text.pack
+  Data.Text.Show.unpack
+  TigerSymbol.Symbol
+module dependencies:
+package dependencies: array-0.5.1.1@array-0.5.1.1 base-4.9.1.0*
+                      binary-0.8.3.0@binary-0.8.3.0
+                      bytestring-0.10.8.1@bytestring-0.10.8.1
+                      containers-0.5.7.1@containers-0.5.7.1
+                      deepseq-1.4.2.0@deepseq-1.4.2.0 ghc-prim-0.5.0.0
+                      integer-gmp-1.0.0.1
+                      text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00*
+orphans: base-4.9.1.0:GHC.Base base-4.9.1.0:GHC.Float
+         binary-0.8.3.0@binary-0.8.3.0:Data.Binary.Generic
+         bytestring-0.10.8.1@bytestring-0.10.8.1:Data.ByteString.Builder
+         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text
+         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text.Show
+family instance modules: base-4.9.1.0:Control.Applicative
+                         base-4.9.1.0:Data.Complex base-4.9.1.0:Data.Either
+                         base-4.9.1.0:Data.Functor.Const base-4.9.1.0:Data.Functor.Identity
+                         base-4.9.1.0:Data.List.NonEmpty base-4.9.1.0:Data.Monoid
+                         base-4.9.1.0:Data.Semigroup base-4.9.1.0:Data.Type.Equality
+                         base-4.9.1.0:Data.Version base-4.9.1.0:Data.Void
+                         base-4.9.1.0:GHC.Exts base-4.9.1.0:GHC.Generics
+                         base-4.9.1.0:GHC.IO.Exception base-4.9.1.0:GHC.TypeLits
+                         containers-0.5.7.1@containers-0.5.7.1:Data.IntMap.Base
+                         containers-0.5.7.1@containers-0.5.7.1:Data.IntSet.Base
+                         containers-0.5.7.1@containers-0.5.7.1:Data.Map.Base
+                         containers-0.5.7.1@containers-0.5.7.1:Data.Sequence
+                         containers-0.5.7.1@containers-0.5.7.1:Data.Set.Base
+                         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text
+import  -/  base-4.9.1.0:GHC.Base c4231c43c07e46080a26bf94094c7aa1
+import  -/  base-4.9.1.0:Prelude 22dd289b8469a8fa8dc81cab7b237771
+import  -/  text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text e8aa34be3dde178f567ae461e65c988b
+import  -/  text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text.Internal 9bfcbbbe07ecef48f631025a838df7da
+import  -/  text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text.Show 516b88f1e0e0dbed91cb925542602306
+e0f13017cb629a67c570112521645ba4
+  $trModule :: GHC.Types.Module
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.Module
+                   TigerSymbol.$trModule2
+                   TigerSymbol.$trModule1) -}
+ea1951ed44ad2781c4a157891925e3b0
+  $trModule1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "TigerSymbol"#) -}
+843399812b58d3c16358c18051b081d6
+  $trModule2 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS
+                   "HaskTiger-0.1.0.0-8sS9j76S4uUE6NaT8hRlFo"#) -}
+6bd2e1d30293ef792a5e782598b46c38
+  $wouter ::
+    GHC.Prim.MutableByteArray# GHC.Prim.RealWorld
+    -> GHC.Prim.Int#
+    -> [GHC.Types.Char]
+    -> GHC.Prim.Int#
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld,
+          Data.Text.Internal.Text #)
+  {- Arity: 5, Strictness: <L,U><L,U><S,1*U><S,U><S,U>,
+     Inline: [0] -}
+7a1e8be17a491ebcd43766c52d9df98f
+  type Symbol = Data.Text.Internal.Text
+368a47e934a296d60af968126e6a3a0f
+  addStr ::
+    GHC.Base.String -> TigerSymbol.Symbol -> TigerSymbol.Symbol
+  {- Arity: 2, Strictness: <S,1*U><L,1*U(U,U,U)>,
+     Unfolding: (\ (str :: GHC.Base.String)
+                   (eta :: Data.Text.Internal.Text) ->
+                 case GHC.Base.++
+                        @ GHC.Types.Char
+                        str
+                        (case eta of wild { Data.Text.Internal.Text dt dt1 dt2 ->
+                         let {
+                           end :: GHC.Prim.Int# = GHC.Prim.+# dt1 dt2
+                         } in
+                         letrec {
+                           $wunfold :: GHC.Prim.Int# -> [GHC.Types.Char]
+                             {- Arity: 1, Strictness: <S,U>, Inline: [0] -}
+                           = \ (ww :: GHC.Prim.Int#) ->
+                             case GHC.Prim.tagToEnum#
+                                    @ GHC.Types.Bool
+                                    (GHC.Prim.>=# ww end) of wild1 {
+                               GHC.Types.False
+                               -> case GHC.Prim.indexWord16Array# dt ww of r# { DEFAULT ->
+                                  case GHC.Prim.tagToEnum#
+                                         @ GHC.Types.Bool
+                                         (GHC.Prim.geWord# r# 55296##) of wild2 {
+                                    GHC.Types.False
+                                    -> GHC.Types.:
+                                         @ GHC.Types.Char
+                                         (GHC.Types.C# (GHC.Prim.chr# (GHC.Prim.word2Int# r#)))
+                                         ($wunfold (GHC.Prim.+# ww 1#))
+                                    GHC.Types.True
+                                    -> case GHC.Prim.tagToEnum#
+                                              @ GHC.Types.Bool
+                                              (GHC.Prim.leWord# r# 56319##) of wild3 {
+                                         GHC.Types.False
+                                         -> GHC.Types.:
+                                              @ GHC.Types.Char
+                                              (GHC.Types.C# (GHC.Prim.chr# (GHC.Prim.word2Int# r#)))
+                                              ($wunfold (GHC.Prim.+# ww 1#))
+                                         GHC.Types.True
+                                         -> case GHC.Prim.indexWord16Array#
+                                                   dt
+                                                   (GHC.Prim.+# ww 1#) of r#1 { DEFAULT ->
+                                            GHC.Types.:
+                                              @ GHC.Types.Char
+                                              (GHC.Types.C#
+                                                 (GHC.Prim.chr#
+                                                    (GHC.Prim.+#
+                                                       (GHC.Prim.+#
+                                                          (GHC.Prim.uncheckedIShiftL#
+                                                             (GHC.Prim.-#
+                                                                (GHC.Prim.word2Int# r#)
+                                                                55296#)
+                                                             10#)
+                                                          (GHC.Prim.-#
+                                                             (GHC.Prim.word2Int# r#1)
+                                                             56320#))
+                                                       65536#)))
+                                              ($wunfold (GHC.Prim.+# ww 2#)) } } } }
+                               GHC.Types.True -> GHC.Types.[] @ GHC.Types.Char }
+                         } in
+                         $wunfold dt1 }) of dt { DEFAULT ->
+                 case GHC.Magic.runRW#
+                        @ 'GHC.Types.PtrRepLifted
+                        @ Data.Text.Internal.Text
+                        (\ (s1 :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                         case GHC.Prim.newByteArray#
+                                @ GHC.Prim.RealWorld
+                                10#
+                                s1 of ds1 { (#,#) ipv ipv1 ->
+                         TigerSymbol.$wouter ipv1 4# dt 0# ipv }) of ds1 { (#,#) ipv ipv1 ->
+                 ipv1 } }) -}
+vectorised variables:
+vectorised tycons:
+vectorised reused tycons:
+parallel variables:
+parallel tycons:
+trusted: safe
+require own pkg trusted: False
+

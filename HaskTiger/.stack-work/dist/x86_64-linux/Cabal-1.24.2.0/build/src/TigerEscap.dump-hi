@@ -1,0 +1,1775 @@
+
+==================== FINAL INTERFACE ====================
+2017-09-02 01:27:01.704939 UTC
+
+interface HaskTiger-0.1.0.0-8sS9j76S4uUE6NaT8hRlFo:TigerEscap 8002
+  interface hash: 7b078e64f8ff455fac6ea2525fedd59c
+  ABI hash: 96431431a4053a33a4c5a25441c31401
+  export-list hash: 431b96cc22eb28f5cd657c171b248554
+  orphan hash: cae8b7edf1da9c2a33114f690356b079
+  flag hash: 06c40cc884ff8f9031b7bc379f419cf3
+  sig of: Nothing
+  used TH splices: False
+  where
+exports:
+  TigerEscap.bulkInsert
+  TigerEscap.calcularEEsc
+  TigerEscap.eappend
+  TigerEscap.initSt
+  TigerEscap.lookUpLvl
+  TigerEscap.travDecs
+  TigerEscap.travExp
+  TigerEscap.travF
+  TigerEscap.travVar
+  TigerEscap.Dat
+  TigerEscap.Depth
+  TigerEscap.Env
+  TigerEscap.Errores{TigerEscap.Interno TigerEscap.NotFound}
+  TigerEscap.Escapator{TigerEscap.depth TigerEscap.insert TigerEscap.lookup TigerEscap.printEnv TigerEscap.raise TigerEscap.up TigerEscap.update}
+  TigerEscap.Estado{TigerEscap.S env lvl}
+  TigerEscap.Mini
+  TigerEscap.SEstado{TigerEscap.Step e l}
+module dependencies: TigerAbs TigerEnv TigerErrores TigerSymbol
+package dependencies: array-0.5.1.1@array-0.5.1.1 base-4.9.1.0
+                      binary-0.8.3.0@binary-0.8.3.0
+                      bytestring-0.10.8.1@bytestring-0.10.8.1
+                      containers-0.5.7.1@containers-0.5.7.1
+                      deepseq-1.4.2.0@deepseq-1.4.2.0 ghc-prim-0.5.0.0
+                      integer-gmp-1.0.0.1 mtl-2.2.1@mtl-2.2.1-BLKBelFsPB3BoFeSWSOYj6
+                      text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00
+                      transformers-0.5.2.0@transformers-0.5.2.0
+orphans: base-4.9.1.0:GHC.Base base-4.9.1.0:GHC.Float
+         binary-0.8.3.0@binary-0.8.3.0:Data.Binary.Generic
+         bytestring-0.10.8.1@bytestring-0.10.8.1:Data.ByteString.Builder
+         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text
+         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text.Show
+         transformers-0.5.2.0@transformers-0.5.2.0:Control.Monad.Trans.Error
+family instance modules: base-4.9.1.0:Control.Applicative
+                         base-4.9.1.0:Data.Complex base-4.9.1.0:Data.Either
+                         base-4.9.1.0:Data.Functor.Const base-4.9.1.0:Data.Functor.Identity
+                         base-4.9.1.0:Data.List.NonEmpty base-4.9.1.0:Data.Monoid
+                         base-4.9.1.0:Data.Semigroup base-4.9.1.0:Data.Type.Equality
+                         base-4.9.1.0:Data.Version base-4.9.1.0:Data.Void
+                         base-4.9.1.0:GHC.Exts base-4.9.1.0:GHC.Generics
+                         base-4.9.1.0:GHC.IO.Exception base-4.9.1.0:GHC.TypeLits
+                         containers-0.5.7.1@containers-0.5.7.1:Data.IntMap.Base
+                         containers-0.5.7.1@containers-0.5.7.1:Data.IntSet.Base
+                         containers-0.5.7.1@containers-0.5.7.1:Data.Map.Base
+                         containers-0.5.7.1@containers-0.5.7.1:Data.Sequence
+                         containers-0.5.7.1@containers-0.5.7.1:Data.Set.Base
+                         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text
+import  -/  TigerAbs 4ed839e0ff39f27894975a9e85c5e0b9
+  exports: 36ecbae58ceb49a736590352cce7edab
+  ArrayExp d263c4a9046c759d4f810e29cd232c68
+  AssignExp c25d565d804c92f519483ff78b2789ac
+  CallExp 06ad64a2346db5e5de4a2650ee751a0a
+  Dec 584bd2c7d698871d9d676fe8675b5f4a
+  Exp 584bd2c7d698871d9d676fe8675b5f4a
+  Field 97de572b9bf614d47ff7ea883877afb0
+  FieldVar 1ef54298de75a2d0d8cbc28f69d1b6f1
+  ForExp 447cc62f67d51b1ad57060fd1cf23224
+  FunctionDec 0ce9c7af228e4a4543ad5749148b0958
+  IfExp 8c8d005b29ef155045103b9f5cba3fa9
+  LetExp b3800dd2eee42760eb4cb484c3433055
+  OpExp 40fe9b61f72872d7a62d25fd8a7faf64
+  Pos f6fde44f9cadf3a3c9a9953fb6ccf086
+  RecordExp ae41dbd153da907f4448c7ebfdebdac0
+  SeqExp 60ad123cfdcddfe53988f3d062ee04d4
+  SimpleVar 70b7da5a6f4053421c4fac9233bfec2f
+  SubscriptVar b9299db853c2e428af5cd8575b37c37b
+  Var 584bd2c7d698871d9d676fe8675b5f4a
+  VarDec f08545732214265cb33bb3f86db33926
+  VarExp a61bb3970a96bae16baf3296fccff49f
+  WhileExp ac603fa37034c82f69f0b81c90fc2611
+  printPos 4eacc15e1971ba1bae309e06e87be295
+import  -/  TigerEnv 1f816dfd4204bcbd4b001c8356707334
+  exports: 1aac8c06ececbe6508b79b66cbd1e97c
+import  -/  TigerErrores 7632e923881e331881803b2380972746
+  exports: 4022ce330c2e54fd701691771d7ac569
+  Daemon 9203d2ef1de91b2ce775afe7dd68217e
+  adder 650aabda5d27de9a1be1c703f30b726b
+  derror 17766a0815c14e9528ba0a6911c835f6
+  internal b22037a19a1d631e42c382bdd40e1104
+  notfound 3bfc6df1a30cf865bb117b82a751a89d
+import  -/  TigerSymbol 30a4cb684a66b2ead73fe1b1abd03fe4
+  exports: 4b06c7ad95fafc7678231d70d774f42b
+  Symbol 7a1e8be17a491ebcd43766c52d9df98f
+import  -/  base-4.9.1.0:Control.Monad a6784c5dab0d75c63dabec5a37843f98
+import  -/  base-4.9.1.0:Data.Either 20b09ef8d0a5b74fdec011c40c1587f5
+import  -/  base-4.9.1.0:Data.Foldable 3e0b6967a1da89945d0e2d47266337a2
+import  -/  base-4.9.1.0:Data.Functor.Identity 6ee67943d44d50091e12d22df04741f0
+import  -/  base-4.9.1.0:Data.Maybe d876c4ffe4b3c43755a781e8ad860d88
+import  -/  base-4.9.1.0:Data.Traversable 556020d7cf3c4a34a774600512918a37
+import  -/  base-4.9.1.0:Debug.Trace a9edf3aec504f4423d8ba829ab373a25
+import  -/  base-4.9.1.0:GHC.Base c4231c43c07e46080a26bf94094c7aa1
+import  -/  base-4.9.1.0:GHC.Num 00bfaa7b2f9d6084913c0697a8a49ec8
+import  -/  base-4.9.1.0:GHC.Show a027f5ac24879eaba752f44aa90fe511
+import  -/  base-4.9.1.0:Prelude 22dd289b8469a8fa8dc81cab7b237771
+import  -/  containers-0.5.7.1@containers-0.5.7.1:Data.Map.Base d432f6875983131473086af8cb290590
+import  -/  containers-0.5.7.1@containers-0.5.7.1:Data.Map.Strict 9d0c0962e53270a0a3fb5cb63723a381
+import  -/  ghc-prim-0.5.0.0:GHC.Classes 0bdf3d057a415ec1b84a7b1994efbe47
+import  -/  mtl-2.2.1@mtl-2.2.1-BLKBelFsPB3BoFeSWSOYj6:Control.Monad.Error.Class 635294424a2da8269902789f5c8bbe99
+import  -/  mtl-2.2.1@mtl-2.2.1-BLKBelFsPB3BoFeSWSOYj6:Control.Monad.Except 3bb0e2598193c1ba00c9723945e93004
+import  -/  mtl-2.2.1@mtl-2.2.1-BLKBelFsPB3BoFeSWSOYj6:Control.Monad.State 749dca8ca0e6625b32091d445bd92b01
+import  -/  mtl-2.2.1@mtl-2.2.1-BLKBelFsPB3BoFeSWSOYj6:Control.Monad.State.Class 6d31234b0a911b56412061943d18b89e
+import  -/  text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text e8aa34be3dde178f567ae461e65c988b
+import  -/  transformers-0.5.2.0@transformers-0.5.2.0:Control.Monad.Trans.Class 45530f1305724ee3931a9be21b40ca7e
+import  -/  transformers-0.5.2.0@transformers-0.5.2.0:Control.Monad.Trans.State.Lazy 371607e50dde46b5f4103b3ab334a497
+a111c4cab011f0aadd3eb947744ce4ef
+  $dmraise ::
+    TigerEscap.Escapator m => forall a. TigerSymbol.Symbol -> m a
+  {- Arity: 1, HasNoCafRefs,
+     Strictness: <S(S(SLLL)LLLLLLLL),1*U(1*U(1*U,A,A,A),A,A,A,A,A,A,A,A)>,
+     Unfolding: InlineRule (0, True, False)
+                (\ @ (m :: * -> *) ($dEscapator :: TigerEscap.Escapator m) @ a ->
+                 TigerErrores.derror
+                   @ m
+                   (TigerEscap.$p1Escapator @ m $dEscapator)
+                   @ a) -}
+c6b182b5d34a778d02b9fc05b71bc00a
+  $fDaemonStateT :: TigerErrores.Daemon TigerEscap.Mini
+  DFunId
+  {- Strictness: m, Inline: [ALWAYS] CONLIKE,
+     Unfolding: DFun:.
+                  @ TigerEscap.Mini
+                  TigerEscap.$fDaemonStateT_$cderror
+                  TigerEscap.$fDaemonStateT_$cadder
+                  TigerEscap.$fDaemonStateT_$cinternal
+                  TigerEscap.$fDaemonStateT_$cnotfound -}
+c6b182b5d34a778d02b9fc05b71bc00a
+  $fDaemonStateT1 ::
+    TigerEscap.Mini a
+    -> TigerSymbol.Symbol
+    -> TigerEscap.Estado
+    -> Data.Either.Either TigerEscap.Errores (a, TigerEscap.Estado)
+  {- Arity: 3, Strictness: <C(S),1*C1(U)><L,1*U(U,U,U)><L,U>,
+     Unfolding: InlineRule (3, True, False)
+                (\ @ a
+                   (w :: TigerEscap.Mini a)
+                   (s :: TigerSymbol.Symbol)
+                   (eta :: TigerEscap.Estado) ->
+                 case w `cast`
+                      (Control.Monad.Trans.State.Lazy.N:StateT[0]
+                           <TigerEscap.Estado>_N
+                           <Data.Either.Either TigerEscap.Errores>_R
+                           <a>_N)
+                        eta of wild {
+                   Data.Either.Left l1
+                   -> Data.Either.Left
+                        @ TigerEscap.Errores
+                        @ (a, TigerEscap.Estado)
+                        (TigerEscap.eappend l1 s)
+                   Data.Either.Right r
+                   -> Data.Either.Right
+                        @ TigerEscap.Errores
+                        @ (a, TigerEscap.Estado)
+                        r }) -}
+c6b182b5d34a778d02b9fc05b71bc00a
+  $fDaemonStateT2 ::
+    TigerSymbol.Symbol
+    -> TigerEscap.Estado
+    -> Data.Either.Either TigerEscap.Errores (a, TigerEscap.Estado)
+  {- Arity: 2, HasNoCafRefs, Strictness: <L,U><L,A>m1,
+     Unfolding: InlineRule (2, True, False)
+                (\ @ a (x :: TigerSymbol.Symbol) (eta :: TigerEscap.Estado) ->
+                 Data.Either.Left
+                   @ TigerEscap.Errores
+                   @ (a, TigerEscap.Estado)
+                   (TigerEscap.Interno x)) -}
+c6b182b5d34a778d02b9fc05b71bc00a
+  $fDaemonStateT_$cadder ::
+    TigerEscap.Mini a -> TigerSymbol.Symbol -> TigerEscap.Mini a
+  {- Arity: 3, Strictness: <C(S),1*C1(U)><L,1*U(U,U,U)><L,U>,
+     Unfolding: InlineRule (0, True, True)
+                TigerEscap.$fDaemonStateT1
+                  `cast`
+                (forall (a :: <*>_N).
+                 <TigerEscap.Mini a>_R
+                 ->_R <TigerSymbol.Symbol>_R
+                 ->_R Sym (Control.Monad.Trans.State.Lazy.N:StateT[0]
+                               <TigerEscap.Estado>_N
+                               <Data.Either.Either TigerEscap.Errores>_R
+                               <a>_N)) -}
+c6b182b5d34a778d02b9fc05b71bc00a
+  $fDaemonStateT_$cderror :: TigerSymbol.Symbol -> TigerEscap.Mini a
+  {- Arity: 2, HasNoCafRefs, Strictness: <L,U><L,A>m1,
+     Unfolding: InlineRule (0, True, True)
+                TigerEscap.$fDaemonStateT2
+                  `cast`
+                (forall (a :: <*>_N).
+                 <TigerSymbol.Symbol>_R
+                 ->_R Sym (Control.Monad.Trans.State.Lazy.N:StateT[0]
+                               <TigerEscap.Estado>_N
+                               <Data.Either.Either TigerEscap.Errores>_R
+                               <a>_N)) -}
+c6b182b5d34a778d02b9fc05b71bc00a
+  $fDaemonStateT_$cinternal ::
+    TigerSymbol.Symbol -> TigerEscap.Mini a
+  {- Arity: 1, Strictness: <L,1*U(U,U,U)>,
+     Unfolding: InlineRule (1, True, False)
+                (\ @ a (x :: TigerSymbol.Symbol) ->
+                 let {
+                   x1 :: TigerSymbol.Symbol
+                   = TigerSymbol.addStr TigerEscap.$fDaemonStateT_g1 x
+                 } in
+                 (\ (eta :: TigerEscap.Estado) ->
+                  Data.Either.Left
+                    @ TigerEscap.Errores
+                    @ (a, TigerEscap.Estado)
+                    (TigerEscap.Interno x1))
+                   `cast`
+                 (Sym (Control.Monad.Trans.State.Lazy.N:StateT[0]
+                           <TigerEscap.Estado>_N
+                           <Data.Either.Either TigerEscap.Errores>_R
+                           <a>_N))) -}
+c6b182b5d34a778d02b9fc05b71bc00a
+  $fDaemonStateT_$cnotfound ::
+    TigerSymbol.Symbol -> TigerEscap.Mini a
+  {- Arity: 1, Strictness: <L,1*U(U,U,U)>,
+     Unfolding: InlineRule (1, True, False)
+                (\ @ a (x :: TigerSymbol.Symbol) ->
+                 let {
+                   x1 :: TigerSymbol.Symbol
+                   = TigerSymbol.addStr TigerEscap.$fDaemonStateT_g x
+                 } in
+                 (\ (eta :: TigerEscap.Estado) ->
+                  Data.Either.Left
+                    @ TigerEscap.Errores
+                    @ (a, TigerEscap.Estado)
+                    (TigerEscap.Interno x1))
+                   `cast`
+                 (Sym (Control.Monad.Trans.State.Lazy.N:StateT[0]
+                           <TigerEscap.Estado>_N
+                           <Data.Either.Either TigerEscap.Errores>_R
+                           <a>_N))) -}
+1d5bf0a2d9533a726b60462cf9732062
+  $fDaemonStateT_g :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# "Not found:"#) -}
+162c27f71fc5c90f3287fe3c1b254570
+  $fDaemonStateT_g1 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# "Internal: "#) -}
+0a99f33babad1d6232f0208d77011d23
+  $fEscapatorStateT :: TigerEscap.Escapator TigerEscap.Mini
+  DFunId
+  {- Strictness: m, Inline: [ALWAYS] CONLIKE,
+     Unfolding: DFun:.
+                  @ TigerEscap.Mini
+                  TigerEscap.$fDaemonStateT
+                  TigerEscap.$fEscapatorStateT_$cp2Escapator
+                  TigerEscap.$fEscapatorStateT_$cdepth
+                  TigerEscap.$fEscapatorStateT_$cup
+                  TigerEscap.$fEscapatorStateT_$cprintEnv
+                  TigerEscap.$fDaemonStateT_$cderror
+                  TigerEscap.$fEscapatorStateT_$cupdate
+                  TigerEscap.$fEscapatorStateT_$clookup
+                  TigerEscap.$fEscapatorStateT_$cinsert -}
+2f676b63092d8c71c82b998438add510
+  $fEscapatorStateT1 ::
+    TigerSymbol.Symbol
+    -> GHC.Types.Bool
+    -> TigerEscap.Mini a
+    -> TigerEscap.Estado
+    -> Data.Either.Either TigerEscap.Errores (a, TigerEscap.Estado)
+  {- Arity: 4,
+     Strictness: <L,1*U(U,U,U)><L,U><C(S),1*C1(U)><L,U(U,U)>,
+     Unfolding: (\ @ a
+                   (name :: TigerSymbol.Symbol)
+                   (esc :: GHC.Types.Bool)
+                   (m :: TigerEscap.Mini a)
+                   (eta :: TigerEscap.Estado) ->
+                 case m `cast`
+                      (Control.Monad.Trans.State.Lazy.N:StateT[0]
+                           <TigerEscap.Estado>_N
+                           <Data.Either.Either TigerEscap.Errores>_R
+                           <a>_N)
+                        (case eta of wild { TigerEscap.S ds ds1 ->
+                         TigerEscap.S
+                           ds
+                           (case name of ww { Data.Text.Internal.Text ww1 ww2 ww3 ->
+                            TigerEscap.$w$sgo4
+                              @ (GHC.Types.Int, GHC.Types.Bool)
+                              ww1
+                              ww2
+                              ww3
+                              (ds, esc)
+                              ds1 }) }) of wild {
+                   Data.Either.Left l1 -> wild
+                   Data.Either.Right r
+                   -> Data.Either.Right
+                        @ TigerEscap.Errores
+                        @ (a, TigerEscap.Estado)
+                        (case r of wild1 { (,) a1 s' -> a1 }, eta) }) -}
+c5778122d0cc8cda8301a8f6f7b04a2b
+  $fEscapatorStateT10 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# "lvl = "#) -}
+5c9eebbe10b072168150383ba7962997
+  $fEscapatorStateT11 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# "S {"#) -}
+e0c0bad0254d9d1ec333cef5d0cc5105
+  $fEscapatorStateT12 ::
+    TigerEscap.Mini a
+    -> TigerEscap.Estado
+    -> Data.Either.Either TigerEscap.Errores (a, TigerEscap.Estado)
+  {- Arity: 2, HasNoCafRefs, Strictness: <C(S),1*C1(U)><L,U(U(U),U)>,
+     Unfolding: (\ @ a
+                   (m :: TigerEscap.Mini a)
+                   (eta :: TigerEscap.Estado) ->
+                 case m `cast`
+                      (Control.Monad.Trans.State.Lazy.N:StateT[0]
+                           <TigerEscap.Estado>_N
+                           <Data.Either.Either TigerEscap.Errores>_R
+                           <a>_N)
+                        (case eta of wild { TigerEscap.S ds ds1 ->
+                         TigerEscap.S
+                           (case ds of wild1 { GHC.Types.I# x ->
+                            GHC.Types.I# (GHC.Prim.+# x 1#) })
+                           ds1 }) of wild {
+                   Data.Either.Left l1 -> wild
+                   Data.Either.Right r
+                   -> Data.Either.Right
+                        @ TigerEscap.Errores
+                        @ (a, TigerEscap.Estado)
+                        (case r of wild1 { (,) a1 s' -> a1 }, eta) }) -}
+149213873a211d336972808cdf52f556
+  $fEscapatorStateT13 ::
+    TigerEscap.Estado
+    -> Data.Either.Either
+         TigerEscap.Errores (GHC.Types.Int, TigerEscap.Estado)
+  {- Arity: 1, HasNoCafRefs, Strictness: <L,U(U,U)>m2,
+     Unfolding: InlineRule (1, True, False)
+                (\ (s1 :: TigerEscap.Estado) ->
+                 Data.Either.Right
+                   @ TigerEscap.Errores
+                   @ (GHC.Types.Int, TigerEscap.Estado)
+                   (case s1 of wild { TigerEscap.S ds ds1 -> ds }, s1)) -}
+d92187e6a4cd7da44d2a540cdbe66ff3
+  $fEscapatorStateT14 ::
+    GHC.Base.Functor
+      (Control.Monad.Trans.State.Lazy.StateT
+         s (Data.Either.Either TigerEscap.Errores))
+  {- Unfolding: (\ @ s ->
+                 Control.Monad.Trans.State.Lazy.$fFunctorStateT
+                   @ (Data.Either.Either TigerEscap.Errores)
+                   @ s
+                   (Data.Either.$fFunctorEither @ TigerEscap.Errores)) -}
+8fd3d72cf1e19ba36b53abbe0e22953c
+  $fEscapatorStateT2 ::
+    TigerSymbol.Symbol
+    -> TigerEscap.Estado
+    -> Data.Either.Either
+         TigerEscap.Errores
+         (GHC.Base.Maybe TigerEscap.Dat, TigerEscap.Estado)
+  {- Arity: 2, HasNoCafRefs, Strictness: <L,1*U(U,U,U)><L,U(U,U)>m2,
+     Unfolding: InlineRule (2, True, False)
+                (\ (name :: TigerSymbol.Symbol) (eta :: TigerEscap.Estado) ->
+                 Data.Either.Right
+                   @ TigerEscap.Errores
+                   @ (GHC.Base.Maybe TigerEscap.Dat, TigerEscap.Estado)
+                   (case eta of wild { TigerEscap.S ds ds1 ->
+                    TigerEscap.$fEscapatorStateT3
+                      @ (GHC.Types.Int, GHC.Types.Bool)
+                      name
+                      ds1 },
+                    eta)) -}
+85265bb6250163cd0de6d55c81087ca2
+  $fEscapatorStateT3 ::
+    TigerSymbol.Symbol
+    -> Data.Map.Base.Map TigerSymbol.Symbol a -> GHC.Base.Maybe a
+  {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U(U,U,U)><S,1*U>,
+     Inline: INLINE[0],
+     Unfolding: InlineRule (2, True, False)
+                (\ @ a
+                   (w :: TigerSymbol.Symbol)
+                   (w1 :: Data.Map.Base.Map TigerSymbol.Symbol a) ->
+                 case w of ww { Data.Text.Internal.Text ww1 ww2 ww3 ->
+                 TigerEscap.$wpoly_go10 @ a ww1 ww2 ww3 w1 }) -}
+1dbf3630d2476536bd9639ce80448b38
+  $fEscapatorStateT4 ::
+    TigerSymbol.Symbol
+    -> GHC.Types.Bool
+    -> TigerEscap.Estado
+    -> Data.Either.Either TigerEscap.Errores ((), TigerEscap.Estado)
+  {- Arity: 3, Strictness: <S,U(U,U,U)><L,U><S(LS),1*U(U,U)>,
+     Inline: INLINE[0],
+     Unfolding: InlineRule (3, True, False)
+                (\ (w :: TigerSymbol.Symbol)
+                   (w1 :: GHC.Types.Bool)
+                   (w2 :: TigerEscap.Estado) ->
+                 case w of ww { Data.Text.Internal.Text ww1 ww2 ww3 ->
+                 case w2 of ww4 { TigerEscap.S ww5 ww6 ->
+                 TigerEscap.$w$cupdate ww1 ww2 ww3 w1 ww5 ww6 } }) -}
+05c9fcc8a5c4ed065d73f0e8f39239b2
+  $fEscapatorStateT5 ::
+    TigerEscap.Estado
+    -> Data.Either.Either TigerEscap.Errores ((), TigerEscap.Estado)
+  {- Arity: 1, Strictness: <L,U(U(U),U)>,
+     Unfolding: (\ (s1 :: TigerEscap.Estado) ->
+                 (Debug.Trace.trace
+                    @ (Control.Monad.Trans.State.Lazy.StateT
+                         TigerEscap.Estado (Data.Either.Either TigerEscap.Errores) ())
+                    (GHC.CString.unpackAppendCString#
+                       "PrintEnv "#
+                       (case s1 of ww { TigerEscap.S ww1 ww2 ->
+                        TigerEscap.$w$cshowsPrec
+                          0#
+                          ww1
+                          ww2
+                          (GHC.Types.[] @ GHC.Types.Char) }))
+                    TigerEscap.$fEscapatorStateT6
+                      `cast`
+                    (Sym (Control.Monad.Trans.State.Lazy.N:StateT[0]
+                              <TigerEscap.Estado>_N
+                              <Data.Either.Either TigerEscap.Errores>_R
+                              <()>_N)))
+                   `cast`
+                 (Control.Monad.Trans.State.Lazy.N:StateT[0]
+                      <TigerEscap.Estado>_N
+                      <Data.Either.Either TigerEscap.Errores>_R
+                      <()>_N)
+                   s1) -}
+724102c4017850127f3e4fab7224e109
+  $fEscapatorStateT6 ::
+    TigerEscap.Estado
+    -> Data.Either.Either TigerEscap.Errores ((), TigerEscap.Estado)
+  {- Arity: 1, HasNoCafRefs, Strictness: <L,U>m2,
+     Unfolding: InlineRule (1, True, False)
+                (\ (s1 :: TigerEscap.Estado) ->
+                 Data.Either.Right
+                   @ TigerEscap.Errores
+                   @ ((), TigerEscap.Estado)
+                   (GHC.Tuple.(), s1)) -}
+df3641f357f4ea7ec3ce1f854c5f9c87
+  $fEscapatorStateT7 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# "}"#) -}
+6fbfec8f972e3188be3d4af5c98ca33e
+  $fEscapatorStateT8 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# "env = "#) -}
+48d809d07029d347b6b6976a9c1c802d
+  $fEscapatorStateT9 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# ", "#) -}
+bd1c725fa721ff58c7cbbfece9792813
+  $fEscapatorStateT_$cdepth :: TigerEscap.Mini TigerEscap.Depth
+  {- Arity: 1, HasNoCafRefs, Strictness: <L,U(U,U)>m2,
+     Unfolding: InlineRule (0, True, True)
+                TigerEscap.$fEscapatorStateT13
+                  `cast`
+                (Sym (Control.Monad.Trans.State.Lazy.N:StateT[0]
+                          <TigerEscap.Estado>_N
+                          <Data.Either.Either TigerEscap.Errores>_R
+                          <GHC.Types.Int>_N)) -}
+21ed1769a61f19aea7612e75d66e526b
+  $fEscapatorStateT_$cinsert ::
+    TigerSymbol.Symbol
+    -> GHC.Types.Bool -> TigerEscap.Mini a -> TigerEscap.Mini a
+  {- Arity: 4,
+     Strictness: <L,1*U(U,U,U)><L,U><C(S),1*C1(U)><L,U(U,U)>,
+     Unfolding: InlineRule (0, True, True)
+                TigerEscap.$fEscapatorStateT1
+                  `cast`
+                (forall (a :: <*>_N).
+                 <TigerSymbol.Symbol>_R
+                 ->_R <GHC.Types.Bool>_R
+                 ->_R <TigerEscap.Mini a>_R
+                 ->_R Sym (Control.Monad.Trans.State.Lazy.N:StateT[0]
+                               <TigerEscap.Estado>_N
+                               <Data.Either.Either TigerEscap.Errores>_R
+                               <a>_N)) -}
+33f7bd0642d23c2d9867eb9aa85ee8ca
+  $fEscapatorStateT_$clookup ::
+    TigerSymbol.Symbol
+    -> TigerEscap.Mini (GHC.Base.Maybe (GHC.Types.Int, GHC.Types.Bool))
+  {- Arity: 2, HasNoCafRefs, Strictness: <L,1*U(U,U,U)><L,U(U,U)>m2,
+     Unfolding: InlineRule (0, True, True)
+                TigerEscap.$fEscapatorStateT2
+                  `cast`
+                (<TigerSymbol.Symbol>_R
+                 ->_R Sym (Control.Monad.Trans.State.Lazy.N:StateT[0]
+                               <TigerEscap.Estado>_N
+                               <Data.Either.Either TigerEscap.Errores>_R
+                               <GHC.Base.Maybe TigerEscap.Dat>_N)) -}
+6ff81128b46c77f6bdc76c0786cccfd7
+  $fEscapatorStateT_$cp2Escapator :: GHC.Base.Monad TigerEscap.Mini
+  {- Strictness: m,
+     Unfolding: InlineRule (0, True, True)
+                (TigerEscap.$fEscapatorStateT_$s$fMonadStateT
+                   @ TigerEscap.Estado) -}
+1234199e878c67a0ac65782962d56d5e
+  $fEscapatorStateT_$cprintEnv :: TigerEscap.Mini ()
+  {- Arity: 1, Strictness: <L,U(U(U),U)>,
+     Unfolding: InlineRule (0, True, True)
+                TigerEscap.$fEscapatorStateT5
+                  `cast`
+                (Sym (Control.Monad.Trans.State.Lazy.N:StateT[0]
+                          <TigerEscap.Estado>_N
+                          <Data.Either.Either TigerEscap.Errores>_R
+                          <()>_N)) -}
+78b0807a6e75726fb369e15025401caa
+  $fEscapatorStateT_$cup :: TigerEscap.Mini a -> TigerEscap.Mini a
+  {- Arity: 2, HasNoCafRefs, Strictness: <C(S),1*C1(U)><L,U(U(U),U)>,
+     Unfolding: InlineRule (0, True, True)
+                TigerEscap.$fEscapatorStateT12
+                  `cast`
+                (forall (a :: <*>_N).
+                 <TigerEscap.Mini a>_R
+                 ->_R Sym (Control.Monad.Trans.State.Lazy.N:StateT[0]
+                               <TigerEscap.Estado>_N
+                               <Data.Either.Either TigerEscap.Errores>_R
+                               <a>_N)) -}
+95ed3481e7e9695464b8e5dacbb46c70
+  $fEscapatorStateT_$cupdate ::
+    TigerSymbol.Symbol -> GHC.Types.Bool -> TigerEscap.Mini ()
+  {- Arity: 3, Strictness: <S,U(U,U,U)><L,U><S(LS),1*U(U,U)>,
+     Unfolding: InlineRule (0, True, True)
+                TigerEscap.$fEscapatorStateT4
+                  `cast`
+                (<TigerSymbol.Symbol>_R
+                 ->_R <GHC.Types.Bool>_R
+                 ->_R Sym (Control.Monad.Trans.State.Lazy.N:StateT[0]
+                               <TigerEscap.Estado>_N
+                               <Data.Either.Either TigerEscap.Errores>_R
+                               <()>_N)) -}
+b93d7aea606d77a9d75d3c522300e802
+  $fEscapatorStateT_$dFunctor ::
+    GHC.Base.Functor (Data.Either.Either TigerEscap.Errores)
+  {- Strictness: m,
+     Unfolding: InlineRule (0, True, True)
+                (Data.Either.$fFunctorEither @ TigerEscap.Errores) -}
+e4b10268d1686355bf8cec8aa2c9f21e
+  $fEscapatorStateT_$s$fApplicativeStateT ::
+    GHC.Base.Applicative
+      (Control.Monad.Trans.State.Lazy.StateT
+         s (Data.Either.Either TigerEscap.Errores))
+  {- Strictness: m, Inline: [ALWAYS] CONLIKE,
+     Unfolding: DFun: @ s.
+                  @ (Control.Monad.Trans.State.Lazy.StateT
+                       s (Data.Either.Either TigerEscap.Errores))
+                  (TigerEscap.$fEscapatorStateT14 @ s)
+                  (TigerEscap.$fEscapatorStateT_$s$fApplicativeStateT_$cpure @ s)
+                  (TigerEscap.$fEscapatorStateT_$s$fApplicativeStateT_$c<*> @ s)
+                  (Control.Monad.Trans.State.Lazy.$fApplicativeStateT_$c*>
+                     @ (Data.Either.Either TigerEscap.Errores)
+                     @ s
+                     TigerEscap.$fEscapatorStateT_$dFunctor
+                     (Data.Either.$fMonadEither @ TigerEscap.Errores))
+                  (Control.Monad.Trans.State.Lazy.$fApplicativeStateT_$c<*
+                     @ (Data.Either.Either TigerEscap.Errores)
+                     @ s
+                     TigerEscap.$fEscapatorStateT_$dFunctor
+                     (Data.Either.$fMonadEither @ TigerEscap.Errores)) -}
+727ca0078c57ab748d8ce135e366c036
+  $fEscapatorStateT_$s$fApplicativeStateT_$c<*> ::
+    Control.Monad.Trans.State.Lazy.StateT
+      s (Data.Either.Either TigerEscap.Errores) (a -> b)
+    -> Control.Monad.Trans.State.Lazy.StateT
+         s (Data.Either.Either TigerEscap.Errores) a
+    -> Control.Monad.Trans.State.Lazy.StateT
+         s (Data.Either.Either TigerEscap.Errores) b
+  {- Arity: 3, HasNoCafRefs,
+     Strictness: <C(S),1*C1(U)><L,1*C1(U)><L,U>,
+     Inline: INLINE (sat-args=2),
+     Unfolding: InlineRule (2, False, False)
+                (\ @ s
+                   @ a
+                   @ b
+                   (ds :: Control.Monad.Trans.State.Lazy.StateT
+                            s (Data.Either.Either TigerEscap.Errores) (a -> b))
+                   (ds1 :: Control.Monad.Trans.State.Lazy.StateT
+                             s (Data.Either.Either TigerEscap.Errores) a) ->
+                 GHC.Base.$
+                   @ 'GHC.Types.PtrRepLifted
+                   @ (s -> Data.Either.Either TigerEscap.Errores (b, s))
+                   @ (Control.Monad.Trans.State.Lazy.StateT
+                        s (Data.Either.Either TigerEscap.Errores) b)
+                   (\ (tpl :: s -> Data.Either.Either TigerEscap.Errores (b, s)) ->
+                    tpl)
+                     `cast`
+                   (<s -> Data.Either.Either TigerEscap.Errores (b, s)>_R
+                    ->_R Sym (Control.Monad.Trans.State.Lazy.N:StateT[0]
+                                  <s>_N <Data.Either.Either TigerEscap.Errores>_R <b>_N))
+                   (\ (s1 :: s) ->
+                    Data.Either.$fMonadEither_$c>>=
+                      @ TigerEscap.Errores
+                      @ (a -> b, s)
+                      @ (b, s)
+                      (ds
+                         `cast`
+                       (Control.Monad.Trans.State.Lazy.N:StateT[0]
+                            <s>_N <Data.Either.Either TigerEscap.Errores>_R <a -> b>_N)
+                         s1)
+                      (\ (ds2 :: (a -> b, s))[OneShot] ->
+                       Data.Either.$fMonadEither_$c>>=
+                         @ TigerEscap.Errores
+                         @ (a, s)
+                         @ (b, s)
+                         (ds1
+                            `cast`
+                          (Control.Monad.Trans.State.Lazy.N:StateT[0]
+                               <s>_N <Data.Either.Either TigerEscap.Errores>_R <a>_N)
+                            (case ds2 of wild { (,) f s' -> s' }))
+                         (\ (ds3 :: (a, s))[OneShot] ->
+                          Data.Either.$fMonadEither_$creturn
+                            @ TigerEscap.Errores
+                            @ (b, s)
+                            (case ds2 of wild { (,) f s' ->
+                             f (case ds3 of wild1 { (,) x s'' -> x }) },
+                             case ds3 of wild { (,) x s'' -> s'' }))))) -}
+eb3026b50c3ae07ab0270ddbad76c73a
+  $fEscapatorStateT_$s$fApplicativeStateT_$cpure ::
+    a
+    -> Control.Monad.Trans.State.Lazy.StateT
+         s (Data.Either.Either TigerEscap.Errores) a
+  {- Arity: 2, HasNoCafRefs, Strictness: <L,U><L,U>m2,
+     Inline: INLINE (sat-args=1),
+     Unfolding: InlineRule (1, False, False)
+                (\ @ s @ a (a1 :: a) ->
+                 GHC.Base.$
+                   @ 'GHC.Types.PtrRepLifted
+                   @ (s -> Data.Either.Either TigerEscap.Errores (a, s))
+                   @ (Control.Monad.Trans.State.Lazy.StateT
+                        s (Data.Either.Either TigerEscap.Errores) a)
+                   (\ (tpl :: s -> Data.Either.Either TigerEscap.Errores (a, s)) ->
+                    tpl)
+                     `cast`
+                   (<s -> Data.Either.Either TigerEscap.Errores (a, s)>_R
+                    ->_R Sym (Control.Monad.Trans.State.Lazy.N:StateT[0]
+                                  <s>_N <Data.Either.Either TigerEscap.Errores>_R <a>_N))
+                   (\ (s1 :: s) ->
+                    Data.Either.$fMonadEither_$creturn
+                      @ TigerEscap.Errores
+                      @ (a, s)
+                      (a1, s1))) -}
+f64d214c487cdde537d89a94d1000c0a
+  $fEscapatorStateT_$s$fMonadStateT ::
+    GHC.Base.Monad
+      (Control.Monad.Trans.State.Lazy.StateT
+         s (Data.Either.Either TigerEscap.Errores))
+  {- Strictness: m, Inline: [ALWAYS] CONLIKE,
+     Unfolding: DFun: @ s.
+                  @ (Control.Monad.Trans.State.Lazy.StateT
+                       s (Data.Either.Either TigerEscap.Errores))
+                  (TigerEscap.$fEscapatorStateT_$s$fMonadStateT_$cp1Monad @ s)
+                  (TigerEscap.$fEscapatorStateT_$s$fMonadStateT_$c>>= @ s)
+                  (TigerEscap.$fEscapatorStateT_$s$fMonadStateT_$c>> @ s)
+                  (Control.Monad.Trans.State.Lazy.$fMonadStateT_$creturn
+                     @ (Data.Either.Either TigerEscap.Errores)
+                     @ s
+                     (Data.Either.$fMonadEither @ TigerEscap.Errores))
+                  (TigerEscap.$fEscapatorStateT_$s$fMonadStateT_$cfail @ s) -}
+ad203ce38c7ca3241981cef4caa3f582
+  $fEscapatorStateT_$s$fMonadStateT_$c>> ::
+    Control.Monad.Trans.State.Lazy.StateT
+      s (Data.Either.Either TigerEscap.Errores) a
+    -> Control.Monad.Trans.State.Lazy.StateT
+         s (Data.Either.Either TigerEscap.Errores) b
+    -> Control.Monad.Trans.State.Lazy.StateT
+         s (Data.Either.Either TigerEscap.Errores) b
+  {- Arity: 3, HasNoCafRefs,
+     Strictness: <C(S),1*C1(U)><L,1*C1(U)><L,U>,
+     Inline: INLINE (sat-args=2),
+     Unfolding: InlineRule (2, False, False)
+                (\ @ s
+                   @ a
+                   @ b
+                   (m1 :: Control.Monad.Trans.State.Lazy.StateT
+                            s (Data.Either.Either TigerEscap.Errores) a)
+                   (k :: Control.Monad.Trans.State.Lazy.StateT
+                           s (Data.Either.Either TigerEscap.Errores) b) ->
+                 GHC.Base.$
+                   @ 'GHC.Types.PtrRepLifted
+                   @ (s -> Data.Either.Either TigerEscap.Errores (b, s))
+                   @ (Control.Monad.Trans.State.Lazy.StateT
+                        s (Data.Either.Either TigerEscap.Errores) b)
+                   (\ (tpl :: s -> Data.Either.Either TigerEscap.Errores (b, s)) ->
+                    tpl)
+                     `cast`
+                   (<s -> Data.Either.Either TigerEscap.Errores (b, s)>_R
+                    ->_R Sym (Control.Monad.Trans.State.Lazy.N:StateT[0]
+                                  <s>_N <Data.Either.Either TigerEscap.Errores>_R <b>_N))
+                   (\ (s1 :: s) ->
+                    Data.Either.$fMonadEither_$c>>=
+                      @ TigerEscap.Errores
+                      @ (a, s)
+                      @ (b, s)
+                      (Control.Monad.Trans.State.Lazy.runStateT
+                         @ s
+                         @ (Data.Either.Either TigerEscap.Errores)
+                         @ a
+                         m1
+                         s1)
+                      (\ (ds :: (a, s))[OneShot] ->
+                       Control.Monad.Trans.State.Lazy.runStateT
+                         @ s
+                         @ (Data.Either.Either TigerEscap.Errores)
+                         @ b
+                         k
+                         (case ds of wild { (,) a1 s' -> s' })))) -}
+b14a4afe23cbe6c2a2254568b3ff0337
+  $fEscapatorStateT_$s$fMonadStateT_$c>>= ::
+    Control.Monad.Trans.State.Lazy.StateT
+      s (Data.Either.Either TigerEscap.Errores) a
+    -> (a
+        -> Control.Monad.Trans.State.Lazy.StateT
+             s (Data.Either.Either TigerEscap.Errores) b)
+    -> Control.Monad.Trans.State.Lazy.StateT
+         s (Data.Either.Either TigerEscap.Errores) b
+  {- Arity: 3, HasNoCafRefs,
+     Strictness: <C(S),1*C1(U)><L,1*C1(C1(U))><L,U>,
+     Inline: INLINE (sat-args=2),
+     Unfolding: InlineRule (2, False, False)
+                (\ @ s
+                   @ a
+                   @ b
+                   (m1 :: Control.Monad.Trans.State.Lazy.StateT
+                            s (Data.Either.Either TigerEscap.Errores) a)
+                   (k :: a
+                         -> Control.Monad.Trans.State.Lazy.StateT
+                              s (Data.Either.Either TigerEscap.Errores) b) ->
+                 GHC.Base.$
+                   @ 'GHC.Types.PtrRepLifted
+                   @ (s -> Data.Either.Either TigerEscap.Errores (b, s))
+                   @ (Control.Monad.Trans.State.Lazy.StateT
+                        s (Data.Either.Either TigerEscap.Errores) b)
+                   (\ (tpl :: s -> Data.Either.Either TigerEscap.Errores (b, s)) ->
+                    tpl)
+                     `cast`
+                   (<s -> Data.Either.Either TigerEscap.Errores (b, s)>_R
+                    ->_R Sym (Control.Monad.Trans.State.Lazy.N:StateT[0]
+                                  <s>_N <Data.Either.Either TigerEscap.Errores>_R <b>_N))
+                   (\ (s1 :: s) ->
+                    Data.Either.$fMonadEither_$c>>=
+                      @ TigerEscap.Errores
+                      @ (a, s)
+                      @ (b, s)
+                      (Control.Monad.Trans.State.Lazy.runStateT
+                         @ s
+                         @ (Data.Either.Either TigerEscap.Errores)
+                         @ a
+                         m1
+                         s1)
+                      (\ (ds :: (a, s))[OneShot] ->
+                       Control.Monad.Trans.State.Lazy.runStateT
+                         @ s
+                         @ (Data.Either.Either TigerEscap.Errores)
+                         @ b
+                         (k (case ds of wild { (,) a1 s' -> a1 }))
+                         (case ds of wild { (,) a1 s' -> s' })))) -}
+2292aa501f5f528fac1ff89bb2691c72
+  $fEscapatorStateT_$s$fMonadStateT_$cfail ::
+    GHC.Base.String
+    -> Control.Monad.Trans.State.Lazy.StateT
+         s (Data.Either.Either TigerEscap.Errores) a
+  {- Arity: 2, Strictness: <B,U><B,A>x, Inline: INLINE (sat-args=1),
+     Unfolding: InlineRule (1, False, False)
+                (\ @ s @ a (str :: GHC.Base.String) ->
+                 GHC.Base.$
+                   @ 'GHC.Types.PtrRepLifted
+                   @ (s -> Data.Either.Either TigerEscap.Errores (a, s))
+                   @ (Control.Monad.Trans.State.Lazy.StateT
+                        s (Data.Either.Either TigerEscap.Errores) a)
+                   (\ (tpl :: s -> Data.Either.Either TigerEscap.Errores (a, s)) ->
+                    tpl)
+                     `cast`
+                   (<s -> Data.Either.Either TigerEscap.Errores (a, s)>_R
+                    ->_R Sym (Control.Monad.Trans.State.Lazy.N:StateT[0]
+                                  <s>_N <Data.Either.Either TigerEscap.Errores>_R <a>_N))
+                   (\ (ds :: s) ->
+                    Data.Either.$fMonadEither_$cfail
+                      @ TigerEscap.Errores
+                      @ (a, s)
+                      str)) -}
+f611e57f0e2f565462f36b87646b954b
+  $fEscapatorStateT_$s$fMonadStateT_$cp1Monad ::
+    GHC.Base.Applicative
+      (Control.Monad.Trans.State.Lazy.StateT
+         s (Data.Either.Either TigerEscap.Errores))
+  {- Strictness: m,
+     Unfolding: InlineRule (0, True, True)
+                TigerEscap.$fEscapatorStateT_$s$fApplicativeStateT -}
+0acc04964befa01c48cfe6b80af6b35f
+  $fEscapatorStateT_$s$fShow(,) ::
+    GHC.Show.Show (GHC.Types.Int, GHC.Types.Bool)
+  {- Strictness: m, Inline: [ALWAYS] CONLIKE,
+     Unfolding: DFun:.
+                  @ (GHC.Types.Int, GHC.Types.Bool)
+                  (GHC.Show.$fShow(,)_$cshowsPrec
+                     @ GHC.Types.Int
+                     @ GHC.Types.Bool
+                     GHC.Show.$fShowInt
+                     GHC.Show.$fShowBool)
+                  TigerEscap.$fEscapatorStateT_$s$fShow(,)_$cshow
+                  TigerEscap.$fEscapatorStateT_$s$fShow(,)_$cshowList -}
+50fa35a3eba8678ed68af24da7a211f8
+  $fEscapatorStateT_$s$fShow(,)_$cshow ::
+    (GHC.Types.Int, GHC.Types.Bool) -> GHC.Base.String
+  {- Arity: 1, Strictness: <S,1*U(1*U(U),U)>m2,
+     Unfolding: InlineRule (1, True, False)
+                (\ (x :: (GHC.Types.Int, GHC.Types.Bool)) ->
+                 GHC.Show.$fShow(,)_$cshowsPrec
+                   @ GHC.Types.Int
+                   @ GHC.Types.Bool
+                   GHC.Show.$fShowInt
+                   GHC.Show.$fShowBool
+                   GHC.Show.shows22
+                   x
+                   (GHC.Types.[] @ GHC.Types.Char)) -}
+7b75f03e7ae8d6f2e382d65208f2719f
+  $fEscapatorStateT_$s$fShow(,)_$cshowList ::
+    [(GHC.Types.Int, GHC.Types.Bool)] -> GHC.Show.ShowS
+  {- Arity: 2, Strictness: <S,1*U><L,U>,
+     Unfolding: InlineRule (2, True, False)
+                (\ (eta :: [(GHC.Types.Int, GHC.Types.Bool)])
+                   (eta1 :: GHC.Base.String) ->
+                 GHC.Show.showList__
+                   @ (GHC.Types.Int, GHC.Types.Bool)
+                   (GHC.Show.$fShow(,)_$cshowsPrec
+                      @ GHC.Types.Int
+                      @ GHC.Types.Bool
+                      GHC.Show.$fShowInt
+                      GHC.Show.$fShowBool
+                      GHC.Show.shows22)
+                   eta
+                   eta1) -}
+c6b182b5d34a778d02b9fc05b71bc00a
+  $fShowErrores :: GHC.Show.Show TigerEscap.Errores
+  DFunId
+  {- Strictness: m, Inline: [ALWAYS] CONLIKE,
+     Unfolding: DFun:.
+                  @ TigerEscap.Errores
+                  TigerEscap.$fShowErrores_$cshowsPrec
+                  TigerEscap.$fShowErrores_$cshow
+                  TigerEscap.$fShowErrores_$cshowList -}
+e0946cbe098b3116ffdd9c0e3c2fddae
+  $fShowErrores1 :: (GHC.Types.Char -> b -> b) -> b -> b
+  {- Arity: 2, HasNoCafRefs, Strictness: <L,C(C1(U))><L,U>,
+     Unfolding: (\ @ b
+                   (c :: GHC.Types.Char -> b -> b)[OneShot]
+                   (n :: b)[OneShot] ->
+                 GHC.CString.unpackFoldrCString#
+                   @ b
+                   "No se encuentra la variable "#
+                   c
+                   n) -}
+c6b182b5d34a778d02b9fc05b71bc00a
+  $fShowErrores_$cshow :: TigerEscap.Errores -> GHC.Base.String
+  {- Arity: 1, Strictness: <S,1*U>,
+     Unfolding: (\ (ds :: TigerEscap.Errores) ->
+                 case ds of wild {
+                   TigerEscap.NotFound e1
+                   -> TigerEscap.$fShowErrores1
+                        @ [GHC.Types.Char]
+                        (GHC.Types.: @ GHC.Types.Char)
+                        (Data.Text.Show.$fShowText_$cshow e1)
+                   TigerEscap.Interno e1
+                   -> GHC.CString.unpackAppendCString#
+                        "Error interno "#
+                        (Data.Text.Show.$fShowText_$cshow e1) }) -}
+c6b182b5d34a778d02b9fc05b71bc00a
+  $fShowErrores_$cshowList :: [TigerEscap.Errores] -> GHC.Show.ShowS
+  {- Arity: 2, Strictness: <S,1*U><L,U>,
+     Unfolding: InlineRule (2, True, False)
+                (\ (ls :: [TigerEscap.Errores]) (s :: GHC.Base.String) ->
+                 GHC.Show.showList__
+                   @ TigerEscap.Errores
+                   (TigerEscap.$fShowErrores_$cshowsPrec GHC.Show.shows22)
+                   ls
+                   s) -}
+c6b182b5d34a778d02b9fc05b71bc00a
+  $fShowErrores_$cshowsPrec ::
+    GHC.Types.Int -> TigerEscap.Errores -> GHC.Show.ShowS
+  {- Arity: 3, Strictness: <L,A><S,1*U><L,1*U>, Inline: INLINE[0],
+     Unfolding: InlineRule (3, True, True)
+                (\ (w :: GHC.Types.Int)
+                   (w1 :: TigerEscap.Errores)
+                   (w2 :: GHC.Base.String) ->
+                 TigerEscap.$w$cshowsPrec1 w1 w2) -}
+df112a051c8ff72a59471bb105f4bcf1
+  $fShowEstado :: GHC.Show.Show TigerEscap.Estado
+  DFunId
+  {- Strictness: m, Inline: [ALWAYS] CONLIKE,
+     Unfolding: DFun:.
+                  @ TigerEscap.Estado
+                  TigerEscap.$fShowEstado_$cshowsPrec
+                  TigerEscap.$fShowEstado_$cshow
+                  TigerEscap.$fShowEstado_$cshowList -}
+df112a051c8ff72a59471bb105f4bcf1
+  $fShowEstado1 :: TigerEscap.Estado -> GHC.Show.ShowS
+  {- Arity: 1,
+     Unfolding: (\ (w :: TigerEscap.Estado) ->
+                 case w of ww { TigerEscap.S ww1 ww2 ->
+                 TigerEscap.$w$cshowsPrec 0# ww1 ww2 }) -}
+df112a051c8ff72a59471bb105f4bcf1
+  $fShowEstado_$cshow :: TigerEscap.Estado -> GHC.Base.String
+  {- Arity: 1, Strictness: <S,1*U(U(U),1*U)>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (x :: TigerEscap.Estado) ->
+                 TigerEscap.$fShowEstado_$cshowsPrec
+                   GHC.Show.shows22
+                   x
+                   (GHC.Types.[] @ GHC.Types.Char)) -}
+df112a051c8ff72a59471bb105f4bcf1
+  $fShowEstado_$cshowList :: [TigerEscap.Estado] -> GHC.Show.ShowS
+  {- Arity: 2,
+     Unfolding: (GHC.Show.showList__
+                   @ TigerEscap.Estado
+                   TigerEscap.$fShowEstado1) -}
+df112a051c8ff72a59471bb105f4bcf1
+  $fShowEstado_$cshowsPrec ::
+    GHC.Types.Int -> TigerEscap.Estado -> GHC.Show.ShowS
+  {- Arity: 2, Strictness: <S(S),1*U(U)><S,1*U(U(U),1*U)>,
+     Inline: INLINE[0],
+     Unfolding: InlineRule (2, True, False)
+                (\ (w :: GHC.Types.Int) (w1 :: TigerEscap.Estado) ->
+                 case w of ww { GHC.Types.I# ww1 ->
+                 case w1 of ww2 { TigerEscap.S ww3 ww4 ->
+                 TigerEscap.$w$cshowsPrec ww1 ww3 ww4 } }) -}
+32960fb0c2bad8f1e2fa24acd8e30035
+  $fShowSEstado :: GHC.Show.Show TigerEscap.SEstado
+  DFunId
+  {- Strictness: m, Inline: [ALWAYS] CONLIKE,
+     Unfolding: DFun:.
+                  @ TigerEscap.SEstado
+                  TigerEscap.$fShowSEstado_$cshowsPrec
+                  TigerEscap.$fShowSEstado_$cshow
+                  TigerEscap.$fShowSEstado_$cshowList -}
+32960fb0c2bad8f1e2fa24acd8e30035
+  $fShowSEstado1 :: TigerEscap.SEstado -> GHC.Show.ShowS
+  {- Arity: 2,
+     Unfolding: (\ (w :: TigerEscap.SEstado) (w1 :: GHC.Base.String) ->
+                 case w of ww { TigerEscap.Step ww1 ww2 ->
+                 TigerEscap.$w$cshowsPrec2 0# ww1 ww2 w1 }) -}
+2e33197dc30f900e349294a91a9e6fb7
+  $fShowSEstado2 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# "Step {"#) -}
+139d9e657f60a4d654ea178cce139af0
+  $fShowSEstado3 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# "e = "#) -}
+fd2c276cb369c4e66af5d2cbfc291ec3
+  $fShowSEstado4 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# "l = "#) -}
+32960fb0c2bad8f1e2fa24acd8e30035
+  $fShowSEstado_$cshow :: TigerEscap.SEstado -> GHC.Base.String
+  {- Arity: 1, Strictness: <S,1*U(1*U(U),1*U)>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (x :: TigerEscap.SEstado) ->
+                 TigerEscap.$fShowSEstado_$cshowsPrec
+                   GHC.Show.shows22
+                   x
+                   (GHC.Types.[] @ GHC.Types.Char)) -}
+32960fb0c2bad8f1e2fa24acd8e30035
+  $fShowSEstado_$cshowList :: [TigerEscap.SEstado] -> GHC.Show.ShowS
+  {- Arity: 2,
+     Unfolding: (GHC.Show.showList__
+                   @ TigerEscap.SEstado
+                   TigerEscap.$fShowSEstado1) -}
+32960fb0c2bad8f1e2fa24acd8e30035
+  $fShowSEstado_$cshowsPrec ::
+    GHC.Types.Int -> TigerEscap.SEstado -> GHC.Show.ShowS
+  {- Arity: 3, Strictness: <S(S),1*U(U)><S,1*U(1*U(U),1*U)><L,U>,
+     Inline: INLINE[0],
+     Unfolding: InlineRule (3, True, False)
+                (\ (w :: GHC.Types.Int)
+                   (w1 :: TigerEscap.SEstado)
+                   (w2 :: GHC.Base.String) ->
+                 case w of ww { GHC.Types.I# ww1 ->
+                 case w1 of ww2 { TigerEscap.Step ww3 ww4 ->
+                 TigerEscap.$w$cshowsPrec2 ww1 ww3 ww4 w2 } }) -}
+692a68f1d0c79638ed20b8120f52937d
+  $tc'C:Escapator :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   13065176276892002585##
+                   11907169640701496587##
+                   TigerEscap.$trModule
+                   TigerEscap.$tc'C:Escapator1) -}
+27b967324067e6ffe40171f93e7bfc06
+  $tc'C:Escapator1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "'C:Escapator"#) -}
+dac8ac7a22fd6125186f95e3e25f51ba
+  $tc'Interno :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   9489259574048075860##
+                   4787164405383757221##
+                   TigerEscap.$trModule
+                   TigerEscap.$tc'Interno1) -}
+df6e1744374353036db3118239747ae7
+  $tc'Interno1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "'Interno"#) -}
+70564274e5891bb15cd39cf223d19052
+  $tc'NotFound :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   7419691057292462323##
+                   11931486401207242627##
+                   TigerEscap.$trModule
+                   TigerEscap.$tc'NotFound1) -}
+81b4651d10d7fff177a74113886947fc
+  $tc'NotFound1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "'NotFound"#) -}
+8b6e5c4532287e52a0db5b0852b29c3a
+  $tc'S :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   11107507380987192932##
+                   11734077290978158486##
+                   TigerEscap.$trModule
+                   TigerEscap.$tc'S1) -}
+b3f4fc680a017459492af87d03b53cdf
+  $tc'S1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "'S"#) -}
+ba4e8a3f58713ad9773198dfeb895666
+  $tc'Step :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   14246953321179827944##
+                   8952907593080453928##
+                   TigerEscap.$trModule
+                   TigerEscap.$tc'Step1) -}
+2cbda3e2af503c24d97c58af8c976bf9
+  $tc'Step1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "'Step"#) -}
+87561b4bb06c4e12d9387c22c7e65fb9
+  $tcErrores :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   12971898489501561483##
+                   9705374064704200503##
+                   TigerEscap.$trModule
+                   TigerEscap.$tcErrores1) -}
+04f6c7fb5cf48e2d38bdc04cc6c10816
+  $tcErrores1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "Errores"#) -}
+9a8174c483967b154a34a0757c0b2776
+  $tcEscapator :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   11961628757626528807##
+                   4932903224247758330##
+                   TigerEscap.$trModule
+                   TigerEscap.$tcEscapator1) -}
+96d5f57a9b8d441bd46ca0931768d568
+  $tcEscapator1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "Escapator"#) -}
+61f8b28a41ce5d7075af6b8075f094a9
+  $tcEstado :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   6063293088296241080##
+                   4786204025712158732##
+                   TigerEscap.$trModule
+                   TigerEscap.$tcEstado1) -}
+aa0081a5905b116198695838b92bdfbd
+  $tcEstado1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "Estado"#) -}
+06d03b5cec39452840284ac57a5237ad
+  $tcSEstado :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   3298764275949275057##
+                   4628283893747090567##
+                   TigerEscap.$trModule
+                   TigerEscap.$tcSEstado1) -}
+6cd36a938dac19067c93386a3ca39230
+  $tcSEstado1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "SEstado"#) -}
+6ba37c5168f62d88363081c74574501c
+  $trModule :: GHC.Types.Module
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.Module
+                   TigerEscap.$trModule2
+                   TigerEscap.$trModule1) -}
+d8d1fde51a9cf48ee803df39937ca486
+  $trModule1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "TigerEscap"#) -}
+f245c9f013f91d8878d0fb6cb01906f5
+  $trModule2 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS
+                   "HaskTiger-0.1.0.0-8sS9j76S4uUE6NaT8hRlFo"#) -}
+4520423bbad2e4d8a13ec6856f200bb7
+  $w$cshowsPrec ::
+    GHC.Prim.Int# -> GHC.Types.Int -> TigerEscap.Env -> GHC.Show.ShowS
+  {- Arity: 3, Strictness: <S,U><L,U(U)><L,1*U>, Inline: [0],
+     Unfolding: (\ (ww :: GHC.Prim.Int#)
+                   (ww1 :: GHC.Types.Int)
+                   (ww2 :: TigerEscap.Env) ->
+                 let {
+                   f :: GHC.Base.String -> GHC.Base.String
+                   = Data.Map.Base.$w$cshowsPrec
+                       @ Data.Text.Internal.Text
+                       @ (GHC.Types.Int, GHC.Types.Bool)
+                       Data.Text.Show.$fShowText
+                       TigerEscap.$fEscapatorStateT_$s$fShow(,)
+                       0#
+                       ww2
+                 } in
+                 let {
+                   p :: GHC.Show.ShowS {- Arity: 1, Strictness: <L,1*U> -}
+                   = \ (x :: GHC.Base.String) ->
+                     GHC.Base.++
+                       @ GHC.Types.Char
+                       TigerEscap.$fEscapatorStateT11
+                       (GHC.Base.++
+                          @ GHC.Types.Char
+                          TigerEscap.$fEscapatorStateT10
+                          (case ww1 of ww3 { GHC.Types.I# ww4 ->
+                           case GHC.Show.$wshowSignedInt
+                                  0#
+                                  ww4
+                                  (GHC.Base.++
+                                     @ GHC.Types.Char
+                                     TigerEscap.$fEscapatorStateT9
+                                     (GHC.Base.++
+                                        @ GHC.Types.Char
+                                        TigerEscap.$fEscapatorStateT8
+                                        (f (GHC.Base.++
+                                              @ GHC.Types.Char
+                                              TigerEscap.$fEscapatorStateT7
+                                              x)))) of ww5 { (#,#) ww6 ww7 ->
+                           GHC.Types.: @ GHC.Types.Char ww6 ww7 } }))
+                 } in
+                 case GHC.Prim.tagToEnum#
+                        @ GHC.Types.Bool
+                        (GHC.Prim.>=# ww 11#) of wild {
+                   GHC.Types.False -> p
+                   GHC.Types.True
+                   -> \ (x :: GHC.Base.String) ->
+                      GHC.Types.:
+                        @ GHC.Types.Char
+                        GHC.Show.shows7
+                        (p (GHC.Types.: @ GHC.Types.Char GHC.Show.shows4 x)) }) -}
+c6b182b5d34a778d02b9fc05b71bc00a
+  $w$cshowsPrec1 ::
+    TigerEscap.Errores -> GHC.Base.String -> [GHC.Types.Char]
+  {- Arity: 2, Strictness: <S,1*U><L,1*U>, Inline: [0],
+     Unfolding: (\ (w :: TigerEscap.Errores) (w1 :: GHC.Base.String) ->
+                 case w of wild {
+                   TigerEscap.NotFound e1
+                   -> TigerEscap.$fShowErrores1
+                        @ [GHC.Types.Char]
+                        (GHC.Types.: @ GHC.Types.Char)
+                        (case Data.Text.Show.$w$cshow e1 of ww { (#,#) ww1 ww2 ->
+                         GHC.Base.++
+                           @ GHC.Types.Char
+                           (GHC.Types.: @ GHC.Types.Char ww1 ww2)
+                           w1 })
+                   TigerEscap.Interno e1
+                   -> GHC.CString.unpackAppendCString#
+                        "Error interno "#
+                        (case Data.Text.Show.$w$cshow e1 of ww { (#,#) ww1 ww2 ->
+                         GHC.Base.++
+                           @ GHC.Types.Char
+                           (GHC.Types.: @ GHC.Types.Char ww1 ww2)
+                           w1 }) }) -}
+079f4414cefd128ea3884d4254d02e98
+  $w$cshowsPrec2 ::
+    GHC.Prim.Int#
+    -> GHC.Types.Int
+    -> [TigerEscap.Env]
+    -> GHC.Base.String
+    -> GHC.Base.String
+  {- Arity: 4, Strictness: <S,U><L,1*U(U)><L,1*U><L,U>, Inline: [0],
+     Unfolding: (\ (ww :: GHC.Prim.Int#)
+                   (ww1 :: GHC.Types.Int)
+                   (ww2 :: [TigerEscap.Env])
+                   (w :: GHC.Base.String) ->
+                 let {
+                   g :: GHC.Base.String -> GHC.Base.String
+                     {- Arity: 1, Strictness: <L,1*U> -}
+                   = \ (x :: GHC.Base.String)[OneShot] ->
+                     GHC.Base.++
+                       @ GHC.Types.Char
+                       TigerEscap.$fShowSEstado4
+                       (case ww1 of ww3 { GHC.Types.I# ww4 ->
+                        case GHC.Show.$wshowSignedInt
+                               0#
+                               ww4
+                               (GHC.Base.++
+                                  @ GHC.Types.Char
+                                  TigerEscap.$fEscapatorStateT9
+                                  (GHC.Base.++
+                                     @ GHC.Types.Char
+                                     TigerEscap.$fShowSEstado3
+                                     (let {
+                                        s :: GHC.Base.String
+                                        = GHC.Base.++
+                                            @ GHC.Types.Char
+                                            TigerEscap.$fEscapatorStateT7
+                                            x
+                                      } in
+                                      case ww2 of wild {
+                                        [] -> GHC.CString.unpackAppendCString# "[]"# s
+                                        : x1 xs
+                                        -> GHC.Types.:
+                                             @ GHC.Types.Char
+                                             GHC.Show.showList__2
+                                             (Data.Map.Base.$w$cshowsPrec
+                                                @ Data.Text.Internal.Text
+                                                @ (GHC.Types.Int, GHC.Types.Bool)
+                                                Data.Text.Show.$fShowText
+                                                TigerEscap.$fEscapatorStateT_$s$fShow(,)
+                                                0#
+                                                x1
+                                                (let {
+                                                   lvl27 :: [GHC.Types.Char]
+                                                   = GHC.Types.:
+                                                       @ GHC.Types.Char
+                                                       GHC.Show.showList__1
+                                                       s
+                                                 } in
+                                                 letrec {
+                                                   showl :: [Data.Map.Base.Map
+                                                               Data.Text.Internal.Text
+                                                               (GHC.Types.Int, GHC.Types.Bool)]
+                                                            -> GHC.Base.String
+                                                     {- Arity: 1, Strictness: <S,1*U> -}
+                                                   = \ (ds2 :: [Data.Map.Base.Map
+                                                                  Data.Text.Internal.Text
+                                                                  (GHC.Types.Int,
+                                                                   GHC.Types.Bool)]) ->
+                                                     case ds2 of wild1 {
+                                                       [] -> lvl27
+                                                       : y ys
+                                                       -> GHC.Types.:
+                                                            @ GHC.Types.Char
+                                                            GHC.Show.shows5
+                                                            (Data.Map.Base.$w$cshowsPrec
+                                                               @ Data.Text.Internal.Text
+                                                               @ (GHC.Types.Int, GHC.Types.Bool)
+                                                               Data.Text.Show.$fShowText
+                                                               TigerEscap.$fEscapatorStateT_$s$fShow(,)
+                                                               0#
+                                                               y
+                                                               (showl ys)) }
+                                                 } in
+                                                 showl xs)) }))) of ww5 { (#,#) ww6 ww7 ->
+                        GHC.Types.: @ GHC.Types.Char ww6 ww7 } })
+                 } in
+                 case GHC.Prim.tagToEnum#
+                        @ GHC.Types.Bool
+                        (GHC.Prim.>=# ww 11#) of wild {
+                   GHC.Types.False
+                   -> GHC.Base.++ @ GHC.Types.Char TigerEscap.$fShowSEstado2 (g w)
+                   GHC.Types.True
+                   -> GHC.Types.:
+                        @ GHC.Types.Char
+                        GHC.Show.shows7
+                        (GHC.Base.++
+                           @ GHC.Types.Char
+                           TigerEscap.$fShowSEstado2
+                           (g (GHC.Types.: @ GHC.Types.Char GHC.Show.shows4 w))) }) -}
+2ade1e2f22cf7a360b430c925ef4be5c
+  $w$cupdate ::
+    GHC.Prim.ByteArray#
+    -> GHC.Prim.Int#
+    -> GHC.Prim.Int#
+    -> GHC.Types.Bool
+    -> GHC.Types.Int
+    -> TigerEscap.Env
+    -> Data.Either.Either TigerEscap.Errores ((), TigerEscap.Estado)
+  {- Arity: 6, Strictness: <L,U><L,U><L,U><L,U><L,U><S,U>,
+     Inline: [0],
+     Unfolding: (\ (ww :: GHC.Prim.ByteArray#)
+                   (ww1 :: GHC.Prim.Int#)
+                   (ww2 :: GHC.Prim.Int#)
+                   (w :: GHC.Types.Bool)
+                   (ww3 :: GHC.Types.Int)
+                   (ww4 :: TigerEscap.Env) ->
+                 case TigerEscap.$wpoly_go10
+                        @ (GHC.Types.Int, GHC.Types.Bool)
+                        ww
+                        ww1
+                        ww2
+                        ww4 of wild {
+                   GHC.Base.Nothing
+                   -> Data.Either.Left
+                        @ TigerEscap.Errores
+                        @ ((), TigerEscap.Estado)
+                        (TigerEscap.Interno
+                           (TigerSymbol.addStr
+                              TigerEscap.$fDaemonStateT_g
+                              (Data.Text.Internal.Text ww ww1 ww2)))
+                   GHC.Base.Just x
+                   -> case x of wild1 { (,) lvl13 ds ->
+                      Data.Either.Right
+                        @ TigerEscap.Errores
+                        @ ((), TigerEscap.Estado)
+                        (GHC.Tuple.(),
+                         TigerEscap.S
+                           ww3
+                           (TigerEscap.$w$sgo4
+                              @ (GHC.Types.Int, GHC.Types.Bool)
+                              ww
+                              ww1
+                              ww2
+                              (lvl13, w)
+                              ww4)) } }) -}
+c822ccfb38187d703fa8e82fe85dba84
+  $w$sgo4 ::
+    GHC.Prim.ByteArray#
+    -> GHC.Prim.Int#
+    -> GHC.Prim.Int#
+    -> a1
+    -> Data.Map.Base.Map TigerSymbol.Symbol a1
+    -> Data.Map.Base.Map TigerSymbol.Symbol a1
+  {- Arity: 5, Strictness: <L,U><L,U><L,U><S,1*U><S,1*U>,
+     Inline: [0] -}
+1f2fc6faacf44324692a3f2781004fa6
+  $w$stravF ::
+    TigerSymbol.Symbol
+    -> [TigerAbs.Field]
+    -> GHC.Base.Maybe TigerSymbol.Symbol
+    -> TigerAbs.Exp
+    -> TigerAbs.Pos
+    -> Control.Monad.Trans.State.Lazy.StateT
+         TigerEscap.Estado
+         (Data.Either.Either TigerEscap.Errores)
+         (TigerSymbol.Symbol, [TigerAbs.Field],
+          GHC.Base.Maybe TigerSymbol.Symbol, TigerAbs.Exp, TigerAbs.Pos)
+  {- Arity: 5, Strictness: <L,U><L,U><L,U><L,1*U><L,U>,
+     Inline: [0] -}
+e14ae3dcef7c5297b4a6a400f0db169f
+  $wpoly_go10 ::
+    GHC.Prim.ByteArray#
+    -> GHC.Prim.Int#
+    -> GHC.Prim.Int#
+    -> Data.Map.Base.Map TigerSymbol.Symbol a
+    -> GHC.Base.Maybe a
+  {- Arity: 4, HasNoCafRefs, Strictness: <L,U><L,U><L,U><S,1*U>,
+     Inline: [0] -}
+176f1161b94b5fed334a1210fae9d47b
+  $wtravF ::
+    TigerEscap.Escapator m =>
+    TigerSymbol.Symbol
+    -> [TigerAbs.Field]
+    -> GHC.Base.Maybe TigerSymbol.Symbol
+    -> TigerAbs.Exp
+    -> TigerAbs.Pos
+    -> m (TigerSymbol.Symbol, [TigerAbs.Field],
+          GHC.Base.Maybe TigerSymbol.Symbol, TigerAbs.Exp, TigerAbs.Pos)
+  {- Arity: 6,
+     Strictness: <S(LSLLLLLLL),U(U(U,U,U,U),U(U,U,U,U,U),U,C(U),A,A,C(C1(U)),C(U),C(C1(C1(U))))><L,U><L,U><L,U><L,1*U><L,U>,
+     Inline: [0] -}
+b93366d8c76d4f1d5e05eca56c7d7de0
+  type Dat = (GHC.Types.Int, GHC.Types.Bool)
+8bb0fefdb6e24398bae698106b103c37
+  type Depth = GHC.Types.Int
+0927b1a0aff932cec948bae74cae0aea
+  type Env = Data.Map.Base.Map TigerSymbol.Symbol TigerEscap.Dat
+c6b182b5d34a778d02b9fc05b71bc00a
+  data Errores
+    = NotFound TigerSymbol.Symbol | Interno TigerSymbol.Symbol
+0a99f33babad1d6232f0208d77011d23
+  class (TigerErrores.Daemon m, GHC.Base.Monad m) =>
+        Escapator (m :: * -> *) where
+    depth :: m TigerEscap.Depth
+    up :: m a -> m a
+    printEnv :: m ()
+    raise :: TigerSymbol.Symbol -> m a
+    update :: TigerSymbol.Symbol -> GHC.Types.Bool -> m ()
+    lookup :: TigerSymbol.Symbol
+              -> m (GHC.Base.Maybe (GHC.Types.Int, GHC.Types.Bool))
+    insert :: TigerSymbol.Symbol -> GHC.Types.Bool -> m a -> m a
+    {-# MINIMAL depth, up, printEnv, update, lookup, insert #-}
+df112a051c8ff72a59471bb105f4bcf1
+  data Estado = S {lvl :: GHC.Types.Int, env :: TigerEscap.Env}
+c6b182b5d34a778d02b9fc05b71bc00a
+  type Mini =
+    Control.Monad.Trans.State.Lazy.StateT
+      TigerEscap.Estado (Data.Either.Either TigerEscap.Errores)
+    :: * -> *
+32960fb0c2bad8f1e2fa24acd8e30035
+  data SEstado = Step {l :: GHC.Types.Int, e :: [TigerEscap.Env]}
+5f8fc2faf854c205d3442dcbca3ee80b
+  bulkInsert ::
+    TigerEscap.Escapator m =>
+    [(TigerSymbol.Symbol, GHC.Types.Bool)] -> m a -> m a
+  {- Arity: 3, HasNoCafRefs,
+     Strictness: <L,U(A,A,A,A,A,A,A,A,C(C1(C1(U))))><S,1*U><L,U>,
+     Unfolding: (\ @ (m :: * -> *)
+                   @ a
+                   ($dEscapator :: TigerEscap.Escapator m)
+                   (xs :: [(TigerSymbol.Symbol, GHC.Types.Bool)])
+                   (m1 :: m a) ->
+                 letrec {
+                   go5 :: [(TigerSymbol.Symbol, GHC.Types.Bool)] -> m a
+                     {- Arity: 1, Strictness: <S,1*U> -}
+                   = \ (ds :: [(TigerSymbol.Symbol, GHC.Types.Bool)]) ->
+                     case ds of wild {
+                       [] -> m1
+                       : y ys
+                       -> case y of wild1 { (,) name esc ->
+                          TigerEscap.insert @ m $dEscapator @ a name esc (go5 ys) } }
+                 } in
+                 go5 xs) -}
+cca1ed188905ba567c90bcd6e9bc8caa
+  calcularEEsc ::
+    TigerAbs.Exp -> Data.Either.Either TigerEscap.Errores TigerAbs.Exp
+  {- Arity: 1, Strictness: <S,1*U>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (e1 :: TigerAbs.Exp) ->
+                 case (TigerEscap.calcularEEsc_$stravExp e1)
+                        `cast`
+                      (Control.Monad.Trans.State.Lazy.N:StateT[0]
+                           <TigerEscap.Estado>_N
+                           <Data.Either.Either TigerEscap.Errores>_R
+                           <TigerAbs.Exp>_N)
+                        TigerEscap.initSt of wild {
+                   Data.Either.Left l1
+                   -> Data.Either.Left @ TigerEscap.Errores @ TigerAbs.Exp l1
+                   Data.Either.Right r
+                   -> Data.Either.Right
+                        @ TigerEscap.Errores
+                        @ TigerAbs.Exp
+                        (case r of wild1 { (,) a1 ds1 -> a1 }) }) -}
+6b9cb728b491fd005e3b4098ee11cd9c
+  calcularEEsc_$stravExp ::
+    TigerAbs.Exp
+    -> Control.Monad.Trans.State.Lazy.StateT
+         TigerEscap.Estado
+         (Data.Either.Either TigerEscap.Errores)
+         TigerAbs.Exp
+  {- Arity: 1, Strictness: <S,1*U> -}
+291fc13797229804d5806d872d0fec6e
+  e :: TigerEscap.SEstado -> [TigerEscap.Env]
+  RecSel Left TigerEscap.SEstado
+  {- Arity: 1, HasNoCafRefs, Strictness: <S(LS),1*U(A,1*U)>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (ds :: TigerEscap.SEstado) ->
+                 case ds of wild { TigerEscap.Step ds1 ds2 -> ds2 }) -}
+c6b182b5d34a778d02b9fc05b71bc00a
+  eappend ::
+    TigerEscap.Errores -> Data.Text.Internal.Text -> TigerEscap.Errores
+  {- Arity: 2, Strictness: <S,1*U><L,1*U(U,U,U)>,
+     Unfolding: (\ (ds :: TigerEscap.Errores)
+                   (e1 :: Data.Text.Internal.Text) ->
+                 case ds of wild {
+                   TigerEscap.NotFound e2
+                   -> TigerEscap.NotFound (Data.Text.append e2 e1)
+                   TigerEscap.Interno e2
+                   -> TigerEscap.Interno (Data.Text.append e2 e1) }) -}
+a02b1463f670d05aea20146609e24881
+  env :: TigerEscap.Estado -> TigerEscap.Env
+  RecSel Left TigerEscap.Estado
+  {- Arity: 1, HasNoCafRefs, Strictness: <S(LS),1*U(A,1*U)>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (ds :: TigerEscap.Estado) ->
+                 case ds of wild { TigerEscap.S ds1 ds2 -> ds2 }) -}
+2490f37f99585c3dc5c7c83e5b110028
+  initSt :: TigerEscap.Estado
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (TigerEscap.S
+                   TigerEscap.initSt1
+                   (Data.Map.Base.Tip @ TigerSymbol.Symbol @ TigerEscap.Dat)) -}
+867abd5c7d36fd833364f3467709bcb3
+  initSt1 :: GHC.Types.Int
+  {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 1#) -}
+2589830dd8f9eb06b5af9f448eb1af2d
+  l :: TigerEscap.SEstado -> GHC.Types.Int
+  RecSel Left TigerEscap.SEstado
+  {- Arity: 1, HasNoCafRefs, Strictness: <S(SL),1*U(1*U(U),A)>m,
+     Unfolding: InlineRule (1, True, False)
+                (\ (ds :: TigerEscap.SEstado) ->
+                 case ds of wild { TigerEscap.Step ds1 ds2 -> ds1 }) -}
+1e04e8dc12297f145e6488a6c694c6d3
+  lookUpLvl ::
+    TigerEscap.Escapator m => TigerSymbol.Symbol -> m GHC.Types.Int
+  {- Arity: 2, HasNoCafRefs,
+     Strictness: <S(LSLLLLLLL),U(1*U(A,A,A,1*C1(U)),1*U,A,A,A,A,A,1*C1(U),A)><L,U>,
+     Unfolding: (\ @ (m :: * -> *)
+                   ($dEscapator :: TigerEscap.Escapator m)
+                   (eta :: TigerSymbol.Symbol) ->
+                 let {
+                   $dMonad :: GHC.Base.Monad m
+                   = TigerEscap.$p2Escapator @ m $dEscapator
+                 } in
+                 let {
+                   lvl13 :: m GHC.Types.Int
+                   = TigerErrores.notfound
+                       @ m
+                       (TigerEscap.$p1Escapator @ m $dEscapator)
+                       @ GHC.Types.Int
+                       eta
+                 } in
+                 GHC.Base.>>=
+                   @ m
+                   $dMonad
+                   @ (GHC.Base.Maybe (GHC.Types.Int, GHC.Types.Bool))
+                   @ GHC.Types.Int
+                   (TigerEscap.lookup @ m $dEscapator eta)
+                   (\ (ds :: GHC.Base.Maybe (GHC.Types.Int, GHC.Types.Bool)) ->
+                    case ds of wild {
+                      GHC.Base.Nothing -> lvl13
+                      GHC.Base.Just ds1
+                      -> case ds1 of wild1 { (,) l1 esc ->
+                         GHC.Base.return @ m $dMonad @ GHC.Types.Int l1 } })) -}
+9a754e303ace2222d0deb4bb0290d097
+  lookUpLvl_$slookUpLvl ::
+    TigerSymbol.Symbol
+    -> Control.Monad.Trans.State.Lazy.StateT
+         TigerEscap.Estado
+         (Data.Either.Either TigerEscap.Errores)
+         GHC.Types.Int
+  {- Arity: 1, Strictness: <L,U(U,U,U)>,
+     Unfolding: (\ (eta :: TigerSymbol.Symbol) ->
+                 let {
+                   x :: TigerSymbol.Symbol
+                   = TigerSymbol.addStr TigerEscap.$fDaemonStateT_g eta
+                 } in
+                 let {
+                   lvl13 :: TigerEscap.Errores = TigerEscap.Interno x
+                 } in
+                 let {
+                   lvl14 :: Data.Either.Either
+                              TigerEscap.Errores (GHC.Types.Int, TigerEscap.Estado)
+                   = Data.Either.Left
+                       @ TigerEscap.Errores
+                       @ (GHC.Types.Int, TigerEscap.Estado)
+                       lvl13
+                 } in
+                 (\ (s1 :: TigerEscap.Estado) ->
+                  case eta of ww { Data.Text.Internal.Text ww1 ww2 ww3 ->
+                  case s1 of wild { TigerEscap.S ds ds1 ->
+                  case TigerEscap.$wpoly_go10
+                         @ (GHC.Types.Int, GHC.Types.Bool)
+                         ww1
+                         ww2
+                         ww3
+                         ds1 of wild1 {
+                    GHC.Base.Nothing -> lvl14
+                    GHC.Base.Just ds2
+                    -> case ds2 of wild2 { (,) l1 esc ->
+                       Data.Either.Right
+                         @ TigerEscap.Errores
+                         @ (GHC.Types.Int, TigerEscap.Estado)
+                         (l1, wild) } } } })
+                   `cast`
+                 (Sym (Control.Monad.Trans.State.Lazy.N:StateT[0]
+                           <TigerEscap.Estado>_N
+                           <Data.Either.Either TigerEscap.Errores>_R
+                           <GHC.Types.Int>_N))) -}
+231d2020e4f7edea141c2c6a6671bbb0
+  lvl :: TigerEscap.Estado -> GHC.Types.Int
+  RecSel Left TigerEscap.Estado
+  {- Arity: 1, HasNoCafRefs, Strictness: <S(SL),1*U(1*U(U),A)>m,
+     Unfolding: InlineRule (1, True, False)
+                (\ (ds :: TigerEscap.Estado) ->
+                 case ds of wild { TigerEscap.S ds1 ds2 -> ds1 }) -}
+4fdc625333c1912566f7f6c03343df02
+  travDecs :: TigerEscap.Escapator m => [TigerAbs.Dec] -> m a -> m a
+  {- Arity: 3,
+     Strictness: <L,U(U(U,U,U,U),U(U,U,U,U,U),U,C(U),A,A,C(C1(U)),C(U),C(C1(C1(U))))><S,1*U><L,1*U> -}
+9247b50c05cedb140cbeba32d815629a
+  travDecs_$stravDecs ::
+    [TigerAbs.Dec]
+    -> Control.Monad.Trans.State.Lazy.StateT
+         TigerEscap.Estado (Data.Either.Either TigerEscap.Errores) a
+    -> Control.Monad.Trans.State.Lazy.StateT
+         TigerEscap.Estado (Data.Either.Either TigerEscap.Errores) a
+  {- Arity: 2, Strictness: <S,1*U><L,1*U> -}
+28d59535e95c0a4891874469fdb1d708
+  travExp :: TigerEscap.Escapator m => TigerAbs.Exp -> m TigerAbs.Exp
+  {- Arity: 2,
+     Strictness: <S(LSLLLLLLL),U(U(U,U,U,U),U(U,U,U,U,U),U,C(U),A,A,C(C1(U)),C(U),C(C1(C1(U))))><S,1*U> -}
+9b29927bcf1c204cadd482cdbe4dc2f8
+  travF ::
+    TigerEscap.Escapator m =>
+    (TigerSymbol.Symbol, [TigerAbs.Field],
+     GHC.Base.Maybe TigerSymbol.Symbol, TigerAbs.Exp, TigerAbs.Pos)
+    -> m (TigerSymbol.Symbol, [TigerAbs.Field],
+          GHC.Base.Maybe TigerSymbol.Symbol, TigerAbs.Exp, TigerAbs.Pos)
+  {- Arity: 2,
+     Strictness: <S(LSLLLLLLL),U(U(U,U,U,U),U(U,U,U,U,U),U,C(U),A,A,C(C1(U)),C(U),C(C1(C1(U))))><S,1*U(U,U,U,1*U,U)>,
+     Inline: INLINE[0],
+     Unfolding: InlineRule (2, True, False)
+                (\ @ (m :: * -> *)
+                   (w :: TigerEscap.Escapator m)
+                   (w1 :: (TigerSymbol.Symbol, [TigerAbs.Field],
+                           GHC.Base.Maybe TigerSymbol.Symbol, TigerAbs.Exp, TigerAbs.Pos)) ->
+                 case w1 of ww { (,,,,) ww1 ww2 ww3 ww4 ww5 ->
+                 TigerEscap.$wtravF @ m w ww1 ww2 ww3 ww4 ww5 }) -}
+e0fc8f504d3ea1c5fb00991d447b3fb0
+  travVar :: TigerEscap.Escapator m => TigerAbs.Var -> m TigerAbs.Var
+  {- Arity: 2,
+     Strictness: <S(LSLLLLLLL),U(U(U,U,U,U),U(U,U,U,U,U),U,C(U),A,A,C(C1(U)),C(U),C(C1(C1(U))))><S,1*U> -}
+9ad72941ae524e73ef5d00a302105d5f
+  travVar_$stravVar ::
+    TigerAbs.Var
+    -> Control.Monad.Trans.State.Lazy.StateT
+         TigerEscap.Estado
+         (Data.Either.Either TigerEscap.Errores)
+         TigerAbs.Var
+  {- Arity: 1, Strictness: <S,1*U> -}
+instance TigerErrores.Daemon [Control.Monad.Trans.State.Lazy.StateT]
+  = TigerEscap.$fDaemonStateT
+instance TigerEscap.Escapator [Control.Monad.Trans.State.Lazy.StateT]
+  = TigerEscap.$fEscapatorStateT
+instance GHC.Show.Show [TigerEscap.Errores]
+  = TigerEscap.$fShowErrores
+instance GHC.Show.Show [TigerEscap.Estado]
+  = TigerEscap.$fShowEstado
+instance GHC.Show.Show [TigerEscap.SEstado]
+  = TigerEscap.$fShowSEstado
+"SPEC lookUpLvl @ (StateT Estado (Either Errores))" [ALWAYS] forall ($dEscapator :: TigerEscap.Escapator
+                                                                                      (Control.Monad.Trans.State.Lazy.StateT
+                                                                                         TigerEscap.Estado
+                                                                                         (Data.Either.Either
+                                                                                            TigerEscap.Errores)))
+  TigerEscap.lookUpLvl @ (Control.Monad.Trans.State.Lazy.StateT
+                            TigerEscap.Estado (Data.Either.Either TigerEscap.Errores))
+                       $dEscapator
+  = TigerEscap.lookUpLvl_$slookUpLvl
+"SPEC travDecs @ (StateT Estado (Either Errores)) _" [ALWAYS] forall @ a
+                                                                     ($dEscapator :: TigerEscap.Escapator
+                                                                                       (Control.Monad.Trans.State.Lazy.StateT
+                                                                                          TigerEscap.Estado
+                                                                                          (Data.Either.Either
+                                                                                             TigerEscap.Errores)))
+  TigerEscap.travDecs @ (Control.Monad.Trans.State.Lazy.StateT
+                           TigerEscap.Estado (Data.Either.Either TigerEscap.Errores))
+                      @ a
+                      $dEscapator
+  = TigerEscap.travDecs_$stravDecs @ a
+"SPEC travExp @ (StateT Estado (Either Errores))" [ALWAYS] forall ($dEscapator :: TigerEscap.Escapator
+                                                                                    (Control.Monad.Trans.State.Lazy.StateT
+                                                                                       TigerEscap.Estado
+                                                                                       (Data.Either.Either
+                                                                                          TigerEscap.Errores)))
+  TigerEscap.travExp @ (Control.Monad.Trans.State.Lazy.StateT
+                          TigerEscap.Estado (Data.Either.Either TigerEscap.Errores))
+                     $dEscapator
+  = TigerEscap.calcularEEsc_$stravExp
+"SPEC travVar @ (StateT Estado (Either Errores))" [ALWAYS] forall ($dEscapator :: TigerEscap.Escapator
+                                                                                    (Control.Monad.Trans.State.Lazy.StateT
+                                                                                       TigerEscap.Estado
+                                                                                       (Data.Either.Either
+                                                                                          TigerEscap.Errores)))
+  TigerEscap.travVar @ (Control.Monad.Trans.State.Lazy.StateT
+                          TigerEscap.Estado (Data.Either.Either TigerEscap.Errores))
+                     $dEscapator
+  = TigerEscap.travVar_$stravVar
+"SPEC/TigerEscap $fApplicativeStateT @ (Either Errores) _" [ALWAYS] forall @ s
+                                                                           ($dMonad :: GHC.Base.Monad
+                                                                                         (Data.Either.Either
+                                                                                            TigerEscap.Errores))
+                                                                           ($dFunctor :: GHC.Base.Functor
+                                                                                           (Data.Either.Either
+                                                                                              TigerEscap.Errores))
+  Control.Monad.Trans.State.Lazy.$fApplicativeStateT @ (Data.Either.Either
+                                                          TigerEscap.Errores)
+                                                     @ s
+                                                     $dFunctor
+                                                     $dMonad
+  = TigerEscap.$fEscapatorStateT_$s$fApplicativeStateT @ s
+"SPEC/TigerEscap $fApplicativeStateT_$c<*> @ (Either Errores) _" [ALWAYS] forall @ s
+                                                                                 ($dMonad :: GHC.Base.Monad
+                                                                                               (Data.Either.Either
+                                                                                                  TigerEscap.Errores))
+                                                                                 ($dFunctor :: GHC.Base.Functor
+                                                                                                 (Data.Either.Either
+                                                                                                    TigerEscap.Errores))
+  Control.Monad.Trans.State.Lazy.$fApplicativeStateT_$c<*> @ (Data.Either.Either
+                                                                TigerEscap.Errores)
+                                                           @ s
+                                                           $dFunctor
+                                                           $dMonad
+  = TigerEscap.$fEscapatorStateT_$s$fApplicativeStateT_$c<*> @ s
+"SPEC/TigerEscap $fApplicativeStateT_$cpure @ (Either Errores) _" [ALWAYS] forall @ s
+                                                                                  ($dMonad :: GHC.Base.Monad
+                                                                                                (Data.Either.Either
+                                                                                                   TigerEscap.Errores))
+                                                                                  ($dFunctor :: GHC.Base.Functor
+                                                                                                  (Data.Either.Either
+                                                                                                     TigerEscap.Errores))
+  Control.Monad.Trans.State.Lazy.$fApplicativeStateT_$cpure @ (Data.Either.Either
+                                                                 TigerEscap.Errores)
+                                                            @ s
+                                                            $dFunctor
+                                                            $dMonad
+  = TigerEscap.$fEscapatorStateT_$s$fApplicativeStateT_$cpure @ s
+"SPEC/TigerEscap $fMonadStateT @ (Either Errores) _" [ALWAYS] forall @ s
+                                                                     ($dMonad :: GHC.Base.Monad
+                                                                                   (Data.Either.Either
+                                                                                      TigerEscap.Errores))
+  Control.Monad.Trans.State.Lazy.$fMonadStateT @ (Data.Either.Either
+                                                    TigerEscap.Errores)
+                                               @ s
+                                               $dMonad
+  = TigerEscap.$fEscapatorStateT_$s$fMonadStateT @ s
+"SPEC/TigerEscap $fMonadStateT_$c>> @ (Either Errores) _" [ALWAYS] forall @ s
+                                                                          ($dMonad :: GHC.Base.Monad
+                                                                                        (Data.Either.Either
+                                                                                           TigerEscap.Errores))
+  Control.Monad.Trans.State.Lazy.$fMonadStateT_$c>> @ (Data.Either.Either
+                                                         TigerEscap.Errores)
+                                                    @ s
+                                                    $dMonad
+  = TigerEscap.$fEscapatorStateT_$s$fMonadStateT_$c>> @ s
+"SPEC/TigerEscap $fMonadStateT_$c>>= @ (Either Errores) _" [ALWAYS] forall @ s
+                                                                           ($dMonad :: GHC.Base.Monad
+                                                                                         (Data.Either.Either
+                                                                                            TigerEscap.Errores))
+  Control.Monad.Trans.State.Lazy.$fMonadStateT_$c>>= @ (Data.Either.Either
+                                                          TigerEscap.Errores)
+                                                     @ s
+                                                     $dMonad
+  = TigerEscap.$fEscapatorStateT_$s$fMonadStateT_$c>>= @ s
+"SPEC/TigerEscap $fMonadStateT_$cfail @ (Either Errores) _" [ALWAYS] forall @ s
+                                                                            ($dMonad :: GHC.Base.Monad
+                                                                                          (Data.Either.Either
+                                                                                             TigerEscap.Errores))
+  Control.Monad.Trans.State.Lazy.$fMonadStateT_$cfail @ (Data.Either.Either
+                                                           TigerEscap.Errores)
+                                                      @ s
+                                                      $dMonad
+  = TigerEscap.$fEscapatorStateT_$s$fMonadStateT_$cfail @ s
+"SPEC/TigerEscap $fMonadStateT_$cp1Monad @ (Either Errores) _" [ALWAYS] forall @ s
+                                                                               ($dMonad :: GHC.Base.Monad
+                                                                                             (Data.Either.Either
+                                                                                                TigerEscap.Errores))
+  Control.Monad.Trans.State.Lazy.$fMonadStateT_$cp1Monad @ (Data.Either.Either
+                                                              TigerEscap.Errores)
+                                                         @ s
+                                                         $dMonad
+  = TigerEscap.$fEscapatorStateT_$s$fMonadStateT_$cp1Monad @ s
+"SPEC/TigerEscap $fShow(,) @ Int @ Bool" [ALWAYS] forall ($dShow1 :: GHC.Show.Show
+                                                                       GHC.Types.Bool)
+                                                         ($dShow :: GHC.Show.Show GHC.Types.Int)
+  GHC.Show.$fShow(,) @ GHC.Types.Int @ GHC.Types.Bool $dShow $dShow1
+  = TigerEscap.$fEscapatorStateT_$s$fShow(,)
+"SPEC/TigerEscap $fShow(,)_$cshow @ Int @ Bool" [ALWAYS] forall ($dShow1 :: GHC.Show.Show
+                                                                              GHC.Types.Bool)
+                                                                ($dShow :: GHC.Show.Show
+                                                                             GHC.Types.Int)
+  GHC.Show.$fShow(,)_$cshow @ GHC.Types.Int
+                            @ GHC.Types.Bool
+                            $dShow
+                            $dShow1
+  = TigerEscap.$fEscapatorStateT_$s$fShow(,)_$cshow
+"SPEC/TigerEscap $fShow(,)_$cshowList @ Int @ Bool" [ALWAYS] forall ($dShow1 :: GHC.Show.Show
+                                                                                  GHC.Types.Bool)
+                                                                    ($dShow :: GHC.Show.Show
+                                                                                 GHC.Types.Int)
+  GHC.Show.$fShow(,)_$cshowList @ GHC.Types.Int
+                                @ GHC.Types.Bool
+                                $dShow
+                                $dShow1
+  = TigerEscap.$fEscapatorStateT_$s$fShow(,)_$cshowList
+vectorised variables:
+vectorised tycons:
+vectorised reused tycons:
+parallel variables:
+parallel tycons:
+trusted: none
+require own pkg trusted: False
+

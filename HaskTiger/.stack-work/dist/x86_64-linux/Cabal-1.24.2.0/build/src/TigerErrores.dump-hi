@@ -1,0 +1,138 @@
+
+==================== FINAL INTERFACE ====================
+2017-09-02 01:26:59.562399 UTC
+
+interface HaskTiger-0.1.0.0-8sS9j76S4uUE6NaT8hRlFo:TigerErrores 8002
+  interface hash: c373ea241ae9ffcf4d655c06f41f5324
+  ABI hash: 7632e923881e331881803b2380972746
+  export-list hash: 4022ce330c2e54fd701691771d7ac569
+  orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
+  flag hash: ab396f11155bd696ab63895436e6f1df
+  sig of: Nothing
+  used TH splices: False
+  where
+exports:
+  TigerErrores.Daemon{TigerErrores.adder TigerErrores.derror TigerErrores.internal TigerErrores.notfound}
+module dependencies: TigerSymbol
+package dependencies: array-0.5.1.1@array-0.5.1.1 base-4.9.1.0*
+                      binary-0.8.3.0@binary-0.8.3.0
+                      bytestring-0.10.8.1@bytestring-0.10.8.1
+                      containers-0.5.7.1@containers-0.5.7.1
+                      deepseq-1.4.2.0@deepseq-1.4.2.0 ghc-prim-0.5.0.0
+                      integer-gmp-1.0.0.1
+                      text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00
+orphans: base-4.9.1.0:GHC.Base base-4.9.1.0:GHC.Float
+         binary-0.8.3.0@binary-0.8.3.0:Data.Binary.Generic
+         bytestring-0.10.8.1@bytestring-0.10.8.1:Data.ByteString.Builder
+         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text
+         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text.Show
+family instance modules: base-4.9.1.0:Control.Applicative
+                         base-4.9.1.0:Data.Complex base-4.9.1.0:Data.Either
+                         base-4.9.1.0:Data.Functor.Const base-4.9.1.0:Data.Functor.Identity
+                         base-4.9.1.0:Data.List.NonEmpty base-4.9.1.0:Data.Monoid
+                         base-4.9.1.0:Data.Semigroup base-4.9.1.0:Data.Type.Equality
+                         base-4.9.1.0:Data.Version base-4.9.1.0:Data.Void
+                         base-4.9.1.0:GHC.Exts base-4.9.1.0:GHC.Generics
+                         base-4.9.1.0:GHC.IO.Exception base-4.9.1.0:GHC.TypeLits
+                         containers-0.5.7.1@containers-0.5.7.1:Data.IntMap.Base
+                         containers-0.5.7.1@containers-0.5.7.1:Data.IntSet.Base
+                         containers-0.5.7.1@containers-0.5.7.1:Data.Map.Base
+                         containers-0.5.7.1@containers-0.5.7.1:Data.Sequence
+                         containers-0.5.7.1@containers-0.5.7.1:Data.Set.Base
+                         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text
+import  -/  TigerSymbol 30a4cb684a66b2ead73fe1b1abd03fe4
+  exports: 4b06c7ad95fafc7678231d70d774f42b
+  Symbol 7a1e8be17a491ebcd43766c52d9df98f
+  addStr 368a47e934a296d60af968126e6a3a0f
+import  -/  base-4.9.1.0:GHC.Base c4231c43c07e46080a26bf94094c7aa1
+import  -/  base-4.9.1.0:Prelude 22dd289b8469a8fa8dc81cab7b237771
+1eb1fe8f447f302c700da3edadc859f9
+  $dminternal ::
+    TigerErrores.Daemon w => forall a. TigerSymbol.Symbol -> w a
+  {- Arity: 2,
+     Strictness: <S(C(S)LLL),1*U(1*C1(U),A,A,A)><L,1*U(U,U,U)>,
+     Unfolding: InlineRule (0, True, False)
+                (\ @ (w :: * -> *) ($dDaemon :: TigerErrores.Daemon w) @ a ->
+                 let {
+                   f :: TigerSymbol.Symbol -> w a
+                   = TigerErrores.derror @ w $dDaemon @ a
+                 } in
+                 let {
+                   g :: [GHC.Types.Char]
+                   = GHC.Base.build
+                       @ GHC.Types.Char
+                       (\ @ b -> GHC.CString.unpackFoldrCString# @ b "Internal: "#)
+                 } in
+                 \ (x :: TigerSymbol.Symbol) -> f (TigerSymbol.addStr g x)) -}
+f4cafd60da95fcea2763299a10bfa42b
+  $dmnotfound ::
+    TigerErrores.Daemon w => forall a. TigerSymbol.Symbol -> w a
+  {- Arity: 2,
+     Strictness: <S(C(S)LLL),1*U(1*C1(U),A,A,A)><L,1*U(U,U,U)>,
+     Unfolding: InlineRule (0, True, False)
+                (\ @ (w :: * -> *) ($dDaemon :: TigerErrores.Daemon w) @ a ->
+                 let {
+                   f :: TigerSymbol.Symbol -> w a
+                   = TigerErrores.derror @ w $dDaemon @ a
+                 } in
+                 let {
+                   g :: [GHC.Types.Char]
+                   = GHC.Base.build
+                       @ GHC.Types.Char
+                       (\ @ b -> GHC.CString.unpackFoldrCString# @ b "Not found:"#)
+                 } in
+                 \ (x :: TigerSymbol.Symbol) -> f (TigerSymbol.addStr g x)) -}
+65ed65b048ec469f6e5a5ca819d485ba
+  $tc'C:Daemon :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   7947417098450605645##
+                   4503680442672998845##
+                   TigerErrores.$trModule
+                   TigerErrores.$tc'C:Daemon1) -}
+3488b4ed4a1b503661199a99b4ef2870
+  $tc'C:Daemon1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "'C:Daemon"#) -}
+73ed30fd54ba7bf488726e96d73a8a58
+  $tcDaemon :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   3050521636228594405##
+                   14060655724888953766##
+                   TigerErrores.$trModule
+                   TigerErrores.$tcDaemon1) -}
+21cbeac83ae4ef1ae1782978e0254433
+  $tcDaemon1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "Daemon"#) -}
+d767ba44226b3d115658c38b9b26faf5
+  $trModule :: GHC.Types.Module
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.Module
+                   TigerErrores.$trModule2
+                   TigerErrores.$trModule1) -}
+f31b42dea49be0dbcf9b245bb94b442a
+  $trModule1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "TigerErrores"#) -}
+8ea30b2a171d5a7660caab0866f2eb31
+  $trModule2 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS
+                   "HaskTiger-0.1.0.0-8sS9j76S4uUE6NaT8hRlFo"#) -}
+9203d2ef1de91b2ce775afe7dd68217e
+  class Daemon (w :: * -> *) where
+    derror :: TigerSymbol.Symbol -> w a
+    adder :: w a -> TigerSymbol.Symbol -> w a
+    internal :: TigerSymbol.Symbol -> w a
+    notfound :: TigerSymbol.Symbol -> w a
+    {-# MINIMAL derror, adder #-}
+vectorised variables:
+vectorised tycons:
+vectorised reused tycons:
+parallel variables:
+parallel tycons:
+trusted: safe
+require own pkg trusted: False
+

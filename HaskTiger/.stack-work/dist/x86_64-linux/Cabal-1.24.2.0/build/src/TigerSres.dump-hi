@@ -1,0 +1,169 @@
+
+==================== FINAL INTERFACE ====================
+2017-09-02 01:26:59.506895 UTC
+
+interface HaskTiger-0.1.0.0-8sS9j76S4uUE6NaT8hRlFo:TigerSres 8002
+  interface hash: f0e1ac23425d55cca3134c7fe8df15b6
+  ABI hash: bd58845b11c4778368fa9e644bebc593
+  export-list hash: a1227939f9a844b1e37f9226ced1e28b
+  orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
+  flag hash: ab396f11155bd696ab63895436e6f1df
+  sig of: Nothing
+  used TH splices: False
+  where
+exports:
+  TigerSres.EnvEntry{TigerSres.Func TigerSres.Var}
+  TigerSres.FunEntry
+  TigerSres.ValEntry
+module dependencies: TigerTemp TigerTips
+package dependencies: array-0.5.1.1@array-0.5.1.1 base-4.9.1.0*
+                      binary-0.8.3.0@binary-0.8.3.0
+                      bytestring-0.10.8.1@bytestring-0.10.8.1
+                      containers-0.5.7.1@containers-0.5.7.1
+                      deepseq-1.4.2.0@deepseq-1.4.2.0 ghc-prim-0.5.0.0
+                      integer-gmp-1.0.0.1
+                      text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00
+orphans: base-4.9.1.0:GHC.Base base-4.9.1.0:GHC.Float
+         binary-0.8.3.0@binary-0.8.3.0:Data.Binary.Generic
+         bytestring-0.10.8.1@bytestring-0.10.8.1:Data.ByteString.Builder
+         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text
+         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text.Show
+family instance modules: base-4.9.1.0:Control.Applicative
+                         base-4.9.1.0:Data.Complex base-4.9.1.0:Data.Either
+                         base-4.9.1.0:Data.Functor.Const base-4.9.1.0:Data.Functor.Identity
+                         base-4.9.1.0:Data.List.NonEmpty base-4.9.1.0:Data.Monoid
+                         base-4.9.1.0:Data.Semigroup base-4.9.1.0:Data.Type.Equality
+                         base-4.9.1.0:Data.Version base-4.9.1.0:Data.Void
+                         base-4.9.1.0:GHC.Exts base-4.9.1.0:GHC.Generics
+                         base-4.9.1.0:GHC.IO.Exception base-4.9.1.0:GHC.TypeLits
+                         containers-0.5.7.1@containers-0.5.7.1:Data.IntMap.Base
+                         containers-0.5.7.1@containers-0.5.7.1:Data.IntSet.Base
+                         containers-0.5.7.1@containers-0.5.7.1:Data.Map.Base
+                         containers-0.5.7.1@containers-0.5.7.1:Data.Sequence
+                         containers-0.5.7.1@containers-0.5.7.1:Data.Set.Base
+                         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text
+import  -/  TigerTemp c446926040ae9aff9c5e9daf1d384f7f
+  exports: fb83555ed062b11cdb6a16f4bce0407b
+  Label 451a80c6686c5b1a8fae49bc33720dde
+import  -/  TigerTips c0fd0dfdacceefcf81c61e18311d7282
+  exports: b1b1d22fda7e71ee2c7fb5bf69788c87
+  Tipo d63dbfdc8130bfd1c2ee877626fb1366
+  Unique 1f9beb3c4ec7675ae6182f64210065c4
+import  -/  base-4.9.1.0:GHC.Base c4231c43c07e46080a26bf94094c7aa1
+import  -/  base-4.9.1.0:GHC.Show a027f5ac24879eaba752f44aa90fe511
+import  -/  base-4.9.1.0:Prelude 22dd289b8469a8fa8dc81cab7b237771
+import  -/  ghc-prim-0.5.0.0:GHC.Classes 0bdf3d057a415ec1b84a7b1994efbe47
+526495bf57a595e5e3179526fc50beba
+  $fShowEnvEntry :: GHC.Show.Show TigerSres.EnvEntry
+  DFunId
+  {- Strictness: m, Inline: [ALWAYS] CONLIKE,
+     Unfolding: DFun:.
+                  @ TigerSres.EnvEntry
+                  TigerSres.$fShowEnvEntry_$cshowsPrec
+                  TigerSres.$fShowEnvEntry_$cshow
+                  TigerSres.$fShowEnvEntry_$cshowList -}
+526495bf57a595e5e3179526fc50beba
+  $fShowEnvEntry1 :: TigerSres.EnvEntry -> GHC.Show.ShowS
+  {- Arity: 2,
+     Unfolding: (\ (w :: TigerSres.EnvEntry) (w1 :: GHC.Base.String) ->
+                 TigerSres.$w$cshowsPrec 0# w w1) -}
+526495bf57a595e5e3179526fc50beba
+  $fShowEnvEntry_$cshow :: TigerSres.EnvEntry -> GHC.Base.String
+  {- Arity: 1, Strictness: <S,1*U>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (x :: TigerSres.EnvEntry) ->
+                 TigerSres.$fShowEnvEntry_$cshowsPrec
+                   GHC.Show.shows22
+                   x
+                   (GHC.Types.[] @ GHC.Types.Char)) -}
+526495bf57a595e5e3179526fc50beba
+  $fShowEnvEntry_$cshowList :: [TigerSres.EnvEntry] -> GHC.Show.ShowS
+  {- Arity: 2,
+     Unfolding: (GHC.Show.showList__
+                   @ TigerSres.EnvEntry
+                   TigerSres.$fShowEnvEntry1) -}
+526495bf57a595e5e3179526fc50beba
+  $fShowEnvEntry_$cshowsPrec ::
+    GHC.Types.Int -> TigerSres.EnvEntry -> GHC.Show.ShowS
+  {- Arity: 3, Strictness: <S(S),1*U(U)><S,1*U><L,U>,
+     Inline: INLINE[0],
+     Unfolding: InlineRule (3, True, False)
+                (\ (w :: GHC.Types.Int)
+                   (w1 :: TigerSres.EnvEntry)
+                   (w2 :: GHC.Base.String) ->
+                 case w of ww { GHC.Types.I# ww1 ->
+                 TigerSres.$w$cshowsPrec ww1 w1 w2 }) -}
+37093bce450be612e8b554cd84590c7d
+  $tc'Func :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   12002551733624409042##
+                   14876790451313799183##
+                   TigerSres.$trModule
+                   TigerSres.$tc'Func1) -}
+21ec039786521b7d23780809af085cd8
+  $tc'Func1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "'Func"#) -}
+e192348c32ddcb0454224fc146bea804
+  $tc'Var :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   14261788428067632247##
+                   4717634670914414221##
+                   TigerSres.$trModule
+                   TigerSres.$tc'Var1) -}
+f0656f685a704769009bea49a4643dbc
+  $tc'Var1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "'Var"#) -}
+c3ac85b47503b5038834cfa0209f1f75
+  $tcEnvEntry :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   5045493637594418682##
+                   14951002028451188444##
+                   TigerSres.$trModule
+                   TigerSres.$tcEnvEntry1) -}
+4b82d3b12019f4f459fd9e78ab878bfc
+  $tcEnvEntry1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "EnvEntry"#) -}
+2b660f31615025321f0f8f78a60633ca
+  $trModule :: GHC.Types.Module
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.Module
+                   TigerSres.$trModule2
+                   TigerSres.$trModule1) -}
+9de8470ccc658ef7dd12722ddee735b1
+  $trModule1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "TigerSres"#) -}
+a5b47e491534b77db7ef97b50ea1ff63
+  $trModule2 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS
+                   "HaskTiger-0.1.0.0-8sS9j76S4uUE6NaT8hRlFo"#) -}
+526495bf57a595e5e3179526fc50beba
+  $w$cshowsPrec ::
+    GHC.Prim.Int#
+    -> TigerSres.EnvEntry -> GHC.Base.String -> GHC.Base.String
+  {- Arity: 3, Strictness: <S,U><S,1*U><L,U>, Inline: [0] -}
+526495bf57a595e5e3179526fc50beba
+  data EnvEntry = Var TigerSres.ValEntry | Func TigerSres.FunEntry
+9d4c79ee2271d69a3262e60a9acf1c0c
+  type FunEntry =
+    (TigerTips.Unique, TigerTemp.Label, [TigerTips.Tipo],
+     TigerTips.Tipo, GHC.Types.Bool)
+1389363113a29623f9c3f4386020e3d7
+  type ValEntry = TigerTips.Tipo
+instance [safe] GHC.Show.Show [TigerSres.EnvEntry]
+  = TigerSres.$fShowEnvEntry
+vectorised variables:
+vectorised tycons:
+vectorised reused tycons:
+parallel variables:
+parallel tycons:
+trusted: safe
+require own pkg trusted: False
+
