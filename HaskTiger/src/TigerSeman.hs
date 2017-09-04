@@ -87,8 +87,7 @@ data SEErrores = NotFound T.Text | DiffVal T.Text | Internal T.Text
 type OurState = StateT EstadoG (Either SEErrores) 
 
 instance Daemon OurState where
-  derror s   = throwError $ Internal s --TODO: ¿Qué SEErrores va? 
-  adder st s =     
+  derror s   = throwError $ Left  
 
 -- Podemos definir el estado inicial como:
 initConf :: EstadoG
@@ -185,19 +184,19 @@ transVar (FieldVar v s)     =
          if not (null (filter (\(x, y, z) -> x == s) fields)) then return v'
            else P.error "El record no posee el campo deseado"       
        RefRecord text   ->
-         P.error "???" --TODO: ¿Cómo se handlea este caso?
+         P.error "Error interno" -- Nunca debería darse 
        _                ->
          P.error "No es un record"
 transVar (SubscriptVar v e) =
   do v' <- transVar v
      case v' of
        TArray typ _ ->
-         do e' <- transExp e --TODO: ¿Tenemos que chequear si e' es un int?
+         do e' <- transExp e 
+            C.unlessM (tiposIguales e' (TInt RW)) $ P.error "La variable no es del tipo que se le quiere asignar"
             return typ
        _            ->
          P.error "No es un array"
           
---TODO: acá es donde tenemos que agregar los tipos ¿O en LetExp?
 transTy :: (Manticore w) => Ty -> w Tipo
 transTy (NameTy s)      = getTipoT s
 transTy (RecordTy flds) =
@@ -214,6 +213,7 @@ fromTy :: (Manticore w) => Ty -> w Tipo
 fromTy (NameTy s) = getTipoT s
 fromTy _ = P.error "no debería haber una definición de tipos en los args..."
 
+-- Acá agregamos los tipos, clase 04/09/17
 transDecs :: (Manticore w) => [Dec] -> w a -> w a
 transDecs (FunctionDec{} : xs) = id
 transDecs (VarDec{}: xs)       = id
@@ -226,11 +226,11 @@ transExp (UnitExp {})             = return TUnit
 transExp (NilExp {})              = return TNil
 transExp (IntExp {})              = return $ TInt RW
 transExp (StringExp {})           = return TString
--- TODO: ¿Puedo tener como en Erlang funciones con el mismo nombre pero distinta cantidad de argumentos?
--- ¿Por eso se chequean la cantidad de argumentos?
+-- No podemos tener funciones con el mismo nombre como en Erlang
 transExp (CallExp nm args p)      = 
   do tfunc <- getTipoFunV nm
      args' <- mapM transExp args
+     C.unlessM (length args == thd tfunc) $ P.error "Difiere en la cantidad de argumentos"
      mapM_ (\(x, y) -> C.unlessM (tiposIguales x y) $ P.error "Error en los tipos de los argumentos") (zip args' (thd tfunc))
      return $ foth tfunc 
   where thd  (_, _, c, _, _) = c  
@@ -274,7 +274,7 @@ transExp(AssignExp var val p)     =
   do tvar <- transVar var
      tval <- transExp val
      C.unlessM (tiposIguales tvar tval) $ P.error "La variable no es del tipo que se le quiere asignar"
-     return TUnit --TODO: ¿Por qué acá devolvemos TUnit?
+     return TUnit 
 transExp(IfExp co th Nothing p)   = 
   do co' <- transExp co
      C.unlessM (tiposIguales co' $ TInt RW) $ P.error "Error en la condición"
@@ -287,7 +287,7 @@ transExp(IfExp co th (Just el) p) =
      th' <- transExp th
      el' <- transExp el
      C.unlessM (tiposIguales th' el') $ P.error "Las ramas del if difieren en el tipo" 
-     return th' --TODO: chequar que no sea "return TUnit"
+     return th' --FIXME: ver valor de retorno 
 transExp(WhileExp co body p)      = 
   do co' <- transExp co
      C.unlessM (tiposIguales co' $ TInt RO) $ P.error "Error en la condición" --TODO: chequear el RO
