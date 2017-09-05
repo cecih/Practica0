@@ -87,7 +87,7 @@ data SEErrores = NotFound T.Text | DiffVal T.Text | Internal T.Text
 type OurState = StateT EstadoG (Either SEErrores) 
 
 instance Daemon OurState where
-  derror s   = throwError $ Left  
+  derror s   = throwError $ Internal s  
 
 -- Podemos definir el estado inicial como:
 initConf :: EstadoG
@@ -230,7 +230,7 @@ transExp (StringExp {})           = return TString
 transExp (CallExp nm args p)      = 
   do tfunc <- getTipoFunV nm
      args' <- mapM transExp args
-     C.unlessM (length args == thd tfunc) $ P.error "Difiere en la cantidad de argumentos"
+     C.unless (length args == length (thd tfunc)) $ P.error "Difiere en la cantidad de argumentos"
      mapM_ (\(x, y) -> C.unlessM (tiposIguales x y) $ P.error "Error en los tipos de los argumentos") (zip args' (thd tfunc))
      return $ foth tfunc 
   where thd  (_, _, c, _, _) = c  
@@ -287,7 +287,7 @@ transExp(IfExp co th (Just el) p) =
      th' <- transExp th
      el' <- transExp el
      C.unlessM (tiposIguales th' el') $ P.error "Las ramas del if difieren en el tipo" 
-     return th' --FIXME: ver valor de retorno 
+     return (if th' == TNil then el' else th')   
 transExp(WhileExp co body p)      = 
   do co' <- transExp co
      C.unlessM (tiposIguales co' $ TInt RO) $ P.error "Error en la condición" --TODO: chequear el RO
