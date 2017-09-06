@@ -201,13 +201,17 @@ transTy :: (Manticore w) => Ty -> w Tipo
 transTy (NameTy s)      = getTipoT s
 transTy (RecordTy flds) =
   do u <- ugen
-     let (x, y, z) = unzip3 flds
-     flds' <- mapM transTy z --TODO: ¿Qué int le asignamos?
+     let (x, y, z) = unzip3 (sortBy ourOrder flds)
+     flds' <- mapM transTy z 
      return (TRecord (zip3 x flds' [0..length y]) u)
 transTy (ArrayTy s)     = 
   do u <- ugen
      s' <- getTipoT s
      return (TArray s' u) 
+
+ourOrder :: (a, b, c) -> (a, b, c) -> Ordering
+ourOrder (x1, _, _) (x2, _, _) = if x1 > x2 then GT else
+                                     if x1 == x2 then EQ else LT
 
 fromTy :: (Manticore w) => Ty -> w Tipo
 fromTy (NameTy s) = getTipoT s
@@ -290,11 +294,25 @@ transExp(IfExp co th (Just el) p) =
      return (if th' == TNil then el' else th')   
 transExp(WhileExp co body p)      = 
   do co' <- transExp co
-     C.unlessM (tiposIguales co' $ TInt RO) $ P.error "Error en la condición" --TODO: chequear el RO
+     C.unlessM (tiposIguales co' $ TInt RW) $ P.error "Error en la condición" 
      body' <- transExp body
      C.unlessM (tiposIguales body' TUnit) $ P.error "El cuerpo del while está retornando algún valor" 
      return TUnit
-transExp(ForExp nv mb lo hi bo p) = return TUnit -- Completar
+transExp(ForExp nv mb lo hi bo p) =
+  do lo' <- transExp lo
+     hi' <- transExp hi
+     C.unlessM (tiposIguales lo' $ TInt RW) $ P.error "La cota inferior debe ser entera"
+     C.unlessM (tiposIguales hi' $ TInt RW) $ P.error "La cota superior debe ser entera"
+     bo' <- insertVRO nv (transExp bo)
+     C.unlessM (tiposIguales bo' TUnit) $ P.error "El cuerpo del for está retornando algun valor"
+     return TUnit 
 transExp(LetExp dcs body p)       = transDecs dcs (transExp body)
 transExp(BreakExp p)              = return TUnit -- Va gratis ;)
-transExp(ArrayExp sn cant init p) = return TUnit -- Completar
+transExp(ArrayExp sn cant init p) =
+  do u <- ugen
+     sn'   <- getTipoValV sn
+     cant' <- transExp cant
+     C.unlessM (tiposIguales cant' $ TInt RW) $ P.error "El índice debe ser un entero"
+     init' <- transExp init
+     C.unlessM (tiposIguales sn' init') $ P.error "El tipo del init debe coincidir con el de la variable"
+     return $ TArray sn' u
