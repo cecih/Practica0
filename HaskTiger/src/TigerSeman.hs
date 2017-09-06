@@ -10,7 +10,7 @@ import           TigerTips
 
 import           TigerSymbol
 
-import           Control.Conditional  as C
+import           Control.Condtional as C (unless, unlessM)
 import           Control.Monad
 import           Control.Monad.Except (throwError)
 import           Control.Monad.State
@@ -88,6 +88,22 @@ type OurState = StateT EstadoG (Either SEErrores)
 
 instance Daemon OurState where
   derror s   = throwError $ Internal s  
+  adder  w s = catchError w $ return 
+
+instance Manticore OurState where
+  insertValV s ve w = do st <- get
+                         withStateT (\st' -> st' {vEnv = insert s (Var ve) (vEnv st) }) w  
+			 put st 
+  insertFuncV s fe w = do st <- get
+                          withStateT (\st' -> st' {vEnv = insert s (Func fe) (vEnv st) }) w  
+			  put st 
+  insertVRO s w      = insertValV s (Var $ TInt RO) w
+  insertTipoT s ty w = do st <- get
+                          withStateT (\st' -> st' {tEnv = insert s ty (tEnv st) }) w  
+			  put st 
+  ugen = do u <- get
+            put (unique u + 1)
+            return $ unique u + 1 
 
 -- Podemos definir el estado inicial como:
 initConf :: EstadoG
