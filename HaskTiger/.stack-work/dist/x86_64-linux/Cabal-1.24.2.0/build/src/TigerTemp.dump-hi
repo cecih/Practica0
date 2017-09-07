@@ -1,11 +1,11 @@
 
 ==================== FINAL INTERFACE ====================
-2017-09-06 17:58:59.620356 UTC
+2017-09-07 00:00:07.47547 UTC
 
-interface HaskTiger-0.1.0.0-8sS9j76S4uUE6NaT8hRlFo:TigerTemp 8002
-  interface hash: ddfe443b06014dbb4e8a51fc6cb6e90d
-  ABI hash: c446926040ae9aff9c5e9daf1d384f7f
-  export-list hash: fb83555ed062b11cdb6a16f4bce0407b
+interface HaskTiger-0.1.0.0-1NjWJIneMSYKOEJS7DxzEs:TigerTemp 8002
+  interface hash: 3395dacd981fe8bb28fa5e4d68e9b5c7
+  ABI hash: f8cd37ab8b2c8ae503243c1974735658
+  export-list hash: fe650cebb42e0a87a169c19e19a976a1
   orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
   flag hash: ab396f11155bd696ab63895436e6f1df
   sig of: Nothing
@@ -20,12 +20,12 @@ package dependencies: array-0.5.1.1@array-0.5.1.1 base-4.9.1.0*
                       containers-0.5.7.1@containers-0.5.7.1
                       deepseq-1.4.2.0@deepseq-1.4.2.0 ghc-prim-0.5.0.0
                       integer-gmp-1.0.0.1
-                      text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00*
+                      text-1.2.2.2@text-1.2.2.2-1cn50juu89QSL9QkUVcRY*
 orphans: base-4.9.1.0:GHC.Base base-4.9.1.0:GHC.Float
          binary-0.8.3.0@binary-0.8.3.0:Data.Binary.Generic
          bytestring-0.10.8.1@bytestring-0.10.8.1:Data.ByteString.Builder
-         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text
-         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text.Show
+         text-1.2.2.2@text-1.2.2.2-1cn50juu89QSL9QkUVcRY:Data.Text
+         text-1.2.2.2@text-1.2.2.2-1cn50juu89QSL9QkUVcRY:Data.Text.Show
 family instance modules: base-4.9.1.0:Control.Applicative
                          base-4.9.1.0:Data.Complex base-4.9.1.0:Data.Either
                          base-4.9.1.0:Data.Functor.Const base-4.9.1.0:Data.Functor.Identity
@@ -39,26 +39,26 @@ family instance modules: base-4.9.1.0:Control.Applicative
                          containers-0.5.7.1@containers-0.5.7.1:Data.Map.Base
                          containers-0.5.7.1@containers-0.5.7.1:Data.Sequence
                          containers-0.5.7.1@containers-0.5.7.1:Data.Set.Base
-                         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text
+                         text-1.2.2.2@text-1.2.2.2-1cn50juu89QSL9QkUVcRY:Data.Text
 import  -/  base-4.9.1.0:Prelude 22dd289b8469a8fa8dc81cab7b237771
-import  -/  text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text e8aa34be3dde178f567ae461e65c988b
-import  -/  text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text.Internal 9bfcbbbe07ecef48f631025a838df7da
-8eb48f11f7d591ae7165e93bfe45989a
+import  -/  text-1.2.2.2@text-1.2.2.2-1cn50juu89QSL9QkUVcRY:Data.Text ef501398810147cc510ae8565b319c23
+import  -/  text-1.2.2.2@text-1.2.2.2-1cn50juu89QSL9QkUVcRY:Data.Text.Internal e17bbef002f291b56b1f76642ff112d3
+6412071ec56be9c2bd910d1548441f21
   $trModule :: GHC.Types.Module
   {- HasNoCafRefs, Strictness: m,
      Unfolding: (GHC.Types.Module
                    TigerTemp.$trModule2
                    TigerTemp.$trModule1) -}
-ee2c4397a410e8f666a3b80d21b13d73
+e0c5291da730e6f01c713e1409334677
   $trModule1 :: GHC.Types.TrName
   {- HasNoCafRefs, Strictness: m1,
      Unfolding: (GHC.Types.TrNameS "TigerTemp"#) -}
-222728f8fe6e8f054f6ab7daf19f70f4
+f7bcacd64e6c92dd938d3fcd834f7d0d
   $trModule2 :: GHC.Types.TrName
   {- HasNoCafRefs, Strictness: m1,
      Unfolding: (GHC.Types.TrNameS
-                   "HaskTiger-0.1.0.0-8sS9j76S4uUE6NaT8hRlFo"#) -}
-451a80c6686c5b1a8fae49bc33720dde
+                   "HaskTiger-0.1.0.0-1NjWJIneMSYKOEJS7DxzEs"#) -}
+d2f09c9bec6f170d38b75821e95d9774
   type Label = Data.Text.Internal.Text
 vectorised variables:
 vectorised tycons:

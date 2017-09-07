@@ -1,12 +1,12 @@
 
 ==================== FINAL INTERFACE ====================
-2017-09-06 17:59:06.463568 UTC
+2017-09-07 00:00:10.415848 UTC
 
-interface HaskTiger-0.1.0.0-8sS9j76S4uUE6NaT8hRlFo:TigerLexer 8002
-  interface hash: 0a399fb301152803af63b2ff582cf126
-  ABI hash: 4c48dd028ad479b7c8ab84f94a04d3d6
-  export-list hash: 19bb51edf6cf75046d53bca37d4a10a0
-  orphan hash: 2f19b96b625a1b27da66b976fd32e817
+interface HaskTiger-0.1.0.0-1NjWJIneMSYKOEJS7DxzEs:TigerLexer 8002
+  interface hash: f4240cb311d7172b689d8bf775f880be
+  ABI hash: 1879c506a5cb8805bba61e0239c895c1
+  export-list hash: b333061e7dcda5def3ff877ded3c869b
+  orphan hash: 04cdb91093b98666d78a56b80b766024
   flag hash: ab396f11155bd696ab63895436e6f1df
   sig of: Nothing
   used TH splices: False
@@ -37,15 +37,15 @@ package dependencies: array-0.5.1.1@array-0.5.1.1 base-4.9.1.0*
                       containers-0.5.7.1@containers-0.5.7.1
                       deepseq-1.4.2.0@deepseq-1.4.2.0 ghc-prim-0.5.0.0
                       integer-gmp-1.0.0.1 mtl-2.2.1@mtl-2.2.1-BLKBelFsPB3BoFeSWSOYj6
-                      parsec-3.1.11@parsec-3.1.11-1aqiimsgq2dCv7eoaC8WuX
-                      text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00*
+                      parsec-3.1.11@parsec-3.1.11-4MSigapSiUw1ERNBXZn0E5
+                      text-1.2.2.2@text-1.2.2.2-1cn50juu89QSL9QkUVcRY*
                       transformers-0.5.2.0@transformers-0.5.2.0
 orphans: base-4.9.1.0:GHC.Base base-4.9.1.0:GHC.Float
          binary-0.8.3.0@binary-0.8.3.0:Data.Binary.Generic
          bytestring-0.10.8.1@bytestring-0.10.8.1:Data.ByteString.Builder
-         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text
-         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text.Lazy
-         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text.Show
+         text-1.2.2.2@text-1.2.2.2-1cn50juu89QSL9QkUVcRY:Data.Text
+         text-1.2.2.2@text-1.2.2.2-1cn50juu89QSL9QkUVcRY:Data.Text.Lazy
+         text-1.2.2.2@text-1.2.2.2-1cn50juu89QSL9QkUVcRY:Data.Text.Show
          transformers-0.5.2.0@transformers-0.5.2.0:Control.Monad.Trans.Error
 family instance modules: base-4.9.1.0:Control.Applicative
                          base-4.9.1.0:Data.Complex base-4.9.1.0:Data.Either
@@ -60,21 +60,21 @@ family instance modules: base-4.9.1.0:Control.Applicative
                          containers-0.5.7.1@containers-0.5.7.1:Data.Map.Base
                          containers-0.5.7.1@containers-0.5.7.1:Data.Sequence
                          containers-0.5.7.1@containers-0.5.7.1:Data.Set.Base
-                         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text
-                         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text.Lazy
-import  -/  TigerAbs 4ed839e0ff39f27894975a9e85c5e0b9
-  exports: 36ecbae58ceb49a736590352cce7edab
+                         text-1.2.2.2@text-1.2.2.2-1cn50juu89QSL9QkUVcRY:Data.Text
+                         text-1.2.2.2@text-1.2.2.2-1cn50juu89QSL9QkUVcRY:Data.Text.Lazy
+import  -/  TigerAbs 37f30c082077bd2ed6390df841315dcd
+  exports: 3a90fdff097973025312591ea87ea06f
 import  -/  base-4.9.1.0:GHC.Base c4231c43c07e46080a26bf94094c7aa1
 import  -/  base-4.9.1.0:GHC.Num 00bfaa7b2f9d6084913c0697a8a49ec8
 import  -/  base-4.9.1.0:Prelude 22dd289b8469a8fa8dc81cab7b237771
 import  -/  integer-gmp-1.0.0.1:GHC.Integer.Type 318df275d77dcdb18e0006d8d7870c2a
-import  -/  parsec-3.1.11@parsec-3.1.11-1aqiimsgq2dCv7eoaC8WuX:Text.Parsec 249f98b8bd0396476db9ec1e5f439e1e
-import  -/  parsec-3.1.11@parsec-3.1.11-1aqiimsgq2dCv7eoaC8WuX:Text.Parsec.Char 90d109d9d69f9af668227aee4dafb263
-import  -/  parsec-3.1.11@parsec-3.1.11-1aqiimsgq2dCv7eoaC8WuX:Text.Parsec.Prim 0d878ba04cd6efa06cce29fd3cc148ae
-import  -/  parsec-3.1.11@parsec-3.1.11-1aqiimsgq2dCv7eoaC8WuX:Text.Parsec.Text 508773a45f8ae771a71f3cd67fb9a1ec
-import  -/  parsec-3.1.11@parsec-3.1.11-1aqiimsgq2dCv7eoaC8WuX:Text.Parsec.Token b070652ff6120fb71deaf8e05f05fb2c
-import  -/  text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text e8aa34be3dde178f567ae461e65c988b
-6154b99da11fc229e618417ca804179c
+import  -/  parsec-3.1.11@parsec-3.1.11-4MSigapSiUw1ERNBXZn0E5:Text.Parsec 5ebe4726bd77c5637390cb93da39bc72
+import  -/  parsec-3.1.11@parsec-3.1.11-4MSigapSiUw1ERNBXZn0E5:Text.Parsec.Char e53c6aef39f9d1ab625832392fa65cce
+import  -/  parsec-3.1.11@parsec-3.1.11-4MSigapSiUw1ERNBXZn0E5:Text.Parsec.Prim 38a967362d6f8ab3f18d4c0a59c3f4b1
+import  -/  parsec-3.1.11@parsec-3.1.11-4MSigapSiUw1ERNBXZn0E5:Text.Parsec.Text 8b9622ffa93b22c4a7166fef30d3298e
+import  -/  parsec-3.1.11@parsec-3.1.11-4MSigapSiUw1ERNBXZn0E5:Text.Parsec.Token c573ecc2d878d42e48e8b14b66c8c224
+import  -/  text-1.2.2.2@text-1.2.2.2-1cn50juu89QSL9QkUVcRY:Data.Text ef501398810147cc510ae8565b319c23
+0641a98931ed054698e24eaba6ec8a39
   $s$fStream[]mtok ::
     Text.Parsec.Prim.Stream [tok] Data.Functor.Identity.Identity tok
   {- Strictness: m, Inline: [ALWAYS] CONLIKE,
@@ -84,13 +84,13 @@ import  -/  text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text e8aa34be3
                   @ tok
                   (TigerLexer.$s$fStream[]mtok_$s$fStream[]mtok_$cp1Stream @ tok)
                   (TigerLexer.$s$fStream[]mtok_$s$fStream[]mtok_$cuncons @ tok) -}
-cf74240434801c2a3fc02efd311f502f
+5874bcb56c74cb32539acd09c737e7ea
   $s$fStream[]mtok_$s$fStream[]mtok_$cp1Stream ::
     GHC.Base.Monad Data.Functor.Identity.Identity
   {- Strictness: m,
      Unfolding: InlineRule (0, True, True)
                 (\ @ tok -> Data.Functor.Identity.$fMonadIdentity) -}
-85f550585b4112da9da7aae255944563
+4a7b572e86751e93dae1ccc6b4944eec
   $s$fStream[]mtok_$s$fStream[]mtok_$cuncons ::
     [tok]
     -> Data.Functor.Identity.Identity (GHC.Base.Maybe (tok, [tok]))
@@ -115,22 +115,22 @@ cf74240434801c2a3fc02efd311f502f
                         (Data.Functor.Identity.$fApplicativeIdentity_$cpure
                            @ (GHC.Base.Maybe (tok, [tok])))
                         (GHC.Base.Just @ (tok, [tok]) (t, ts)) }) -}
-7365796d028a3ae9c8ff68ace0d02a68
+42c68ee98db3fb380e6a9357e8eb4420
   $trModule :: GHC.Types.Module
   {- HasNoCafRefs, Strictness: m,
      Unfolding: (GHC.Types.Module
                    TigerLexer.$trModule2
                    TigerLexer.$trModule1) -}
-1291e3c96244fb5660fc9ca3f7c0f55f
+2cc40abb1b564ee582090446c7c8183f
   $trModule1 :: GHC.Types.TrName
   {- HasNoCafRefs, Strictness: m1,
      Unfolding: (GHC.Types.TrNameS "TigerLexer"#) -}
-0da80105dc8f2b1d2760d4e7b0f24be2
+31876da202c8acc349c52b23295149e9
   $trModule2 :: GHC.Types.TrName
   {- HasNoCafRefs, Strictness: m1,
      Unfolding: (GHC.Types.TrNameS
-                   "HaskTiger-0.1.0.0-8sS9j76S4uUE6NaT8hRlFo"#) -}
-cce41587174ed38b8525e031b9e88d8b
+                   "HaskTiger-0.1.0.0-1NjWJIneMSYKOEJS7DxzEs"#) -}
+a60fafc1ae5746645215d66ba8b9b3b1
   braces ::
     Text.Parsec.Prim.ParsecT
       GHC.Base.String () Data.Functor.Identity.Identity a
@@ -139,7 +139,7 @@ cce41587174ed38b8525e031b9e88d8b
   {- Unfolding: (\ @ a ->
                  case TigerLexer.lexer of wild { Text.Parsec.Token.TokenParser ds ds1 ds2 ds3 ds4 ds5 ds6 ds7 ds8 ds9 ds10 ds11 ds12 ds13 ds14 ds15 ds16 ds17 ds18 ds19 ds20 ds21 ds22 ds23 ds24 ds25 ds26 ds27 ds28 ->
                  ds17 @ a }) -}
-2d4d7e9d29fa5f3b60c052c83e960962
+3d26177978e0edce77ef1bc3d63b48c7
   brackets ::
     Text.Parsec.Prim.ParsecT
       GHC.Base.String () Data.Functor.Identity.Identity a
@@ -148,13 +148,13 @@ cce41587174ed38b8525e031b9e88d8b
   {- Unfolding: (\ @ a ->
                  case TigerLexer.lexer of wild { Text.Parsec.Token.TokenParser ds ds1 ds2 ds3 ds4 ds5 ds6 ds7 ds8 ds9 ds10 ds11 ds12 ds13 ds14 ds15 ds16 ds17 ds18 ds19 ds20 ds21 ds22 ds23 ds24 ds25 ds26 ds27 ds28 ->
                  ds19 @ a }) -}
-8fedf4626c57c944c6d02e9c25f439a1
+08295f55f0363b8b0bc6cf725fec6f73
   colon ::
     Text.Parsec.Prim.ParsecT
       GHC.Base.String () Data.Functor.Identity.Identity GHC.Base.String
   {- Unfolding: (case TigerLexer.lexer of wild { Text.Parsec.Token.TokenParser ds1 ds2 ds3 ds4 ds5 ds6 ds7 ds8 ds9 ds10 ds11 ds12 ds13 ds14 ds15 ds16 ds17 ds18 ds19 ds20 ds21 ds22 ds23 ds24 ds25 ds26 ds27 ds28 ds29 ->
                  ds24 }) -}
-bfc20124fd6ab4167b51e4501db1e76b
+18e83c5cb7ea0cb4ec6452c63136e0f8
   commaSep ::
     Text.Parsec.Prim.ParsecT
       GHC.Base.String () Data.Functor.Identity.Identity a
@@ -163,7 +163,7 @@ bfc20124fd6ab4167b51e4501db1e76b
   {- Unfolding: (\ @ a ->
                  case TigerLexer.lexer of wild { Text.Parsec.Token.TokenParser ds ds1 ds2 ds3 ds4 ds5 ds6 ds7 ds8 ds9 ds10 ds11 ds12 ds13 ds14 ds15 ds16 ds17 ds18 ds19 ds20 ds21 ds22 ds23 ds24 ds25 ds26 ds27 ds28 ->
                  ds27 @ a }) -}
-f3da77b34196afa72de1635341e8e5ee
+b2d08c34ee70cc163e7a76efe49821e7
   commaSep1 ::
     Text.Parsec.Prim.ParsecT
       GHC.Base.String () Data.Functor.Identity.Identity a
@@ -172,19 +172,19 @@ f3da77b34196afa72de1635341e8e5ee
   {- Unfolding: (\ @ a ->
                  case TigerLexer.lexer of wild { Text.Parsec.Token.TokenParser ds ds1 ds2 ds3 ds4 ds5 ds6 ds7 ds8 ds9 ds10 ds11 ds12 ds13 ds14 ds15 ds16 ds17 ds18 ds19 ds20 ds21 ds22 ds23 ds24 ds25 ds26 ds27 ds28 ->
                  ds28 @ a }) -}
-99eb1249a5894d0b7ec285ad06198b75
+944d98292fed362cfb814f742019cee6
   dot ::
     Text.Parsec.Prim.ParsecT
       GHC.Base.String () Data.Functor.Identity.Identity GHC.Base.String
   {- Unfolding: (case TigerLexer.lexer of wild { Text.Parsec.Token.TokenParser ds1 ds2 ds3 ds4 ds5 ds6 ds7 ds8 ds9 ds10 ds11 ds12 ds13 ds14 ds15 ds16 ds17 ds18 ds19 ds20 ds21 ds22 ds23 ds24 ds25 ds26 ds27 ds28 ds29 ->
                  ds25 }) -}
-cc8610cd807b24d979cccc34d38450f3
+a9c706eb2bfe91c268b52928a0eb9342
   identifier ::
     Text.Parsec.Prim.ParsecT
       GHC.Base.String () Data.Functor.Identity.Identity GHC.Base.String
   {- Unfolding: (case TigerLexer.lexer of wild { Text.Parsec.Token.TokenParser ds1 ds2 ds3 ds4 ds5 ds6 ds7 ds8 ds9 ds10 ds11 ds12 ds13 ds14 ds15 ds16 ds17 ds18 ds19 ds20 ds21 ds22 ds23 ds24 ds25 ds26 ds27 ds28 ds29 ->
                  ds1 }) -}
-28434a39c58b61192a598a26908b4e3b
+8e3e4e5c81f761ac40a04972e2867bc4
   lexer :: Text.Parsec.Token.TokenParser ()
   {- Unfolding: (Text.Parsec.Token.makeTokenParser
                    @ GHC.Base.String
@@ -192,7 +192,7 @@ cc8610cd807b24d979cccc34d38450f3
                    @ ()
                    (TigerLexer.$s$fStream[]mtok @ GHC.Types.Char)
                    TigerLexer.lexer1) -}
-cc305d60eda38f3f455333bb770ea54e
+d3af95b54d81b007f82bacf2b224763a
   lexer1 ::
     Text.Parsec.Token.GenLanguageDef
       GHC.Base.String () Data.Functor.Identity.Identity
@@ -229,268 +229,268 @@ cc305d60eda38f3f455333bb770ea54e
                    TigerLexer.lexer28
                    TigerLexer.lexer2
                    GHC.Types.False) -}
-6a425da96a54b348b1eb598c2abe12d8
+3afcbbd9a70965995505c9dd21ec2f7f
   lexer10 :: [GHC.Base.String]
   {- Unfolding: (GHC.Types.:
                    @ GHC.Base.String
                    TigerLexer.lexer19
                    TigerLexer.lexer11) -}
-c4419c4a568f8cee2227fa65ae75826d
+3251197674ac0ce221484bd733852b24
   lexer11 :: [GHC.Base.String]
   {- Unfolding: (GHC.Types.:
                    @ GHC.Base.String
                    TigerLexer.lexer18
                    TigerLexer.lexer12) -}
-f3a22deeae3a1559a65719d9af452775
+aae672996219d5b48f641e198e73324a
   lexer12 :: [GHC.Base.String]
   {- Unfolding: (GHC.Types.:
                    @ GHC.Base.String
                    TigerLexer.lexer17
                    TigerLexer.lexer13) -}
-6f4282f8efd09c3571824a4f3f9a1fc2
+087bf49c49776b45d33e529c34aecbf8
   lexer13 :: [GHC.Base.String]
   {- Unfolding: (GHC.Types.:
                    @ GHC.Base.String
                    TigerLexer.lexer16
                    TigerLexer.lexer14) -}
-d1b848a3961cc4400a2eff1b91d03564
+85c4b4d7dc847bb5d3476e40fb0ef873
   lexer14 :: [GHC.Base.String]
   {- Unfolding: (GHC.Types.:
                    @ GHC.Base.String
                    TigerLexer.lexer15
                    (GHC.Types.[] @ GHC.Base.String)) -}
-2311ef02ed9c60df08b370fbfa311796
+3a7895fcc277608f058ef6a15680ba40
   lexer15 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# "\""#) -}
-3bea8dd47752c2faa94231ef2c60376f
+2cf807264c7c1213ac238fc4d62f9a79
   lexer16 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# "/"#) -}
-b16f9c3c8f780d4158e6e219c0651ed1
+2620363e3ad6c941f0cf57301d6d6825
   lexer17 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# "*"#) -}
-290fb16081c8ca8654badacf483b41bd
+42cc0053c29388df5d3e0e280b376236
   lexer18 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# "-"#) -}
-5852424c9b7797094ea87f4e402e7b09
+d5b9b12106a9a2ca3287e83cfbbf4659
   lexer19 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# "+"#) -}
-20591d4e6ea533f829295e78c92a04ff
+c0c990bc701602d4a1cdc8c243ec4c0e
   lexer2 :: [GHC.Base.String]
   {- Unfolding: (GHC.Types.:
                    @ GHC.Base.String
                    TigerLexer.lexer27
                    TigerLexer.lexer3) -}
-05f0174d5d8d41d3fa0b980f71866c14
+938e08c909a35af0247acb7439af2344
   lexer20 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# "<>"#) -}
-2b595692f1305a5178495d769c93a22e
+c1657e99a3378405851f3f42197231e3
   lexer21 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# ">="#) -}
-7f2c408925101190fd7a9eb39ca10673
+fbf1d5b525eec43d92f33787b29135e1
   lexer22 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# ">"#) -}
-0fda341267426b56977fa95c6374f808
+e5ed9a183791ce422bab3611fc73c528
   lexer23 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# "<="#) -}
-369ff28bfcbe1a6390ccba6deee30067
+c2a44ebb0eaaca8cc1158001f7c76d9f
   lexer24 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# "<"#) -}
-ba195dd2305a41359420b3a369858274
+30f769f1cbfadbd306ff712888c51f5a
   lexer25 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# "|"#) -}
-053598ace5c85e438b40b6928448fc1f
+c5c69dc885d1e1cb95d2e5b65a224307
   lexer26 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# "&"#) -}
-8209cfe0f0c8079f11240237d043909d
+366eb7b52c1a464132b56ad78ed909a0
   lexer27 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# "="#) -}
-c66f93a9d023bc5448b0c77d06272f45
+565088a6869dc9e8f2b635e75d033d0a
   lexer28 :: [GHC.Base.String]
   {- Unfolding: (GHC.Types.:
                    @ GHC.Base.String
                    TigerLexer.lexer63
                    TigerLexer.lexer29) -}
-57e453146c651accd3b0082fed19b57c
+750561288f5dbb524e124f9af666a966
   lexer29 :: [GHC.Base.String]
   {- Unfolding: (GHC.Types.:
                    @ GHC.Base.String
                    TigerLexer.lexer62
                    TigerLexer.lexer30) -}
-4819f70ff12640e42ee2670a78449407
+8fb3098051f34ee4e5d67a44d0e08d7e
   lexer3 :: [GHC.Base.String]
   {- Unfolding: (GHC.Types.:
                    @ GHC.Base.String
                    TigerLexer.lexer26
                    TigerLexer.lexer4) -}
-63c54910f53dabc793a0f022e9f16539
+1f92b857ff286ef076ef5cdb50cb207f
   lexer30 :: [GHC.Base.String]
   {- Unfolding: (GHC.Types.:
                    @ GHC.Base.String
                    TigerLexer.lexer61
                    TigerLexer.lexer31) -}
-647e814e7bbb6f90c0b6c5bf2e3e5483
+8366ae11445493586ec859c0f4fc79b6
   lexer31 :: [GHC.Base.String]
   {- Unfolding: (GHC.Types.:
                    @ GHC.Base.String
                    TigerLexer.lexer60
                    TigerLexer.lexer32) -}
-cc28d59cec9db031eae0295b2910f2cc
+fb489d5bfc4416982de0586ea778a02d
   lexer32 :: [GHC.Base.String]
   {- Unfolding: (GHC.Types.:
                    @ GHC.Base.String
                    TigerLexer.lexer59
                    TigerLexer.lexer33) -}
-6564900feb53799f77e8884844500fc8
+2b391e84effe808fafaf483ac05c1696
   lexer33 :: [GHC.Base.String]
   {- Unfolding: (GHC.Types.:
                    @ GHC.Base.String
                    TigerLexer.lexer58
                    TigerLexer.lexer34) -}
-b77a83bcffd425ae30975cd0e8f9d412
+93fd92da7ff7f32c41c23cb890ee3efc
   lexer34 :: [GHC.Base.String]
   {- Unfolding: (GHC.Types.:
                    @ GHC.Base.String
                    TigerLexer.lexer57
                    TigerLexer.lexer35) -}
-272fe39a8ffc1949f9bace543994ce33
+11130d7b425713f64a9949395848f83e
   lexer35 :: [GHC.Base.String]
   {- Unfolding: (GHC.Types.:
                    @ GHC.Base.String
                    TigerLexer.lexer56
                    TigerLexer.lexer36) -}
-75007e244b3c4507dfe48167a655fd7f
+813316b4c26bdbf572db210680ab5f1e
   lexer36 :: [GHC.Base.String]
   {- Unfolding: (GHC.Types.:
                    @ GHC.Base.String
                    TigerLexer.lexer55
                    TigerLexer.lexer37) -}
-e6f3aa4c3a01d7f26336dbd77e13799f
+2c70b7e4b831c71b662f3f3358dc9654
   lexer37 :: [GHC.Base.String]
   {- Unfolding: (GHC.Types.:
                    @ GHC.Base.String
                    TigerLexer.lexer54
                    TigerLexer.lexer38) -}
-ee475470b80b281ca2466eddb8dad9f0
+dbb52a208ec42ca30b12f01671ccc011
   lexer38 :: [GHC.Base.String]
   {- Unfolding: (GHC.Types.:
                    @ GHC.Base.String
                    TigerLexer.lexer53
                    TigerLexer.lexer39) -}
-e08e0b7979c09019ea6750b86392d6f6
+9ff0043389db50380ee18856f38f4a14
   lexer39 :: [GHC.Base.String]
   {- Unfolding: (GHC.Types.:
                    @ GHC.Base.String
                    TigerLexer.lexer52
                    TigerLexer.lexer40) -}
-8b35b1af89fba66a6c7ecc24bcc3effc
+df90873176382a849100e37ebc0564c1
   lexer4 :: [GHC.Base.String]
   {- Unfolding: (GHC.Types.:
                    @ GHC.Base.String
                    TigerLexer.lexer25
                    TigerLexer.lexer5) -}
-bfcd57cf946198e2b3e4e15572b546df
+fb825be952f908eef77515de5f114485
   lexer40 :: [GHC.Base.String]
   {- Unfolding: (GHC.Types.:
                    @ GHC.Base.String
                    TigerLexer.lexer51
                    TigerLexer.lexer41) -}
-09c8e85cadd6bdd7ac30c32a26877c0a
+485fb4de7d46f9b826df13c14b51e57c
   lexer41 :: [GHC.Base.String]
   {- Unfolding: (GHC.Types.:
                    @ GHC.Base.String
                    TigerLexer.lexer50
                    TigerLexer.lexer42) -}
-a91ed7252ae4861540380b713075dbea
+b87bc6f27d6ef35a0f6d3c6c0eb8811d
   lexer42 :: [GHC.Base.String]
   {- Unfolding: (GHC.Types.:
                    @ GHC.Base.String
                    TigerLexer.lexer49
                    TigerLexer.lexer43) -}
-1f39447ce6898623773618b5c9508b1c
+d8dddb24fce5b5b8786cb79a6ccca9ba
   lexer43 :: [GHC.Base.String]
   {- Unfolding: (GHC.Types.:
                    @ GHC.Base.String
                    TigerLexer.lexer48
                    TigerLexer.lexer44) -}
-4e28f96a65b5de47d0d4c3bb424ba410
+4af87878724d2bee250968f4388c9b07
   lexer44 :: [GHC.Base.String]
   {- Unfolding: (GHC.Types.:
                    @ GHC.Base.String
                    TigerLexer.lexer47
                    TigerLexer.lexer45) -}
-23e772a1af4c26717a7cef49ccfde5fe
+2b0d8f9f3bdf1758934648d1fe82a700
   lexer45 :: [GHC.Base.String]
   {- Unfolding: (GHC.Types.:
                    @ GHC.Base.String
                    TigerLexer.lexer46
                    (GHC.Types.[] @ GHC.Base.String)) -}
-a89a9006a32278ae7415b96948bf474a
+490dfec6d83886cca1e2db39121ed601
   lexer46 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# "()"#) -}
-90b1fd2adae6e62804a1249e12b5b202
+b57ba08c501570448ec9cd9638783692
   lexer47 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# "nil"#) -}
-83373764d687ae78a1591b6af3a90991
+1b1b8e755dcb27321f0dfb6eaeb34ef7
   lexer48 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# "break"#) -}
-01f1c5f85df4c6adab38de6cc2d9c60c
+49180ff7c3607e1f5151e7c7412be053
   lexer49 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# "to"#) -}
-a8cbd4cef7cc4070b0f08a5ff0618b65
+6004c3e7c1dc14865efb3b64fecff033
   lexer5 :: [GHC.Base.String]
   {- Unfolding: (GHC.Types.:
                    @ GHC.Base.String
                    TigerLexer.lexer24
                    TigerLexer.lexer6) -}
-2f41e9a808b3e0140d44db0402bf1e3e
+519f1347873c556a427c0396595a8b99
   lexer50 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# "for"#) -}
-7c208f28ad0eb0bd101fadb18ef0978c
+014e5b44a6a6a0e6b6a8ba09ab0deb20
   lexer51 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# "do"#) -}
-f3e54f59f9773bc97530e1dbcfef28a2
+2141e48e399c4ef88015f54c16503c84
   lexer52 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# "while"#) -}
-b1376a70751768bbc29d1dfacbc0d307
+f87c1d0c9e30a13e2289a09501623fe1
   lexer53 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# "else"#) -}
-72c45be22c3a77a55a7fb043db941af0
+74994f6210e7f889b1c048583305c5bc
   lexer54 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# "then"#) -}
-b2862a8d3ee13ebe7b9113bf254d9313
+2ffc3bfc3536f5615d9e3f098e043323
   lexer55 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# "if"#) -}
-12c9f42eeb14e8baf659458a0694c658
+e811eae60fa2e202040d76dec3dce04b
   lexer56 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# "of"#) -}
-4f3db6b22d0bbfe2e086286e76425cc1
+8d9d9e879a51009a7b00c36e1204381f
   lexer57 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# "array"#) -}
-a3d4368f6d1e2d039ef88f3f33aae9f0
+2ac8697609793e7d6ec8c3916008bf1d
   lexer58 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# "type"#) -}
-814b4b454b81ac9fe012bc660a8b7be9
+c1ede4e85ab996c120f58f6b09355ee6
   lexer59 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# "function"#) -}
-353e8848c1e17e6724df15bc860ae32f
+5a6ba8328372033f23d2c15f3704f465
   lexer6 :: [GHC.Base.String]
   {- Unfolding: (GHC.Types.:
                    @ GHC.Base.String
                    TigerLexer.lexer23
                    TigerLexer.lexer7) -}
-47fa3f9f01e72575fd24a7eb165760fd
+5ab977abe228fc216cacb07193e6787d
   lexer60 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# "in"#) -}
-31e7068c13b74ca98b1627a6f7a8aaf9
+0f1f351a8a749b143a550de8aba9249e
   lexer61 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# "end"#) -}
-e95b963ab6acab692421fc4a4d86498f
+409317680a4527a52295e588f4be50e7
   lexer62 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# "let"#) -}
-82c06861d8b34d12692b9224b00d22b8
+233e919f1ecc964c82811dd3ecc103d9
   lexer63 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# "var"#) -}
-b50e3562cb4d9aafa32d42e88c6216ae
+4070bd0d4d9dc209118aa74a0bd02acb
   lexer64 ::
     Text.Parsec.Prim.ParsecT
       GHC.Base.String () Data.Functor.Identity.Identity GHC.Types.Char
@@ -500,10 +500,10 @@ b50e3562cb4d9aafa32d42e88c6216ae
                    @ ()
                    (TigerLexer.$s$fStream[]mtok @ GHC.Types.Char)
                    TigerLexer.lexer65) -}
-350aa21128f8146799f5a42baa5c0783
+92d22591f632d19de0ab802c1e10543e
   lexer65 :: GHC.Types.Char
   {- HasNoCafRefs, Unfolding: (GHC.Types.C# '='#) -}
-459c0ddb6990994846bb56d76422c1ae
+dcbdf18b7937cafe39c83cd1aa597b1c
   lexer66 ::
     Text.Parsec.Prim.State GHC.Base.String ()
     -> (GHC.Types.Char
@@ -550,7 +550,7 @@ b50e3562cb4d9aafa32d42e88c6216ae
                    ww3
                    eta1
                    eta4 } }) -}
-f3e18011c751ce2c6a36765be19d6dcf
+d9571f1a9793f83b1851ebe43015ff78
   lexer67 :: GHC.Types.Char -> GHC.Types.Bool
   {- Arity: 1,
      Unfolding: (\ (c :: GHC.Types.Char) ->
@@ -559,7 +559,7 @@ f3e18011c751ce2c6a36765be19d6dcf
                    GHC.Classes.$fEqChar
                    c
                    TigerLexer.lexer_cs) -}
-b378d1e4e9b72068e936d7585c76c057
+2768349c213a9fe441b957a6ba2941a1
   lexer68 ::
     Text.Parsec.Prim.State GHC.Base.String ()
     -> (GHC.Types.Char
@@ -632,16 +632,16 @@ b378d1e4e9b72068e936d7585c76c057
                        eok y s' (Text.Parsec.Error.mergeError err1 err'))
                       (\ (err' :: Text.Parsec.Error.ParseError) ->
                        eerr (Text.Parsec.Error.mergeError err1 err'))) } }) -}
-7c850fd004ea77ef3e586749d425029d
+93a9a2cce6c17062f64cbd1ac4529b84
   lexer69 :: GHC.Types.Char
   {- HasNoCafRefs, Unfolding: (GHC.Types.C# '_'#) -}
-9e05f9cb7046f19522379cd10b8399ed
+84e358d1901b0953408c822132017ad5
   lexer7 :: [GHC.Base.String]
   {- Unfolding: (GHC.Types.:
                    @ GHC.Base.String
                    TigerLexer.lexer22
                    TigerLexer.lexer8) -}
-eadc2748ce877eb4cb13d9391e6bc861
+a33382200e20ed435ac16394f72452a7
   lexer70 ::
     Text.Parsec.Prim.State GHC.Base.String ()
     -> (GHC.Types.Char
@@ -691,13 +691,13 @@ eadc2748ce877eb4cb13d9391e6bc861
                    eta2
                    eta3
                    eta4) -}
-e2591298558c2f1384642ba5ba7c9284
+6679018557f4df9caf75920487ce0197
   lexer71 :: [GHC.Base.String]
   {- Unfolding: (GHC.Types.:
                    @ GHC.Base.String
                    Text.Parsec.Char.letter2
                    (GHC.Types.[] @ GHC.Base.String)) -}
-bb77703d2e014b1ab6fdb14a82e1727a
+10e7c0f1cd21fd11ae4bf41be36aaa37
   lexer72 ::
     Text.Parsec.Prim.State GHC.Base.String ()
     -> (GHC.Types.Char
@@ -744,34 +744,34 @@ bb77703d2e014b1ab6fdb14a82e1727a
                    ww3
                    w3
                    w6 } }) -}
-7015a3d8047ee68feb45cc138973cd02
+bd0fd907dfa8e538168dad7e364ae395
   lexer73 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# "*/"#) -}
-df9931dac9478b53dc93416e9d6a26d3
+d8f0e675d1c05fa590143da07b16b39a
   lexer74 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# "/*"#) -}
-fd9919443f4407713d8d7650e963d4c8
+03286d1c2c9b736ff0780d75ac688d06
   lexer8 :: [GHC.Base.String]
   {- Unfolding: (GHC.Types.:
                    @ GHC.Base.String
                    TigerLexer.lexer21
                    TigerLexer.lexer9) -}
-9a6edef7d1103403e7f8171a6c4716d7
+2524dc5970399db1a0393054de88f132
   lexer9 :: [GHC.Base.String]
   {- Unfolding: (GHC.Types.:
                    @ GHC.Base.String
                    TigerLexer.lexer20
                    TigerLexer.lexer10) -}
-a3890689ba0b88af4791615589c395de
+cae9955b07e5444765ea4e95b58d2a32
   lexer_cs :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# ":,;=&|<=>+-*/."#) -}
-5e08b8ba779a407271be6e912c470514
+04b51673846057b7ceb10dc74c03b024
   lexer_msgs :: [GHC.Base.String]
   {- Unfolding: (GHC.Types.:
                    @ GHC.Base.String
                    Text.Parsec.Char.alphaNum2
                    (GHC.Types.[] @ GHC.Base.String)) -}
-25a7d0fa3e56c7e9b5471e105e068026
+3e2f34bd5370e0695d48da2b4bcd9030
   lexer_n ::
     Text.Parsec.Prim.ParsecT
       GHC.Base.String () Data.Functor.Identity.Identity GHC.Types.Char
@@ -781,7 +781,7 @@ a3890689ba0b88af4791615589c395de
                    @ ()
                    (TigerLexer.$s$fStream[]mtok @ GHC.Types.Char)
                    TigerLexer.lexer69) -}
-0eb3279d28263b6517c5c485dc667a50
+1de618948468e6d5fde4531627866b3b
   number ::
     Text.Parsec.Prim.ParsecT
       GHC.Base.String () Data.Functor.Identity.Identity GHC.Types.Int
@@ -795,7 +795,7 @@ a3890689ba0b88af4791615589c395de
                           <()>_R
                           <Data.Functor.Identity.Identity>_R
                           <GHC.Types.Int>_R)) -}
-32a6122112268062f87ae2d226f049b5
+2d670eecaae31b33c6e78f721ecc1b02
   number1 ::
     Text.Parsec.Prim.State [GHC.Types.Char] ()
     -> (GHC.Types.Int
@@ -883,7 +883,7 @@ a3890689ba0b88af4791615589c395de
                                  @ Text.Parsec.Error.Message) of ww14 { (#,#) ww15 ww16 ->
                        Text.Parsec.Error.ParseError ww15 ww16 } } } } }))
                    eerr }) -}
-bf837a01ea59d8814eee1d33547d6b7e
+a37383dc3e0857664cd259d846d85468
   parens ::
     Text.Parsec.Prim.ParsecT
       GHC.Base.String () Data.Functor.Identity.Identity a
@@ -892,21 +892,21 @@ bf837a01ea59d8814eee1d33547d6b7e
   {- Unfolding: (\ @ a ->
                  case TigerLexer.lexer of wild { Text.Parsec.Token.TokenParser ds ds1 ds2 ds3 ds4 ds5 ds6 ds7 ds8 ds9 ds10 ds11 ds12 ds13 ds14 ds15 ds16 ds17 ds18 ds19 ds20 ds21 ds22 ds23 ds24 ds25 ds26 ds27 ds28 ->
                  ds16 @ a }) -}
-e55bc612190d0e302cac4285765fd629
+899f8205c8bf2dc256f1a543ffd65c73
   reserved ::
     GHC.Base.String
     -> Text.Parsec.Prim.ParsecT
          GHC.Base.String () Data.Functor.Identity.Identity ()
   {- Unfolding: (case TigerLexer.lexer of wild { Text.Parsec.Token.TokenParser ds1 ds2 ds3 ds4 ds5 ds6 ds7 ds8 ds9 ds10 ds11 ds12 ds13 ds14 ds15 ds16 ds17 ds18 ds19 ds20 ds21 ds22 ds23 ds24 ds25 ds26 ds27 ds28 ds29 ->
                  ds2 }) -}
-d1424cdd7254ee1108d43d1db41de217
+c6aaf8c0618b68dae712533e0426230d
   reservedOp ::
     GHC.Base.String
     -> Text.Parsec.Prim.ParsecT
          GHC.Base.String () Data.Functor.Identity.Identity ()
   {- Unfolding: (case TigerLexer.lexer of wild { Text.Parsec.Token.TokenParser ds1 ds2 ds3 ds4 ds5 ds6 ds7 ds8 ds9 ds10 ds11 ds12 ds13 ds14 ds15 ds16 ds17 ds18 ds19 ds20 ds21 ds22 ds23 ds24 ds25 ds26 ds27 ds28 ds29 ->
                  ds4 }) -}
-ee41f21dbd6baaa41b63461a4bcc0522
+a17bdf0144d6fde8690912e0f2fd9543
   semiSep ::
     Text.Parsec.Prim.ParsecT
       GHC.Base.String () Data.Functor.Identity.Identity a
@@ -915,7 +915,7 @@ ee41f21dbd6baaa41b63461a4bcc0522
   {- Unfolding: (\ @ a ->
                  case TigerLexer.lexer of wild { Text.Parsec.Token.TokenParser ds ds1 ds2 ds3 ds4 ds5 ds6 ds7 ds8 ds9 ds10 ds11 ds12 ds13 ds14 ds15 ds16 ds17 ds18 ds19 ds20 ds21 ds22 ds23 ds24 ds25 ds26 ds27 ds28 ->
                  ds25 @ a }) -}
-272ef2e9424e237fdc341ade0a498590
+08bcd9cbe63aaac25200da41e42e0cde
   semiSep1 ::
     Text.Parsec.Prim.ParsecT
       GHC.Base.String () Data.Functor.Identity.Identity a
@@ -924,25 +924,25 @@ ee41f21dbd6baaa41b63461a4bcc0522
   {- Unfolding: (\ @ a ->
                  case TigerLexer.lexer of wild { Text.Parsec.Token.TokenParser ds ds1 ds2 ds3 ds4 ds5 ds6 ds7 ds8 ds9 ds10 ds11 ds12 ds13 ds14 ds15 ds16 ds17 ds18 ds19 ds20 ds21 ds22 ds23 ds24 ds25 ds26 ds27 ds28 ->
                  ds26 @ a }) -}
-06ec7290e7bb224310af405523c54d16
+a69c8b423cd6f53d6d79154f3e9f4cb0
   stringLiteral ::
     Text.Parsec.Prim.ParsecT
       GHC.Base.String () Data.Functor.Identity.Identity GHC.Base.String
   {- Unfolding: (case TigerLexer.lexer of wild { Text.Parsec.Token.TokenParser ds1 ds2 ds3 ds4 ds5 ds6 ds7 ds8 ds9 ds10 ds11 ds12 ds13 ds14 ds15 ds16 ds17 ds18 ds19 ds20 ds21 ds22 ds23 ds24 ds25 ds26 ds27 ds28 ds29 ->
                  ds6 }) -}
-ba0cfcf0fcdc2eaf547ebc4e85b9c0b0
+fa07faa1f52d3c7d2064fe917dba3d5b
   symbol ::
     GHC.Base.String
     -> Text.Parsec.Prim.ParsecT
          GHC.Base.String () Data.Functor.Identity.Identity GHC.Base.String
   {- Unfolding: (case TigerLexer.lexer of wild { Text.Parsec.Token.TokenParser ds1 ds2 ds3 ds4 ds5 ds6 ds7 ds8 ds9 ds10 ds11 ds12 ds13 ds14 ds15 ds16 ds17 ds18 ds19 ds20 ds21 ds22 ds23 ds24 ds25 ds26 ds27 ds28 ds29 ->
                  ds14 }) -}
-fec8855c98fff25ef11e1b2c3128ecf6
+d1e36ce984bd2245a0d6499f825ac3fd
   toInt :: GHC.Integer.Type.Integer -> GHC.Types.Int
   {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U>m,
      Unfolding: InlineRule (0, True, True)
                 GHC.Num.$fNumInt_$cfromInteger -}
-ae597ff8ededfb209a88bda69e75b3dd
+0c3ebb981a160be58d1b08a7e5b9a1dd
   whiteSpace ::
     Text.Parsec.Prim.ParsecT
       GHC.Base.String () Data.Functor.Identity.Identity ()

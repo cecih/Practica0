@@ -4,5 +4,5 @@ Preprocessing library cond-0.4.1.1...
 [1 of 2] Compiling Data.Algebra.Boolean ( src/Data/Algebra/Boolean.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.2.0/build/Data/Algebra/Boolean.o )
 [2 of 2] Compiling Control.Conditional ( src/Control/Conditional.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.2.0/build/Control/Conditional.o )
 Installing library in
-/home/katanalisko/Materias/2017/Compiladores/TigerCompiler/HaskTiger/.stack-work/install/x86_64-linux/lts-9.0/8.0.2/lib/x86_64-linux-ghc-8.0.2/cond-0.4.1.1-2yYcKtUJ6TG4fyL0AuCq0n
+/home/katanalisko/Materias/2017/Compiladores/TigerCompiler/HaskTiger/.stack-work/install/x86_64-linux/ghc-8.0/8.0.2/lib/x86_64-linux-ghc-8.0.2/cond-0.4.1.1-2yYcKtUJ6TG4fyL0AuCq0n
 Registering cond-0.4.1.1...

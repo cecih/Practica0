@@ -1,11 +1,11 @@
 
 ==================== FINAL INTERFACE ====================
-2017-09-06 17:58:59.247143 UTC
+2017-09-07 00:00:07.300001 UTC
 
-interface HaskTiger-0.1.0.0-8sS9j76S4uUE6NaT8hRlFo:TigerTips 8002
-  interface hash: 64a85ffea43143e027271668a4971acb
-  ABI hash: c0fd0dfdacceefcf81c61e18311d7282
-  export-list hash: b1b1d22fda7e71ee2c7fb5bf69788c87
+interface HaskTiger-0.1.0.0-1NjWJIneMSYKOEJS7DxzEs:TigerTips 8002
+  interface hash: b7085864d8f7a79f0e0fecac2b574ede
+  ABI hash: 09d0ed1e7b19dae6eb19e766e278976b
+  export-list hash: dcb87ec6f83998e086ed321a236f4c98
   orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
   flag hash: ab396f11155bd696ab63895436e6f1df
   sig of: Nothing
@@ -23,12 +23,12 @@ package dependencies: array-0.5.1.1@array-0.5.1.1 base-4.9.1.0*
                       containers-0.5.7.1@containers-0.5.7.1
                       deepseq-1.4.2.0@deepseq-1.4.2.0 ghc-prim-0.5.0.0
                       integer-gmp-1.0.0.1
-                      text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00*
+                      text-1.2.2.2@text-1.2.2.2-1cn50juu89QSL9QkUVcRY*
 orphans: base-4.9.1.0:GHC.Base base-4.9.1.0:GHC.Float
          binary-0.8.3.0@binary-0.8.3.0:Data.Binary.Generic
          bytestring-0.10.8.1@bytestring-0.10.8.1:Data.ByteString.Builder
-         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text
-         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text.Show
+         text-1.2.2.2@text-1.2.2.2-1cn50juu89QSL9QkUVcRY:Data.Text
+         text-1.2.2.2@text-1.2.2.2-1cn50juu89QSL9QkUVcRY:Data.Text.Show
 family instance modules: base-4.9.1.0:Control.Applicative
                          base-4.9.1.0:Data.Complex base-4.9.1.0:Data.Either
                          base-4.9.1.0:Data.Functor.Const base-4.9.1.0:Data.Functor.Identity
@@ -42,21 +42,21 @@ family instance modules: base-4.9.1.0:Control.Applicative
                          containers-0.5.7.1@containers-0.5.7.1:Data.Map.Base
                          containers-0.5.7.1@containers-0.5.7.1:Data.Sequence
                          containers-0.5.7.1@containers-0.5.7.1:Data.Set.Base
-                         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text
+                         text-1.2.2.2@text-1.2.2.2-1cn50juu89QSL9QkUVcRY:Data.Text
 import  -/  base-4.9.1.0:GHC.Base c4231c43c07e46080a26bf94094c7aa1
 import  -/  base-4.9.1.0:GHC.Err 3bba35a16538d33d424682ce66876cdd
 import  -/  base-4.9.1.0:GHC.Show a027f5ac24879eaba752f44aa90fe511
 import  -/  base-4.9.1.0:Prelude 22dd289b8469a8fa8dc81cab7b237771
 import  -/  ghc-prim-0.5.0.0:GHC.Classes 0bdf3d057a415ec1b84a7b1994efbe47
-import  -/  text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text e8aa34be3dde178f567ae461e65c988b
-import  -/  text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text.Internal 9bfcbbbe07ecef48f631025a838df7da
-d1eac788ec6292cd6b2c037fdef1dc02
+import  -/  text-1.2.2.2@text-1.2.2.2-1cn50juu89QSL9QkUVcRY:Data.Text ef501398810147cc510ae8565b319c23
+import  -/  text-1.2.2.2@text-1.2.2.2-1cn50juu89QSL9QkUVcRY:Data.Text.Internal e17bbef002f291b56b1f76642ff112d3
+7a2ffb7e822eb5f8a3b2c661eec94da9
   $fEqRWO :: GHC.Classes.Eq TigerTips.RWO
   DFunId
   {- HasNoCafRefs, Strictness: m, Inline: [ALWAYS] CONLIKE,
      Unfolding: DFun:.
                   @ TigerTips.RWO TigerTips.$fEqRWO_$c== TigerTips.$fEqRWO_$c/= -}
-d1eac788ec6292cd6b2c037fdef1dc02
+7a2ffb7e822eb5f8a3b2c661eec94da9
   $fEqRWO_$c/= :: TigerTips.RWO -> TigerTips.RWO -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><S,1*U>,
      Unfolding: InlineRule (2, True, False)
@@ -69,7 +69,7 @@ d1eac788ec6292cd6b2c037fdef1dc02
                    -> case b of wild1 {
                         TigerTips.RW -> GHC.Types.True
                         TigerTips.RO -> GHC.Types.False } }) -}
-d1eac788ec6292cd6b2c037fdef1dc02
+7a2ffb7e822eb5f8a3b2c661eec94da9
   $fEqRWO_$c== :: TigerTips.RWO -> TigerTips.RWO -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><S,1*U>,
      Unfolding: InlineRule (2, True, False)
@@ -82,13 +82,13 @@ d1eac788ec6292cd6b2c037fdef1dc02
                    -> case ds1 of wild1 {
                         TigerTips.RW -> GHC.Types.False
                         TigerTips.RO -> GHC.Types.True } }) -}
-d63dbfdc8130bfd1c2ee877626fb1366
+7a9cbb36fc3301ae9285220ca7aef68d
   $fEqTipo :: GHC.Classes.Eq TigerTips.Tipo
   DFunId
   {- HasNoCafRefs, Strictness: m, Inline: [ALWAYS] CONLIKE,
      Unfolding: DFun:.
                   @ TigerTips.Tipo TigerTips.$fEqTipo_$c== TigerTips.$fEqTipo_$c/= -}
-d63dbfdc8130bfd1c2ee877626fb1366
+7a9cbb36fc3301ae9285220ca7aef68d
   $fEqTipo_$c/= :: TigerTips.Tipo -> TigerTips.Tipo -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><S,1*U>,
      Unfolding: InlineRule (2, True, False)
@@ -96,10 +96,10 @@ d63dbfdc8130bfd1c2ee877626fb1366
                  case TigerTips.$fEqTipo_$c== a b of wild {
                    GHC.Types.False -> GHC.Types.True
                    GHC.Types.True -> GHC.Types.False }) -}
-d63dbfdc8130bfd1c2ee877626fb1366
+7a9cbb36fc3301ae9285220ca7aef68d
   $fEqTipo_$c== :: TigerTips.Tipo -> TigerTips.Tipo -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><S,1*U> -}
-d1eac788ec6292cd6b2c037fdef1dc02
+7a2ffb7e822eb5f8a3b2c661eec94da9
   $fShowRWO :: GHC.Show.Show TigerTips.RWO
   DFunId
   {- Strictness: m, Inline: [ALWAYS] CONLIKE,
@@ -108,7 +108,7 @@ d1eac788ec6292cd6b2c037fdef1dc02
                   TigerTips.$fShowRWO_$cshowsPrec
                   TigerTips.$fShowRWO_$cshow
                   TigerTips.$fShowRWO_$cshowList -}
-d1eac788ec6292cd6b2c037fdef1dc02
+7a2ffb7e822eb5f8a3b2c661eec94da9
   $fShowRWO1 :: TigerTips.RWO -> GHC.Show.ShowS
   {- Arity: 2, Strictness: <S,1*U><L,1*U>,
      Unfolding: InlineRule (2, True, False)
@@ -130,13 +130,13 @@ d1eac788ec6292cd6b2c037fdef1dc02
                            (n :: b)[OneShot] ->
                          GHC.Base.foldr @ GHC.Types.Char @ b c n TigerTips.$fShowRWO2)
                         eta }) -}
-54410be89c69e47ad948c1106eebfb32
+7c7175cda1badb23212fdef23404d7ab
   $fShowRWO2 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# "RO"#) -}
-50f7e35c4b2931908dc54024898683fc
+e9e34e94bd92ff8164a0fddad9c54ec9
   $fShowRWO3 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# "RW"#) -}
-d1eac788ec6292cd6b2c037fdef1dc02
+7a2ffb7e822eb5f8a3b2c661eec94da9
   $fShowRWO_$cshow :: TigerTips.RWO -> GHC.Base.String
   {- Arity: 1, Strictness: <S,1*U>,
      Unfolding: InlineRule (1, True, False)
@@ -144,13 +144,13 @@ d1eac788ec6292cd6b2c037fdef1dc02
                  case x of wild {
                    TigerTips.RW -> TigerTips.$fShowRWO3
                    TigerTips.RO -> TigerTips.$fShowRWO2 }) -}
-d1eac788ec6292cd6b2c037fdef1dc02
+7a2ffb7e822eb5f8a3b2c661eec94da9
   $fShowRWO_$cshowList :: [TigerTips.RWO] -> GHC.Show.ShowS
   {- Arity: 2,
      Unfolding: (GHC.Show.showList__
                    @ TigerTips.RWO
                    TigerTips.$fShowRWO1) -}
-d1eac788ec6292cd6b2c037fdef1dc02
+7a2ffb7e822eb5f8a3b2c661eec94da9
   $fShowRWO_$cshowsPrec ::
     GHC.Types.Int -> TigerTips.RWO -> GHC.Show.ShowS
   {- Arity: 3, Strictness: <L,A><S,1*U><L,1*U>,
@@ -175,7 +175,7 @@ d1eac788ec6292cd6b2c037fdef1dc02
                            (n :: b)[OneShot] ->
                          GHC.Base.foldr @ GHC.Types.Char @ b c n TigerTips.$fShowRWO2)
                         eta }) -}
-d63dbfdc8130bfd1c2ee877626fb1366
+7a9cbb36fc3301ae9285220ca7aef68d
   $fShowTipo :: GHC.Show.Show TigerTips.Tipo
   DFunId
   {- Strictness: m, Inline: [ALWAYS] CONLIKE,
@@ -184,15 +184,15 @@ d63dbfdc8130bfd1c2ee877626fb1366
                   TigerTips.$fShowTipo_$cshowsPrec
                   TigerTips.$fShowTipo_$cshow
                   TigerTips.$fShowTipo_$cshowList -}
-d63dbfdc8130bfd1c2ee877626fb1366
+7a9cbb36fc3301ae9285220ca7aef68d
   $fShowTipo1 :: TigerTips.Tipo -> GHC.Show.ShowS
   {- Arity: 2,
      Unfolding: (TigerTips.$fShowTipo_$cshowsPrec
                    TigerTips.$fShowTipo2) -}
-d1b27b6fef8050bb120d0277246bd073
+73f9fca8d0d03c67a8f02810049e0789
   $fShowTipo2 :: GHC.Types.Int
   {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 0#) -}
-d63dbfdc8130bfd1c2ee877626fb1366
+7a9cbb36fc3301ae9285220ca7aef68d
   $fShowTipo_$cshow :: TigerTips.Tipo -> GHC.Base.String
   {- Arity: 1, Strictness: <S,1*U>,
      Unfolding: InlineRule (1, True, False)
@@ -201,17 +201,17 @@ d63dbfdc8130bfd1c2ee877626fb1366
                    GHC.Show.shows22
                    x
                    (GHC.Types.[] @ GHC.Types.Char)) -}
-d63dbfdc8130bfd1c2ee877626fb1366
+7a9cbb36fc3301ae9285220ca7aef68d
   $fShowTipo_$cshowList :: [TigerTips.Tipo] -> GHC.Show.ShowS
   {- Arity: 2,
      Unfolding: (GHC.Show.showList__
                    @ TigerTips.Tipo
                    TigerTips.$fShowTipo1) -}
-d63dbfdc8130bfd1c2ee877626fb1366
+7a9cbb36fc3301ae9285220ca7aef68d
   $fShowTipo_$cshowsPrec ::
     GHC.Types.Int -> TigerTips.Tipo -> GHC.Show.ShowS
   {- Arity: 3, Strictness: <L,1*U(U)><S,1*U><L,U> -}
-52a31e35f051064d86957d669615967a
+fc7c62cf7973f1e396f2a9616f90bbeb
   $s$fEq(,,) ::
     GHC.Classes.Eq
       (Data.Text.Internal.Text, TigerTips.Tipo, GHC.Types.Int)
@@ -226,7 +226,7 @@ d63dbfdc8130bfd1c2ee877626fb1366
                      TigerTips.$fEqTipo
                      GHC.Classes.$fEqInt)
                   TigerTips.$s$fEq(,,)_$s$fEq(,,)_$c/= -}
-32ee08ee15b965a7d601cc8434e10da2
+88c4a32d68747714a139807dfb2dc105
   $s$fEq(,,)_$s$fEq(,,)_$c/= ::
     (Data.Text.Internal.Text, TigerTips.Tipo, GHC.Types.Int)
     -> (Data.Text.Internal.Text, TigerTips.Tipo, GHC.Types.Int)
@@ -247,168 +247,168 @@ d63dbfdc8130bfd1c2ee877626fb1366
                         b1 of wild {
                    GHC.Types.False -> GHC.Types.True
                    GHC.Types.True -> GHC.Types.False }) -}
-ef3d7168959c48498e785eef66259cbb
+2fcd047df1f28963632e5f00dcda074d
   $tc'RO :: GHC.Types.TyCon
   {- HasNoCafRefs, Strictness: m,
      Unfolding: (GHC.Types.TyCon
-                   15601471252511018426##
-                   1883706830878066201##
+                   18107130816334269575##
+                   9312482768824223179##
                    TigerTips.$trModule
                    TigerTips.$tc'RO1) -}
-4207f3905ea7dd85e2ea94783fc6d41b
+d4226c4a40ee0fb2d7d4b22b3fcb8ac4
   $tc'RO1 :: GHC.Types.TrName
   {- HasNoCafRefs, Strictness: m1,
      Unfolding: (GHC.Types.TrNameS "'RO"#) -}
-3e3d38e3cf4568c3079947e58e77094f
+75db21c3d824f5ef98336a922d1f6560
   $tc'RW :: GHC.Types.TyCon
   {- HasNoCafRefs, Strictness: m,
      Unfolding: (GHC.Types.TyCon
-                   13126275175047319508##
-                   12551958256329290364##
+                   11174073751283213335##
+                   13787303388892547822##
                    TigerTips.$trModule
                    TigerTips.$tc'RW1) -}
-0c14f19a8c1849eeefba55cade0f44c5
+0a5a2b8bf26bae85f3b4a83c2f33c07f
   $tc'RW1 :: GHC.Types.TrName
   {- HasNoCafRefs, Strictness: m1,
      Unfolding: (GHC.Types.TrNameS "'RW"#) -}
-4a3dbb4ee09e82e9f48acda77a5483bb
+cd1cd862066be7e2475864d2f84185a3
   $tc'RefRecord :: GHC.Types.TyCon
   {- HasNoCafRefs, Strictness: m,
      Unfolding: (GHC.Types.TyCon
-                   13115257186051700638##
-                   15428804553753478697##
+                   3664864221493011480##
+                   8082355501596473087##
                    TigerTips.$trModule
                    TigerTips.$tc'RefRecord1) -}
-fe8ee78a793dcaef723259263c627828
+585fa2368795fc84bfa3d5c2784381ea
   $tc'RefRecord1 :: GHC.Types.TrName
   {- HasNoCafRefs, Strictness: m1,
      Unfolding: (GHC.Types.TrNameS "'RefRecord"#) -}
-d449da4b2c820113a445e1b41f9ca6ed
+ba272a64694312cf082bb1469e032808
   $tc'TArray :: GHC.Types.TyCon
   {- HasNoCafRefs, Strictness: m,
      Unfolding: (GHC.Types.TyCon
-                   7144338559898002640##
-                   9773928479288603685##
+                   7243112434150190112##
+                   8995088995188156526##
                    TigerTips.$trModule
                    TigerTips.$tc'TArray1) -}
-1a6f923ed36841f62ae8ecfcd8dc7e0b
+0c2a140820c06add9d32a13929c957c3
   $tc'TArray1 :: GHC.Types.TrName
   {- HasNoCafRefs, Strictness: m1,
      Unfolding: (GHC.Types.TrNameS "'TArray"#) -}
-d8012ac88c9b88a8f4b070d2f46fb5db
+65e6ede28667ad8b59d949cc04bdce11
   $tc'TInt :: GHC.Types.TyCon
   {- HasNoCafRefs, Strictness: m,
      Unfolding: (GHC.Types.TyCon
-                   16486560880284883173##
-                   11890475337135900885##
+                   10406250853394499141##
+                   2500768341288729771##
                    TigerTips.$trModule
                    TigerTips.$tc'TInt1) -}
-fb3ab3eb9f3f1d3649681143ec3eb67f
+35088787c7ded70279124a047a588c4c
   $tc'TInt1 :: GHC.Types.TrName
   {- HasNoCafRefs, Strictness: m1,
      Unfolding: (GHC.Types.TrNameS "'TInt"#) -}
-eb91f69274aa51a90b4da25ba70e58e5
+a0b26adcb5bda40bf3f77b5d63a62f1d
   $tc'TNil :: GHC.Types.TyCon
   {- HasNoCafRefs, Strictness: m,
      Unfolding: (GHC.Types.TyCon
-                   14653362524976300608##
-                   595724664098789990##
+                   11180451295071797266##
+                   9041513714774044256##
                    TigerTips.$trModule
                    TigerTips.$tc'TNil1) -}
-051f9250e37ab233a531bbd373bad212
+db5b1fc64f9ee029c05807aa26e152ad
   $tc'TNil1 :: GHC.Types.TrName
   {- HasNoCafRefs, Strictness: m1,
      Unfolding: (GHC.Types.TrNameS "'TNil"#) -}
-b7f30c65236821bbaaf9986582a4233b
+870e168a86be3a4fedc68cf8c19412ff
   $tc'TRecord :: GHC.Types.TyCon
   {- HasNoCafRefs, Strictness: m,
      Unfolding: (GHC.Types.TyCon
-                   191701753190156357##
-                   17085195685010369944##
+                   14719858204182390113##
+                   3856859916589828354##
                    TigerTips.$trModule
                    TigerTips.$tc'TRecord1) -}
-b72e49a0a167bbdfdd7cfad36f21dae4
+ccfbc8bf3cbcdbc42a495ffa8cb4e24c
   $tc'TRecord1 :: GHC.Types.TrName
   {- HasNoCafRefs, Strictness: m1,
      Unfolding: (GHC.Types.TrNameS "'TRecord"#) -}
-c08bf82943f921ed79f060bf145c2918
+02fbb736f43c9808cfd1230340f7affa
   $tc'TString :: GHC.Types.TyCon
   {- HasNoCafRefs, Strictness: m,
      Unfolding: (GHC.Types.TyCon
-                   12278179123339795318##
-                   7988771490182484886##
+                   17415063924148623417##
+                   14609929779706269154##
                    TigerTips.$trModule
                    TigerTips.$tc'TString1) -}
-85fc2de197ca52786e88431fab00ae25
+0c02c6e3f469a08e0b620dbd6ef63efa
   $tc'TString1 :: GHC.Types.TrName
   {- HasNoCafRefs, Strictness: m1,
      Unfolding: (GHC.Types.TrNameS "'TString"#) -}
-3c4809c57b5868566684d8f0d7e54921
+5c10c71bc2332197585efb4cf9200853
   $tc'TTipo :: GHC.Types.TyCon
   {- HasNoCafRefs, Strictness: m,
      Unfolding: (GHC.Types.TyCon
-                   3343241536371635297##
-                   5748701476373118611##
+                   14729525458086031608##
+                   15223889226461234596##
                    TigerTips.$trModule
                    TigerTips.$tc'TTipo1) -}
-666ef2aac8b319ae8d3dc10c2e483cfa
+3d9d1a2ff351189eb26222847220e079
   $tc'TTipo1 :: GHC.Types.TrName
   {- HasNoCafRefs, Strictness: m1,
      Unfolding: (GHC.Types.TrNameS "'TTipo"#) -}
-a39174033769cd7d8dbae12dc3a4cd9d
+a40a802fa9a5b58413b43a92764b543e
   $tc'TUnit :: GHC.Types.TyCon
   {- HasNoCafRefs, Strictness: m,
      Unfolding: (GHC.Types.TyCon
-                   16461184204499214121##
-                   8700904939450282049##
+                   214709538329692061##
+                   7017716623593571435##
                    TigerTips.$trModule
                    TigerTips.$tc'TUnit1) -}
-c530653b52e807c827498718a1937bcb
+825be2a344bab6a91dd595c669d06914
   $tc'TUnit1 :: GHC.Types.TrName
   {- HasNoCafRefs, Strictness: m1,
      Unfolding: (GHC.Types.TrNameS "'TUnit"#) -}
-12e933e7800c57c5207da5c5c44f2438
+317aa60fb32da48ebc02460eb3e82bcc
   $tcRWO :: GHC.Types.TyCon
   {- HasNoCafRefs, Strictness: m,
      Unfolding: (GHC.Types.TyCon
-                   14288699816585917536##
-                   1421321398452188427##
+                   2438242412328658914##
+                   13164509897858889202##
                    TigerTips.$trModule
                    TigerTips.$tcRWO1) -}
-f5078524d18a04c3631f0dfbbb54c942
+9daab7977788a296c7e72cdabc843f73
   $tcRWO1 :: GHC.Types.TrName
   {- HasNoCafRefs, Strictness: m1,
      Unfolding: (GHC.Types.TrNameS "RWO"#) -}
-a79d9ea16beb2b700963fb96af1fb251
+e3cc1ab80d01c935fdde6537d95fd294
   $tcTipo :: GHC.Types.TyCon
   {- HasNoCafRefs, Strictness: m,
      Unfolding: (GHC.Types.TyCon
-                   2845100108371999266##
-                   8275894100507551159##
+                   14908259351545800790##
+                   7930201613690124354##
                    TigerTips.$trModule
                    TigerTips.$tcTipo1) -}
-ac8679c32d96126d82e49db00b77af4c
+dbc35de39349e4124cd1ae40c28ef913
   $tcTipo1 :: GHC.Types.TrName
   {- HasNoCafRefs, Strictness: m1,
      Unfolding: (GHC.Types.TrNameS "Tipo"#) -}
-50ea321651b2bd915c697563b598431e
+d17d125109774aa5b3e45c1a5c0262bd
   $trModule :: GHC.Types.Module
   {- HasNoCafRefs, Strictness: m,
      Unfolding: (GHC.Types.Module
                    TigerTips.$trModule2
                    TigerTips.$trModule1) -}
-af92c0def022255239098ac6d8976ed8
+c1fcb0b2e6665ba6de69e063966095dd
   $trModule1 :: GHC.Types.TrName
   {- HasNoCafRefs, Strictness: m1,
      Unfolding: (GHC.Types.TrNameS "TigerTips"#) -}
-89af91444a38ac87b82c3494be600aa6
+74c53d3d1b26d1e76de16e2440e640ee
   $trModule2 :: GHC.Types.TrName
   {- HasNoCafRefs, Strictness: m1,
      Unfolding: (GHC.Types.TrNameS
-                   "HaskTiger-0.1.0.0-8sS9j76S4uUE6NaT8hRlFo"#) -}
-d1eac788ec6292cd6b2c037fdef1dc02
+                   "HaskTiger-0.1.0.0-1NjWJIneMSYKOEJS7DxzEs"#) -}
+7a2ffb7e822eb5f8a3b2c661eec94da9
   data RWO = RW | RO
-d63dbfdc8130bfd1c2ee877626fb1366
+7a9cbb36fc3301ae9285220ca7aef68d
   data Tipo
     = TUnit
     | TNil
@@ -420,9 +420,9 @@ d63dbfdc8130bfd1c2ee877626fb1366
               TigerTips.Unique
     | RefRecord Data.Text.Internal.Text
     | TTipo Data.Text.Internal.Text
-1f9beb3c4ec7675ae6182f64210065c4
+9abf1eb79fff2a55d19ebab8178f7d58
   type Unique = GHC.Types.Int
-d7ae4b011cac1f25a67694423c2fa3a1
+8a641fdb0b0b718d840dbc7e18c22b68
   intiposIguales ::
     TigerTips.Tipo -> TigerTips.Tipo -> GHC.Types.Bool
   {- Arity: 2, Strictness: <S,1*U><S,1*U>,
@@ -454,10 +454,10 @@ d7ae4b011cac1f25a67694423c2fa3a1
                         TigerTips.TRecord ds4 u2 -> GHC.Classes.eqInt ds3 u2
                         TigerTips.TTipo ds4 -> TigerTips.intiposIguales2 }
                    TigerTips.TTipo ds2 -> TigerTips.intiposIguales1 }) -}
-6af4bb5978f63f461b64b03e173ce21b
+344e0561b2a5af3367f39e92b5b758ac
   intiposIguales1 :: GHC.Types.Bool
   {- Strictness: x -}
-4b3cf854e2aa16df67f6e37023982240
+dd6c0d36547b7e782092d3c9b69c02ce
   intiposIguales2 :: GHC.Types.Bool
   {- Strictness: x -}
 instance [safe] GHC.Classes.Eq [TigerTips.RWO] = TigerTips.$fEqRWO

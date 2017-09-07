@@ -10,9 +10,10 @@ import           TigerTips
 
 import           TigerSymbol
 
-import           Control.Condtional as C (unless, unlessM)
+import           Control.Conditional as C ((<||>), ifM, unless, unlessM)
 import           Control.Monad
-import           Control.Monad.Except (throwError)
+import           Control.Monad.Error.Class
+import           Control.Monad.Except (throwError, catchError)
 import           Control.Monad.State
 import           Data.List            as List
 import qualified Data.Map.Strict      as M
@@ -86,23 +87,32 @@ data SEErrores = NotFound T.Text | DiffVal T.Text | Internal T.Text
 
 type OurState = StateT EstadoG (Either SEErrores) 
 
+errAppend :: SEErrores -> Symbol -> SEErrores
+errAppend (NotFound t) s = NotFound (addStr (unpack t) s) 
+errAppend (DiffVal t) s  = DiffVal (addStr (unpack t) s) 
+errAppend (Internal t) s = Internal (addStr (unpack t) s) 
+
 instance Daemon OurState where
   derror s   = throwError $ Internal s  
-  adder  w s = catchError w $ return 
+  adder  w s = catchError w (\e -> let ea = errAppend e s 
+                                   in case ea of
+                                        NotFound t -> notfound t
+                                        DiffVal t  -> diffval t
+                                        Internal t -> internal t)  
 
 instance Manticore OurState where
-  insertValV s ve w = do st <- get
-                         withStateT (\st' -> st' {vEnv = insert s (Var ve) (vEnv st) }) w  
-			 put st 
-  insertFuncV s fe w = do st <- get
-                          withStateT (\st' -> st' {vEnv = insert s (Func fe) (vEnv st) }) w  
-			  put st 
+  insertValV s ve w  = do st <- get
+                          withStateT (\st' -> st' {vEnv = M.insert s (Var ve) (vEnv st)}) w  
+                          put st 
+  insertFunV s fe w  = do st <- get
+                          withStateT (\st' -> st' {vEnv = M.insert s (Func fe) (vEnv st)}) w 
+                          put st 
   insertVRO s w      = insertValV s (Var $ TInt RO) w
   insertTipoT s ty w = do st <- get
-                          withStateT (\st' -> st' {tEnv = insert s ty (tEnv st) }) w  
-			  put st 
+                          withStateT (\st' -> st' {tEnv = M.insert s ty (tEnv st)}) w  
+                          put st 
   ugen = do u <- get
-            put (unique u + 1)
+            put (u {unique = unique u + 1})
             return $ unique u + 1 
 
 -- Podemos definir el estado inicial como:
@@ -225,7 +235,7 @@ transTy (ArrayTy s)     =
      s' <- getTipoT s
      return (TArray s' u) 
 
-ourOrder :: (a, b, c) -> (a, b, c) -> Ordering
+ourOrder :: (Eq a, Ord a) => (a, b, c) -> (a, b, c) -> Ordering
 ourOrder (x1, _, _) (x2, _, _) = if x1 > x2 then GT else
                                      if x1 == x2 then EQ else LT
 
