@@ -78,7 +78,7 @@ addpos :: (Daemon w, Show b) => w a -> b -> w a
 addpos t p = E.adder t (pack $ show p)
 
 -- Un ejemplo de estado que alcanzaría para realizar todas la funciones es:
-data EstadoG = G {unique :: Int, vEnv :: [M.Map Symbol EnvEntry], tEnv :: [M.Map Symbol Tipo]}
+data EstadoG = G {unique :: Int, vEnv :: M.Map Symbol EnvEntry, tEnv :: M.Map Symbol Tipo}
     deriving Show
 
 -- Acompañado de un tipo de errores
@@ -101,16 +101,19 @@ instance Daemon OurState where
                                         Internal t -> internal t)  
 
 instance Manticore OurState where
-  insertValV s ve w  = do st <- get
-                          withStateT (\st' -> st' {vEnv = M.insert s (Var ve) (vEnv st)}) w  
-                          put st 
-  insertFunV s fe w  = do st <- get
-                          withStateT (\st' -> st' {vEnv = M.insert s (Func fe) (vEnv st)}) w 
-                          put st 
-  insertVRO s w      = insertValV s (Var $ TInt RO) w
+  insertValV s ve w  = do st  <- get
+                          res <- withStateT (\st' -> st' {vEnv = M.insert s (Var ve) (vEnv st)}) w  
+                          put st
+                          return res
+  insertFunV s fe w  = do st  <- get
+                          res <- withStateT (\st' -> st' {vEnv = M.insert s (Func fe) (vEnv st)}) w 
+                          put st
+                          return res 
+  insertVRO s w      = insertValV s (TInt RO) w
   insertTipoT s ty w = do st <- get
-                          withStateT (\st' -> st' {tEnv = M.insert s ty (tEnv st)}) w  
+                          res <- withStateT (\st' -> st' {tEnv = M.insert s ty (tEnv st)}) w  
                           put st 
+                          return res
   ugen = do u <- get
             put (u {unique = unique u + 1})
             return $ unique u + 1 
@@ -118,8 +121,8 @@ instance Manticore OurState where
 -- Podemos definir el estado inicial como:
 initConf :: EstadoG
 initConf = G {unique = 0
-            , tEnv = [M.insert (T.pack "int") (TInt RW) (M.singleton (T.pack "string") TString)]
-            , vEnv = [M.fromList
+            , tEnv = M.insert (T.pack "int") (TInt RW) (M.singleton (T.pack "string") TString)
+            , vEnv = M.fromList
                       [(T.pack "print", Func (1,T.pack "print",[TString], TUnit, True))
                       ,(T.pack "flush", Func (1,T.pack "flush",[],TUnit, True))
                       ,(T.pack "getchar",Func (1,T.pack "getchar",[],TString,True))
@@ -130,7 +133,7 @@ initConf = G {unique = 0
                       ,(T.pack "concat",Func (1,T.pack "concat",[TString,TString],TString,True))
                       ,(T.pack "not",Func (1,T.pack "not",[TInt RW],TInt RW,True))
                       ,(T.pack "exit",Func (1,T.pack "exit",[TInt RW],TUnit,True))
-                      ]]}
+                      ]}
 
 -- Utilizando alguna especie de run de la monada definida, obtenemos algo así
 --runLion :: Exp -> Either SEErrores Tipo
