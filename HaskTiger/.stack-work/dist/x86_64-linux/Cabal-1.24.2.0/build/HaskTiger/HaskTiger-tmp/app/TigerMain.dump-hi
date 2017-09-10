@@ -1,9 +1,9 @@
 
 ==================== FINAL INTERFACE ====================
-2017-09-08 21:35:00.326658 UTC
+2017-09-10 01:15:18.470611 UTC
 
 interface main@main:Main 8002
-  interface hash: 1dceacf9e3083e5292ab675bbe2091b3
+  interface hash: 2ffbebd6a70577503ba43ed0a78f4f52
   ABI hash: 1732a58235b4c79333d4fc27dd352c6b
   export-list hash: 7cb23ee7d711cace15f3f5d25e093587
   orphan hash: b6cf35917975c1a3fcc6d6aeca9118c9
@@ -54,7 +54,7 @@ import  -/  HaskTiger-0.1.0.0@HaskTiger-0.1.0.0-1NjWJIneMSYKOEJS7DxzEs:TigerAbs 
 import  -/  HaskTiger-0.1.0.0@HaskTiger-0.1.0.0-1NjWJIneMSYKOEJS7DxzEs:TigerEscap be3ab7404785021ab907cee46df4141a
 import  -/  HaskTiger-0.1.0.0@HaskTiger-0.1.0.0-1NjWJIneMSYKOEJS7DxzEs:TigerParser fc500f01c4c56b9254b53b1e209e8e23
 import  -/  HaskTiger-0.1.0.0@HaskTiger-0.1.0.0-1NjWJIneMSYKOEJS7DxzEs:TigerPretty cab4810d8c6fb58e419839b4d191c2af
-import  -/  HaskTiger-0.1.0.0@HaskTiger-0.1.0.0-1NjWJIneMSYKOEJS7DxzEs:TigerSeman 7cc4587ea7fed625058c002b6bd21be3
+import  -/  HaskTiger-0.1.0.0@HaskTiger-0.1.0.0-1NjWJIneMSYKOEJS7DxzEs:TigerSeman f36070ee027075c79c0f4724d3d3a234
 import  -/  base-4.9.1.0:Control.Monad a6784c5dab0d75c63dabec5a37843f98
 import  -/  base-4.9.1.0:Data.Either 20b09ef8d0a5b74fdec011c40c1587f5
 import  -/  base-4.9.1.0:Data.Foldable 3e0b6967a1da89945d0e2d47266337a2

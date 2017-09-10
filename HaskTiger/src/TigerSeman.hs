@@ -9,6 +9,7 @@ import           TigerSres
 import           TigerTips
 
 import           TigerSymbol
+import           PrintEnv
 
 import           Control.Conditional as C ((<||>), ifM, unless, unlessM)
 import           Control.Monad
@@ -21,6 +22,7 @@ import           Prelude              as P
 
 import qualified Data.Graph           as G
 import qualified Data.Text            as T
+import Text.PrettyPrint.HughesPJ
 
 import           Debug.Trace
 
@@ -42,7 +44,7 @@ class (Daemon w, Monad w) => Manticore w where
   -- | Busca un tipo en el entorno
     getTipoT :: Symbol -> w Tipo
   -- | Funciones de Debugging!
-    showVEnv :: w ()
+    showVEnv :: w (IO ())
     showTEnv :: w ()
     --
     -- | Función monadica que determina si dos tipos son iguales.
@@ -78,7 +80,7 @@ addpos :: (Daemon w, Show b) => w a -> b -> w a
 addpos t p = E.adder t (pack $ show p)
 
 -- Un ejemplo de estado que alcanzaría para realizar todas la funciones es:
-data EstadoG = G {unique :: Int, vEnv :: [M.Map Symbol EnvEntry], tEnv :: [M.Map Symbol Tipo]}
+data EstadoG = G {unique :: Int, vEnv :: M.Map Symbol EnvEntry, tEnv :: M.Map Symbol Tipo}
     deriving Show
 
 -- Acompañado de un tipo de errores
@@ -102,25 +104,41 @@ instance Daemon OurState where
 
 instance Manticore OurState where
   insertValV s ve w  = do st <- get
-                          withStateT (\st' -> st' {vEnv = map (\ls -> (M.insert s (Var ve)) ls) (vEnv st)}) w  
-                          --put st
-                          
+                          res <- withStateT (\st' -> st' {vEnv = M.insert s (Var ve) (vEnv st)}) w  
+                          put st
+                          return res
   insertFunV s fe w  = do st <- get
-                          withStateT (\st' -> st' {vEnv = map (\ls-> (M.insert s (Func fe)) ls) (vEnv st)}) w 
-                          --put st 
+                          res <- withStateT (\st' -> st' {vEnv = M.insert s (Func fe) (vEnv st)}) w 
+                          put st
+                          return res 
   insertVRO s w      = insertValV s (TInt RO) w 
   insertTipoT s ty w = do st <- get
-                          withStateT (\st' -> st' {tEnv = map (\ls-> (M.insert s ty) ls) (tEnv st)}) w  
-                          --put st 
-  ugen = do u <- get                             
-            put (u {unique = unique u + 1})
-            return $ unique u + 1 
+                          res <- withStateT (\st' -> st' {tEnv = M.insert s ty (tEnv st)}) w  
+                          put st
+                          return res 
+  getTipoFunV s      = do st <- get
+                          case M.lookup s (vEnv st) of
+                            Just (Func f) -> return f 
+                            Nothing       -> internal s   
+  getTipoValV s      = do st <- get
+                          case M.lookup s (vEnv st) of
+                            Just (Var v) -> return v 
+                            Nothing      -> internal s   
+  getTipoT s         = do st <- get
+                          case M.lookup s (tEnv st) of
+                            Just ty -> return ty 
+                            Nothing -> internal s   
+  showVEnv           = do st <- get
+                          return $ print $ concat (map (\(k, v) -> unpack k ++ renderEnv v) (M.toList $ vEnv st))    
+  ugen               = do u <- get                             
+                          put (u {unique = unique u + 1})
+                          return $ unique u + 1 
 
 -- Podemos definir el estado inicial como:
 initConf :: EstadoG
 initConf = G {unique = 0
-            , tEnv = [M.insert (T.pack "int") (TInt RW) (M.singleton (T.pack "string") TString)]
-            , vEnv = [M.fromList
+            , tEnv = M.insert (T.pack "int") (TInt RW) (M.singleton (T.pack "string") TString)
+            , vEnv = M.fromList
                       [(T.pack "print", Func (1,T.pack "print",[TString], TUnit, True))
                       ,(T.pack "flush", Func (1,T.pack "flush",[],TUnit, True))
                       ,(T.pack "getchar",Func (1,T.pack "getchar",[],TString,True))
@@ -131,7 +149,7 @@ initConf = G {unique = 0
                       ,(T.pack "concat",Func (1,T.pack "concat",[TString,TString],TString,True))
                       ,(T.pack "not",Func (1,T.pack "not",[TInt RW],TInt RW,True))
                       ,(T.pack "exit",Func (1,T.pack "exit",[TInt RW],TUnit,True))
-                      ]]}
+                      ]}
 
 -- Utilizando alguna especie de run de la monada definida, obtenemos algo así
 --runLion :: Exp -> Either SEErrores Tipo

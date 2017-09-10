@@ -1,10 +1,10 @@
 
 ==================== FINAL INTERFACE ====================
-2017-09-08 23:58:03.829762 UTC
+2017-09-10 01:15:16.676808 UTC
 
 interface HaskTiger-0.1.0.0-1NjWJIneMSYKOEJS7DxzEs:TigerSeman 8002
-  interface hash: b0d1a82a3c7e3328d95729f83e77e306
-  ABI hash: 7cc4587ea7fed625058c002b6bd21be3
+  interface hash: a78f628cd137e068214c02f03d899089
+  ABI hash: f36070ee027075c79c0f4724d3d3a234
   export-list hash: b36ba09f3713c72b996559b52a39ce8a
   orphan hash: 6ca9d3b42cc4d86b8d5daa3fc4be7680
   flag hash: e42325c67e4cbf35a695cbd293698255
@@ -162,7 +162,7 @@ import  -/  text-1.2.2.2@text-1.2.2.2-1cn50juu89QSL9QkUVcRY:Data.Text ef50139881
 import  -/  text-1.2.2.2@text-1.2.2.2-1cn50juu89QSL9QkUVcRY:Data.Text.Internal e17bbef002f291b56b1f76642ff112d3
 import  -/  text-1.2.2.2@text-1.2.2.2-1cn50juu89QSL9QkUVcRY:Data.Text.Show 4809e83bdd2e21888a17b80353f343b6
 import  -/  transformers-0.5.2.0@transformers-0.5.2.0:Control.Monad.Trans.State.Lazy 371607e50dde46b5f4103b3ab334a497
-7eda2d80fc0319ad4ab716e19701f0d4
+aba2ae552f96ec00f2c9102c55acfdc0
   $dmtiposIguales ::
     TigerSeman.Manticore w =>
     TigerTips.Tipo -> TigerTips.Tipo -> w GHC.Types.Bool
@@ -340,7 +340,7 @@ import  -/  transformers-0.5.2.0@transformers-0.5.2.0:Control.Monad.Trans.State.
                                 (TigerSeman.getTipoT @ w $dManticore s')
                                 (\ (s3 :: TigerTips.Tipo) ->
                                  TigerSeman.tiposIguales @ w $dManticore s2 s3)) } }) -}
-3e9f4b4b79851d9795b5ece79859e542
+2a41a042699f747861e8943e24ac1e0a
   $fDaemonStateT :: TigerErrores.Daemon TigerSeman.OurState
   DFunId
   {- Strictness: m, Inline: [ALWAYS] CONLIKE,
@@ -351,7 +351,7 @@ import  -/  transformers-0.5.2.0@transformers-0.5.2.0:Control.Monad.Trans.State.
                   TigerSeman.$fDaemonStateT_$cnotfound
                   TigerSeman.$fDaemonStateT_$cdiffval
                   TigerSeman.$fDaemonStateT_$cinternal -}
-3e9f4b4b79851d9795b5ece79859e542
+2a41a042699f747861e8943e24ac1e0a
   $fDaemonStateT1 ::
     TigerSeman.OurState a
     -> TigerSymbol.Symbol
@@ -389,7 +389,7 @@ import  -/  transformers-0.5.2.0@transformers-0.5.2.0:Control.Monad.Trans.State.
                              (TigerSeman.Internal
                                 (TigerSymbol.addStr TigerSeman.$fDaemonStateT_g t)) }
                    Data.Either.Right r -> wild }) -}
-3e9f4b4b79851d9795b5ece79859e542
+2a41a042699f747861e8943e24ac1e0a
   $fDaemonStateT2 ::
     TigerSymbol.Symbol
     -> TigerSeman.EstadoG
@@ -401,7 +401,7 @@ import  -/  transformers-0.5.2.0@transformers-0.5.2.0:Control.Monad.Trans.State.
                    @ TigerSeman.SEErrores
                    @ (a, TigerSeman.EstadoG)
                    (TigerSeman.Internal s1)) -}
-3e9f4b4b79851d9795b5ece79859e542
+2a41a042699f747861e8943e24ac1e0a
   $fDaemonStateT_$cadder ::
     TigerSeman.OurState a
     -> TigerSymbol.Symbol -> TigerSeman.OurState a
@@ -416,7 +416,7 @@ import  -/  transformers-0.5.2.0@transformers-0.5.2.0:Control.Monad.Trans.State.
                                <TigerSeman.EstadoG>_N
                                <Data.Either.Either TigerSeman.SEErrores>_R
                                <a>_N)) -}
-3e9f4b4b79851d9795b5ece79859e542
+2a41a042699f747861e8943e24ac1e0a
   $fDaemonStateT_$cderror ::
     TigerSymbol.Symbol -> TigerSeman.OurState a
   {- Arity: 2, HasNoCafRefs, Strictness: <L,U><L,A>m1,
@@ -429,7 +429,7 @@ import  -/  transformers-0.5.2.0@transformers-0.5.2.0:Control.Monad.Trans.State.
                                <TigerSeman.EstadoG>_N
                                <Data.Either.Either TigerSeman.SEErrores>_R
                                <a>_N)) -}
-3e9f4b4b79851d9795b5ece79859e542
+2a41a042699f747861e8943e24ac1e0a
   $fDaemonStateT_$cdiffval ::
     TigerSymbol.Symbol -> TigerSeman.OurState a
   {- Arity: 1, Strictness: <L,1*U(U,U,U)>,
@@ -449,7 +449,7 @@ import  -/  transformers-0.5.2.0@transformers-0.5.2.0:Control.Monad.Trans.State.
                            <TigerSeman.EstadoG>_N
                            <Data.Either.Either TigerSeman.SEErrores>_R
                            <a>_N))) -}
-3e9f4b4b79851d9795b5ece79859e542
+2a41a042699f747861e8943e24ac1e0a
   $fDaemonStateT_$cinternal ::
     TigerSymbol.Symbol -> TigerSeman.OurState a
   {- Arity: 1, Strictness: <L,1*U(U,U,U)>,
@@ -469,7 +469,7 @@ import  -/  transformers-0.5.2.0@transformers-0.5.2.0:Control.Monad.Trans.State.
                            <TigerSeman.EstadoG>_N
                            <Data.Either.Either TigerSeman.SEErrores>_R
                            <a>_N))) -}
-3e9f4b4b79851d9795b5ece79859e542
+2a41a042699f747861e8943e24ac1e0a
   $fDaemonStateT_$cnotfound ::
     TigerSymbol.Symbol -> TigerSeman.OurState a
   {- Arity: 1, Strictness: <L,1*U(U,U,U)>,
@@ -498,7 +498,7 @@ d712bc8496c5e6853dcec8603a63d2ef
 e3e04e9a4ec57bca4a85ad606818bd45
   $fDaemonStateT_g2 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# "Not found:"#) -}
-926525b03f3fda6f1aa07d03c6bb7bca
+83e0b30925b48d92766c65e2dda0dda0
   $fManticoreStateT :: TigerSeman.Manticore TigerSeman.OurState
   DFunId
   {- Inline: [ALWAYS] CONLIKE,
@@ -518,7 +518,7 @@ e3e04e9a4ec57bca4a85ad606818bd45
                   TigerSeman.$fManticoreStateT_$ctiposIguales
                   TigerSeman.$fManticoreStateT_$cugen
                   TigerSeman.$fManticoreStateT_$caddTypos -}
-f37dc5f7f36b76ad51c4f79e0cef9f39
+71b39c9ea2fd728b317538a415ade5df
   $fManticoreStateT1 ::
     TigerSeman.EstadoG
     -> Data.Either.Either
@@ -539,7 +539,7 @@ f37dc5f7f36b76ad51c4f79e0cef9f39
                        GHC.Types.I# (GHC.Prim.+# x 1#) })
                       ds1
                       ds2 })) -}
-547e5e275e1238f132443f00f85be7e4
+3e3d4b398ceceaa1343fc26ba937e2b8
   $fManticoreStateT2 ::
     TigerSymbol.Symbol
     -> TigerTips.Tipo
@@ -547,35 +547,39 @@ f37dc5f7f36b76ad51c4f79e0cef9f39
     -> TigerSeman.EstadoG
     -> Data.Either.Either TigerSeman.SEErrores (a, TigerSeman.EstadoG)
   {- Arity: 4,
-     Strictness: <L,U(U,U,U)><L,U><C(S),1*C1(U)><L,1*U(U,U,1*U)>,
+     Strictness: <L,1*U(U,U,U)><L,1*U><C(S),1*C1(U)><L,U(U,U,U)>,
      Unfolding: (\ @ a
                    (s1 :: TigerSymbol.Symbol)
                    (ty :: TigerTips.Tipo)
                    (w :: TigerSeman.OurState a)
                    (eta :: TigerSeman.EstadoG) ->
-                 w `cast`
-                 (Control.Monad.Trans.State.Lazy.N:StateT[0]
-                      <TigerSeman.EstadoG>_N
-                      <Data.Either.Either TigerSeman.SEErrores>_R
-                      <a>_N)
-                   (case eta of wild { TigerSeman.G ds ds1 ds2 ->
-                    TigerSeman.G
-                      ds
-                      ds1
-                      (GHC.Base.map
-                         @ (Data.Map.Base.Map TigerSymbol.Symbol TigerTips.Tipo)
-                         @ (Data.Map.Base.Map TigerSymbol.Symbol TigerTips.Tipo)
-                         (\ (ls :: Data.Map.Base.Map TigerSymbol.Symbol TigerTips.Tipo) ->
-                          TigerSeman.$fManticoreStateT_$sgo4 @ TigerTips.Tipo s1 ty ls)
-                         ds2) })) -}
-61f6344742265956761c0907e67e07f4
+                 case w `cast`
+                      (Control.Monad.Trans.State.Lazy.N:StateT[0]
+                           <TigerSeman.EstadoG>_N
+                           <Data.Either.Either TigerSeman.SEErrores>_R
+                           <a>_N)
+                        (case eta of wild { TigerSeman.G ds ds1 ds2 ->
+                         TigerSeman.G
+                           ds
+                           ds1
+                           (TigerSeman.$fManticoreStateT_$sgo4
+                              @ TigerTips.Tipo
+                              s1
+                              ty
+                              ds2) }) of wild {
+                   Data.Either.Left l -> wild
+                   Data.Either.Right r
+                   -> Data.Either.Right
+                        @ TigerSeman.SEErrores
+                        @ (a, TigerSeman.EstadoG)
+                        (case r of wild1 { (,) a1 s' -> a1 }, eta) }) -}
+b41dcd7d472b29ee9586da64db078a59
   $fManticoreStateT3 ::
     TigerSymbol.Symbol
     -> TigerSeman.OurState a
     -> TigerSeman.EstadoG
     -> Data.Either.Either TigerSeman.SEErrores (a, TigerSeman.EstadoG)
-  {- Arity: 3,
-     Strictness: <L,U(U,U,U)><C(S),1*C1(U)><L,1*U(U,1*U,U)>,
+  {- Arity: 3, Strictness: <L,1*U(U,U,U)><C(S),1*C1(U)><L,U(U,U,U)>,
      Unfolding: InlineRule (3, True, False)
                 (\ @ a
                    (s1 :: TigerSymbol.Symbol)
@@ -591,7 +595,7 @@ f37dc5f7f36b76ad51c4f79e0cef9f39
   $fManticoreStateT4 :: TigerTips.Tipo
   {- HasNoCafRefs, Strictness: m3,
      Unfolding: (TigerTips.TInt TigerTips.RO) -}
-0e40d2f722097e2a7aa0f155641f176e
+bc4f70d1c4de80f288ff4ac0fd9d8736
   $fManticoreStateT5 ::
     TigerSymbol.Symbol
     -> TigerSres.ValEntry
@@ -599,36 +603,36 @@ f37dc5f7f36b76ad51c4f79e0cef9f39
     -> TigerSeman.EstadoG
     -> Data.Either.Either TigerSeman.SEErrores (a, TigerSeman.EstadoG)
   {- Arity: 4,
-     Strictness: <L,U(U,U,U)><L,U><C(S),1*C1(U)><L,1*U(U,1*U,U)>,
+     Strictness: <L,1*U(U,U,U)><L,U><C(S),1*C1(U)><L,U(U,U,U)>,
      Unfolding: (\ @ a
                    (s1 :: TigerSymbol.Symbol)
                    (ve :: TigerSres.ValEntry)
                    (w :: TigerSeman.OurState a)
                    (eta :: TigerSeman.EstadoG) ->
-                 w `cast`
-                 (Control.Monad.Trans.State.Lazy.N:StateT[0]
-                      <TigerSeman.EstadoG>_N
-                      <Data.Either.Either TigerSeman.SEErrores>_R
-                      <a>_N)
-                   (case eta of wild { TigerSeman.G ds ds1 ds2 ->
-                    TigerSeman.G
-                      ds
-                      (GHC.Base.map
-                         @ (Data.Map.Base.Map TigerSymbol.Symbol TigerSres.EnvEntry)
-                         @ (Data.Map.Base.Map TigerSymbol.Symbol TigerSres.EnvEntry)
-                         (\ (ls :: Data.Map.Base.Map
-                                     TigerSymbol.Symbol TigerSres.EnvEntry) ->
-                          case s1 of ww { Data.Text.Internal.Text ww1 ww2 ww3 ->
-                          TigerSeman.$w$sgo4
-                            @ TigerSres.EnvEntry
-                            ww1
-                            ww2
-                            ww3
-                            (TigerSres.Var ve)
-                            ls })
-                         ds1)
-                      ds2 })) -}
-ffa12b46d3ef448428c08300bad85d78
+                 case w `cast`
+                      (Control.Monad.Trans.State.Lazy.N:StateT[0]
+                           <TigerSeman.EstadoG>_N
+                           <Data.Either.Either TigerSeman.SEErrores>_R
+                           <a>_N)
+                        (case eta of wild { TigerSeman.G ds ds1 ds2 ->
+                         TigerSeman.G
+                           ds
+                           (case s1 of ww { Data.Text.Internal.Text ww1 ww2 ww3 ->
+                            TigerSeman.$w$sgo4
+                              @ TigerSres.EnvEntry
+                              ww1
+                              ww2
+                              ww3
+                              (TigerSres.Var ve)
+                              ds1 })
+                           ds2 }) of wild {
+                   Data.Either.Left l -> wild
+                   Data.Either.Right r
+                   -> Data.Either.Right
+                        @ TigerSeman.SEErrores
+                        @ (a, TigerSeman.EstadoG)
+                        (case r of wild1 { (,) a1 s' -> a1 }, eta) }) -}
+954244dc62f21cd7565d8e9ed1038a3c
   $fManticoreStateT6 ::
     TigerSymbol.Symbol
     -> TigerSres.FunEntry
@@ -636,35 +640,35 @@ ffa12b46d3ef448428c08300bad85d78
     -> TigerSeman.EstadoG
     -> Data.Either.Either TigerSeman.SEErrores (a, TigerSeman.EstadoG)
   {- Arity: 4,
-     Strictness: <L,U(U,U,U)><L,U><C(S),1*C1(U)><L,1*U(U,1*U,U)>,
+     Strictness: <L,1*U(U,U,U)><L,U><C(S),1*C1(U)><L,U(U,U,U)>,
      Unfolding: (\ @ a
                    (s1 :: TigerSymbol.Symbol)
                    (fe :: TigerSres.FunEntry)
                    (w :: TigerSeman.OurState a)
                    (eta :: TigerSeman.EstadoG) ->
-                 w `cast`
-                 (Control.Monad.Trans.State.Lazy.N:StateT[0]
-                      <TigerSeman.EstadoG>_N
-                      <Data.Either.Either TigerSeman.SEErrores>_R
-                      <a>_N)
-                   (case eta of wild { TigerSeman.G ds ds1 ds2 ->
-                    TigerSeman.G
-                      ds
-                      (GHC.Base.map
-                         @ (Data.Map.Base.Map TigerSymbol.Symbol TigerSres.EnvEntry)
-                         @ (Data.Map.Base.Map TigerSymbol.Symbol TigerSres.EnvEntry)
-                         (\ (ls :: Data.Map.Base.Map
-                                     TigerSymbol.Symbol TigerSres.EnvEntry) ->
-                          case s1 of ww { Data.Text.Internal.Text ww1 ww2 ww3 ->
-                          TigerSeman.$w$sgo4
-                            @ TigerSres.EnvEntry
-                            ww1
-                            ww2
-                            ww3
-                            (TigerSres.Func fe)
-                            ls })
-                         ds1)
-                      ds2 })) -}
+                 case w `cast`
+                      (Control.Monad.Trans.State.Lazy.N:StateT[0]
+                           <TigerSeman.EstadoG>_N
+                           <Data.Either.Either TigerSeman.SEErrores>_R
+                           <a>_N)
+                        (case eta of wild { TigerSeman.G ds ds1 ds2 ->
+                         TigerSeman.G
+                           ds
+                           (case s1 of ww { Data.Text.Internal.Text ww1 ww2 ww3 ->
+                            TigerSeman.$w$sgo4
+                              @ TigerSres.EnvEntry
+                              ww1
+                              ww2
+                              ww3
+                              (TigerSres.Func fe)
+                              ds1 })
+                           ds2 }) of wild {
+                   Data.Either.Left l -> wild
+                   Data.Either.Right r
+                   -> Data.Either.Right
+                        @ TigerSeman.SEErrores
+                        @ (a, TigerSeman.EstadoG)
+                        (case r of wild1 { (,) a1 s' -> a1 }, eta) }) -}
 7101432d656a62281255454ae3e27500
   $fManticoreStateT7 ::
     GHC.Base.Functor
@@ -675,31 +679,31 @@ ffa12b46d3ef448428c08300bad85d78
                    @ (Data.Either.Either TigerSeman.SEErrores)
                    @ s1
                    (Data.Either.$fFunctorEither @ TigerSeman.SEErrores)) -}
-b24773377cd538937bc8f7347288e3bd
+e83171986c57eeda82dfe5ed065b2265
   $fManticoreStateT_$caddTypos ::
     [(TigerSymbol.Symbol, TigerAbs.Ty, TigerAbs.Pos)]
     -> TigerSeman.OurState ()
   {- Strictness: x -}
-9dd5fa1e83148a1d09699dfd729091f4
+9e3887331c34e4330db140623a0d5be4
   $fManticoreStateT_$cgetTipoFunV ::
     TigerSymbol.Symbol -> TigerSeman.OurState TigerSres.FunEntry
   {- Strictness: x -}
-cc13a56576ffbd24a533c77d2cc0cd31
+10a5e74fcf1af2769491360480a314bf
   $fManticoreStateT_$cgetTipoT ::
     TigerSymbol.Symbol -> TigerSeman.OurState TigerTips.Tipo
   {- Strictness: x -}
-977125115cc15995e2ab25df1ac1de7e
+e9a27a7988f4b8e79a089719d7465722
   $fManticoreStateT_$cgetTipoValV ::
     TigerSymbol.Symbol -> TigerSeman.OurState TigerSres.ValEntry
   {- Strictness: x -}
-8d4c9bef00a2250809f2e6a92da58986
+46a3ea1d846b032686eaa9e9af32ac9d
   $fManticoreStateT_$cinsertFunV ::
     TigerSymbol.Symbol
     -> TigerSres.FunEntry
     -> TigerSeman.OurState a
     -> TigerSeman.OurState a
   {- Arity: 4,
-     Strictness: <L,U(U,U,U)><L,U><C(S),1*C1(U)><L,1*U(U,1*U,U)>,
+     Strictness: <L,1*U(U,U,U)><L,U><C(S),1*C1(U)><L,U(U,U,U)>,
      Unfolding: InlineRule (0, True, True)
                 TigerSeman.$fManticoreStateT6
                   `cast`
@@ -711,12 +715,12 @@ cc13a56576ffbd24a533c77d2cc0cd31
                                <TigerSeman.EstadoG>_N
                                <Data.Either.Either TigerSeman.SEErrores>_R
                                <a>_N)) -}
-9931ad136058728041493db429dffda3
+919823feb0da3616f8580f04eb3e3aee
   $fManticoreStateT_$cinsertTipoT ::
     TigerSymbol.Symbol
     -> TigerTips.Tipo -> TigerSeman.OurState a -> TigerSeman.OurState a
   {- Arity: 4,
-     Strictness: <L,U(U,U,U)><L,U><C(S),1*C1(U)><L,1*U(U,U,1*U)>,
+     Strictness: <L,1*U(U,U,U)><L,1*U><C(S),1*C1(U)><L,U(U,U,U)>,
      Unfolding: InlineRule (0, True, True)
                 TigerSeman.$fManticoreStateT2
                   `cast`
@@ -728,12 +732,11 @@ cc13a56576ffbd24a533c77d2cc0cd31
                                <TigerSeman.EstadoG>_N
                                <Data.Either.Either TigerSeman.SEErrores>_R
                                <a>_N)) -}
-45d947ac1cba9b193d59e53f023c1f3a
+a83b2f27cc15b68e2d1d222601879ed3
   $fManticoreStateT_$cinsertVRO ::
     TigerSymbol.Symbol
     -> TigerSeman.OurState a -> TigerSeman.OurState a
-  {- Arity: 3,
-     Strictness: <L,U(U,U,U)><C(S),1*C1(U)><L,1*U(U,1*U,U)>,
+  {- Arity: 3, Strictness: <L,1*U(U,U,U)><C(S),1*C1(U)><L,U(U,U,U)>,
      Unfolding: InlineRule (0, True, True)
                 TigerSeman.$fManticoreStateT3
                   `cast`
@@ -744,14 +747,14 @@ cc13a56576ffbd24a533c77d2cc0cd31
                                <TigerSeman.EstadoG>_N
                                <Data.Either.Either TigerSeman.SEErrores>_R
                                <a>_N)) -}
-a8f898bf12a96eb0784056ad7ad496a0
+5a7b48418df861c4f1b3b5bb9a0b3d09
   $fManticoreStateT_$cinsertValV ::
     TigerSymbol.Symbol
     -> TigerSres.ValEntry
     -> TigerSeman.OurState a
     -> TigerSeman.OurState a
   {- Arity: 4,
-     Strictness: <L,U(U,U,U)><L,U><C(S),1*C1(U)><L,1*U(U,1*U,U)>,
+     Strictness: <L,1*U(U,U,U)><L,U><C(S),1*C1(U)><L,U(U,U,U)>,
      Unfolding: InlineRule (0, True, True)
                 TigerSeman.$fManticoreStateT5
                   `cast`
@@ -763,25 +766,25 @@ a8f898bf12a96eb0784056ad7ad496a0
                                <TigerSeman.EstadoG>_N
                                <Data.Either.Either TigerSeman.SEErrores>_R
                                <a>_N)) -}
-3c138d08cf9dbbc9ab38a9bece02c47b
+bfad035eaeabf9bd629304d9ac483710
   $fManticoreStateT_$cp2Manticore ::
     GHC.Base.Monad TigerSeman.OurState
   {- Strictness: m,
      Unfolding: InlineRule (0, True, True)
                 (TigerSeman.$fManticoreStateT_$s$fMonadStateT
                    @ TigerSeman.EstadoG) -}
-2a3e137a0ccf0bb13bc4fb1fc6c0bec8
+967c91d9e2a0879064254154ec24aa64
   $fManticoreStateT_$cshowTEnv :: TigerSeman.OurState ()
   {- Strictness: x -}
-0605291270b1183f2fbf31d269a5d424
+f2ec6f92793e7673a2271835e6aaacef
   $fManticoreStateT_$cshowVEnv :: TigerSeman.OurState ()
   {- Strictness: x -}
-23611ce35cf3b41754eaae463db76dcf
+1acde45297da11022c129300656fbc49
   $fManticoreStateT_$ctiposIguales ::
     TigerTips.Tipo
     -> TigerTips.Tipo -> TigerSeman.OurState GHC.Types.Bool
   {- Arity: 2, Strictness: <S,U><S,U> -}
-fbd680862ba93184e825565c5fe53e52
+99d6e5f60a05058f6f4bec7b0e0508b9
   $fManticoreStateT_$cugen :: TigerSeman.OurState TigerTips.Unique
   {- Arity: 1, HasNoCafRefs, Strictness: <L,U(U(U),U,U)>m2,
      Unfolding: InlineRule (0, True, True)
@@ -1068,7 +1071,7 @@ b22d085f747c77a4461f3ae8fc0ca873
                    (w2 :: Data.Map.Base.Map Data.Text.Internal.Text a1) ->
                  case w of ww { Data.Text.Internal.Text ww1 ww2 ww3 ->
                  TigerSeman.$w$sgo4 @ a1 ww1 ww2 ww3 w1 w2 }) -}
-3e9f4b4b79851d9795b5ece79859e542
+2a41a042699f747861e8943e24ac1e0a
   $fShowEstadoG :: GHC.Show.Show TigerSeman.EstadoG
   DFunId
   {- Strictness: m, Inline: [ALWAYS] CONLIKE,
@@ -1077,39 +1080,55 @@ b22d085f747c77a4461f3ae8fc0ca873
                   TigerSeman.$fShowEstadoG_$cshowsPrec
                   TigerSeman.$fShowEstadoG_$cshow
                   TigerSeman.$fShowEstadoG_$cshowList -}
-3e9f4b4b79851d9795b5ece79859e542
+2a41a042699f747861e8943e24ac1e0a
   $fShowEstadoG1 :: TigerSeman.EstadoG -> GHC.Show.ShowS
-  {- Arity: 2,
-     Unfolding: (\ (w :: TigerSeman.EstadoG) (w1 :: GHC.Base.String) ->
+  {- Arity: 1,
+     Unfolding: (\ (w :: TigerSeman.EstadoG) ->
                  case w of ww { TigerSeman.G ww1 ww2 ww3 ->
-                 TigerSeman.$w$cshowsPrec 0# ww1 ww2 ww3 w1 }) -}
-3e9f4b4b79851d9795b5ece79859e542
+                 TigerSeman.$w$cshowsPrec 0# ww1 ww2 ww3 }) -}
+25992b36ebe33b57a51880fc348d62ce
+  $fShowEstadoG2 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# "}"#) -}
+fa7fb915d29fe476d28459d4b9e64fc2
+  $fShowEstadoG3 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# "tEnv = "#) -}
+fa36dd6e96799bcf608659afb00a99c5
+  $fShowEstadoG4 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# "vEnv = "#) -}
+871a90f460ea8489c20bbe89cd69fadc
+  $fShowEstadoG5 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# ", "#) -}
+129799a342cf9f89812c726d83d1a181
+  $fShowEstadoG6 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# "unique = "#) -}
+eb92f72a25bbddf0b7e4d8ca5bc6a181
+  $fShowEstadoG7 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# "G {"#) -}
+2a41a042699f747861e8943e24ac1e0a
   $fShowEstadoG_$cshow :: TigerSeman.EstadoG -> GHC.Base.String
-  {- Arity: 1, Strictness: <S,1*U(1*U(U),1*U,1*U)>,
+  {- Arity: 1, Strictness: <S,1*U(U(U),1*U,1*U)>,
      Unfolding: InlineRule (1, True, False)
                 (\ (x :: TigerSeman.EstadoG) ->
                  TigerSeman.$fShowEstadoG_$cshowsPrec
                    GHC.Show.shows22
                    x
                    (GHC.Types.[] @ GHC.Types.Char)) -}
-3e9f4b4b79851d9795b5ece79859e542
+2a41a042699f747861e8943e24ac1e0a
   $fShowEstadoG_$cshowList :: [TigerSeman.EstadoG] -> GHC.Show.ShowS
   {- Arity: 2,
      Unfolding: (GHC.Show.showList__
                    @ TigerSeman.EstadoG
                    TigerSeman.$fShowEstadoG1) -}
-3e9f4b4b79851d9795b5ece79859e542
+2a41a042699f747861e8943e24ac1e0a
   $fShowEstadoG_$cshowsPrec ::
     GHC.Types.Int -> TigerSeman.EstadoG -> GHC.Show.ShowS
-  {- Arity: 3, Strictness: <S(S),1*U(U)><S,1*U(1*U(U),1*U,1*U)><L,U>,
+  {- Arity: 2, Strictness: <S(S),1*U(U)><S,1*U(U(U),1*U,1*U)>,
      Inline: INLINE[0],
-     Unfolding: InlineRule (3, True, False)
-                (\ (w :: GHC.Types.Int)
-                   (w1 :: TigerSeman.EstadoG)
-                   (w2 :: GHC.Base.String) ->
+     Unfolding: InlineRule (2, True, False)
+                (\ (w :: GHC.Types.Int) (w1 :: TigerSeman.EstadoG) ->
                  case w of ww { GHC.Types.I# ww1 ->
                  case w1 of ww2 { TigerSeman.G ww3 ww4 ww5 ->
-                 TigerSeman.$w$cshowsPrec ww1 ww3 ww4 ww5 w2 } }) -}
+                 TigerSeman.$w$cshowsPrec ww1 ww3 ww4 ww5 } }) -}
 4523d201572e6cb81553761759f96589
   $fShowSEErrores :: GHC.Show.Show TigerSeman.SEErrores
   DFunId
@@ -1332,16 +1351,80 @@ a951cc879525f37579ceaddb0aba788a
   {- HasNoCafRefs, Strictness: m1,
      Unfolding: (GHC.Types.TrNameS
                    "HaskTiger-0.1.0.0-1NjWJIneMSYKOEJS7DxzEs"#) -}
-5579d5fbd96d54fbf1005f730bf83b31
+a57fc5219e330337d26632c310b02d8f
   $w$cshowsPrec ::
     GHC.Prim.Int#
     -> GHC.Types.Int
-    -> [Data.Map.Base.Map TigerSymbol.Symbol TigerSres.EnvEntry]
-    -> [Data.Map.Base.Map TigerSymbol.Symbol TigerTips.Tipo]
-    -> GHC.Base.String
-    -> GHC.Base.String
-  {- Arity: 5, Strictness: <S,U><L,1*U(U)><L,1*U><L,1*U><L,U>,
-     Inline: [0] -}
+    -> Data.Map.Base.Map TigerSymbol.Symbol TigerSres.EnvEntry
+    -> Data.Map.Base.Map TigerSymbol.Symbol TigerTips.Tipo
+    -> GHC.Show.ShowS
+  {- Arity: 4, Strictness: <S,U><L,U(U)><L,1*U><L,1*U>, Inline: [0],
+     Unfolding: (\ (ww :: GHC.Prim.Int#)
+                   (ww1 :: GHC.Types.Int)
+                   (ww2 :: Data.Map.Base.Map TigerSymbol.Symbol TigerSres.EnvEntry)
+                   (ww3 :: Data.Map.Base.Map TigerSymbol.Symbol TigerTips.Tipo) ->
+                 let {
+                   f :: GHC.Base.String -> GHC.Base.String
+                   = Data.Map.Base.$w$cshowsPrec
+                       @ Data.Text.Internal.Text
+                       @ TigerSres.EnvEntry
+                       Data.Text.Show.$fShowText
+                       TigerSres.$fShowEnvEntry
+                       0#
+                       ww2
+                 } in
+                 let {
+                   f1 :: GHC.Base.String -> GHC.Base.String
+                   = Data.Map.Base.$w$cshowsPrec
+                       @ Data.Text.Internal.Text
+                       @ TigerTips.Tipo
+                       Data.Text.Show.$fShowText
+                       TigerTips.$fShowTipo
+                       0#
+                       ww3
+                 } in
+                 let {
+                   p :: GHC.Show.ShowS {- Arity: 1, Strictness: <L,1*U> -}
+                   = \ (x :: GHC.Base.String) ->
+                     GHC.Base.++
+                       @ GHC.Types.Char
+                       TigerSeman.$fShowEstadoG7
+                       (GHC.Base.++
+                          @ GHC.Types.Char
+                          TigerSeman.$fShowEstadoG6
+                          (case ww1 of ww4 { GHC.Types.I# ww5 ->
+                           case GHC.Show.$wshowSignedInt
+                                  0#
+                                  ww5
+                                  (GHC.Base.++
+                                     @ GHC.Types.Char
+                                     TigerSeman.$fShowEstadoG5
+                                     (GHC.Base.++
+                                        @ GHC.Types.Char
+                                        TigerSeman.$fShowEstadoG4
+                                        (f (GHC.Base.++
+                                              @ GHC.Types.Char
+                                              TigerSeman.$fShowEstadoG5
+                                              (GHC.Base.++
+                                                 @ GHC.Types.Char
+                                                 TigerSeman.$fShowEstadoG3
+                                                 (f1
+                                                    (GHC.Base.++
+                                                       @ GHC.Types.Char
+                                                       TigerSeman.$fShowEstadoG2
+                                                       x))))))) of ww6 { (#,#) ww7 ww8 ->
+                           GHC.Types.: @ GHC.Types.Char ww7 ww8 } }))
+                 } in
+                 case GHC.Prim.tagToEnum#
+                        @ GHC.Types.Bool
+                        (GHC.Prim.>=# ww 11#) of wild {
+                   GHC.Types.False -> p
+                   GHC.Types.True
+                   -> \ (x :: GHC.Base.String) ->
+                      GHC.Types.:
+                        @ GHC.Types.Char
+                        GHC.Show.shows7
+                        (p (GHC.Types.: @ GHC.Types.Char GHC.Show.shows4 x)) }) -}
 4523d201572e6cb81553761759f96589
   $w$cshowsPrec1 ::
     GHC.Prim.Int#
@@ -1471,12 +1554,12 @@ e06495d3bf6152c86c3e385db826712a
     -> [(Data.Text.Internal.Text, a)]
     -> Data.Map.Base.Map Data.Text.Internal.Text a
   {- Arity: 3, Strictness: <L,U><S,1*U><S,1*U>, Inline: [0] -}
-3e9f4b4b79851d9795b5ece79859e542
+2a41a042699f747861e8943e24ac1e0a
   data EstadoG
     = G {unique :: GHC.Types.Int,
-         vEnv :: [Data.Map.Base.Map TigerSymbol.Symbol TigerSres.EnvEntry],
-         tEnv :: [Data.Map.Base.Map TigerSymbol.Symbol TigerTips.Tipo]}
-926525b03f3fda6f1aa07d03c6bb7bca
+         vEnv :: Data.Map.Base.Map TigerSymbol.Symbol TigerSres.EnvEntry,
+         tEnv :: Data.Map.Base.Map TigerSymbol.Symbol TigerTips.Tipo}
+83e0b30925b48d92766c65e2dda0dda0
   class (TigerErrores.Daemon w, GHC.Base.Monad w) =>
         Manticore (w :: * -> *) where
     insertValV :: TigerSymbol.Symbol
@@ -1498,7 +1581,7 @@ e06495d3bf6152c86c3e385db826712a
     {-# MINIMAL insertValV, insertFunV, insertVRO, insertTipoT,
                 getTipoFunV, getTipoValV, getTipoT, showVEnv, showTEnv, ugen,
                 addTypos #-}
-3e9f4b4b79851d9795b5ece79859e542
+2a41a042699f747861e8943e24ac1e0a
   type OurState =
     Control.Monad.Trans.State.Lazy.StateT
       TigerSeman.EstadoG (Data.Either.Either TigerSeman.SEErrores)
@@ -1542,7 +1625,7 @@ beb9519557c4e6a241e96764ad079fc1
     -> [(TigerSymbol.Symbol, TigerTips.Tipo, GHC.Types.Int)]
     -> GHC.Base.Maybe TigerTips.Tipo
   {- Arity: 2, HasNoCafRefs, Strictness: <L,1*U(U,U,U)><S,1*U> -}
-c2e9ff02d77ad1e2e7295cc2280e4a6a
+8f868bfd7ed5ddfbba352a421316fb81
   cmpZip ::
     TigerSeman.Manticore m =>
     [(TigerSymbol.Symbol, TigerTips.Tipo)]
@@ -1575,7 +1658,7 @@ ccb3979d285fd4cfb962c2778ca37d7c
   errAppend ::
     TigerSeman.SEErrores -> TigerSymbol.Symbol -> TigerSeman.SEErrores
   {- Arity: 2, Strictness: <S,1*U><L,1*U(U,U,U)> -}
-e1a19ff1e554deb785efacbc029cfe8b
+5a04f268a97b9217eb256c0ad1179ea2
   fromTy :: TigerSeman.Manticore w => TigerAbs.Ty -> w TigerTips.Tipo
   {- Arity: 2,
      Strictness: <S(LLLLLLLLC(S)LLLLL),1*U(A,A,A,A,A,A,A,A,1*C1(U),A,A,A,A,A)><S,1*U>,
@@ -1589,78 +1672,16 @@ e1a19ff1e554deb785efacbc029cfe8b
 a754d03fef58260d4d2748315545c7ba
   fromTy1 :: w TigerTips.Tipo
   {- Strictness: x -}
-6787ee26cd71ce78b9ac338d12c478ce
+3487bd99bbc1d5ef0f3c9d271114d965
   initConf :: TigerSeman.EstadoG
   {- Strictness: m,
      Unfolding: (TigerSeman.G
-                   TigerSeman.initConf62
-                   TigerSeman.initConf4
-                   TigerSeman.initConf1) -}
-6b7ac87e70ac284ef15a7dfb75d88516
-  initConf1 :: [Data.Map.Base.Map TigerSymbol.Symbol TigerTips.Tipo]
-  {- Strictness: m2,
-     Unfolding: (GHC.Types.:
-                   @ (Data.Map.Base.Map TigerSymbol.Symbol TigerTips.Tipo)
-                   TigerSeman.initConf2
-                   (GHC.Types.[]
-                      @ (Data.Map.Base.Map TigerSymbol.Symbol TigerTips.Tipo))) -}
-861500892daa832ba47ac5e08e488e36
-  initConf10 :: [(Data.Text.Internal.Text, TigerSres.EnvEntry)]
-  {- Unfolding: (GHC.Types.:
-                   @ (Data.Text.Internal.Text, TigerSres.EnvEntry)
-                   TigerSeman.initConf42
-                   TigerSeman.initConf11) -}
-a98ca00ed6a2bab5328c4e0ac5a89dfd
-  initConf11 :: [(Data.Text.Internal.Text, TigerSres.EnvEntry)]
-  {- Unfolding: (GHC.Types.:
-                   @ (Data.Text.Internal.Text, TigerSres.EnvEntry)
-                   TigerSeman.initConf38
-                   TigerSeman.initConf12) -}
-4562881426421671f32213571958554e
-  initConf12 :: [(Data.Text.Internal.Text, TigerSres.EnvEntry)]
-  {- Unfolding: (GHC.Types.:
-                   @ (Data.Text.Internal.Text, TigerSres.EnvEntry)
-                   TigerSeman.initConf32
-                   TigerSeman.initConf13) -}
-f624738a989be5a4e18883c1dcc2c4b3
-  initConf13 :: [(Data.Text.Internal.Text, TigerSres.EnvEntry)]
-  {- Unfolding: (GHC.Types.:
-                   @ (Data.Text.Internal.Text, TigerSres.EnvEntry)
-                   TigerSeman.initConf26
-                   TigerSeman.initConf14) -}
-01008c97a10abd06b9299200989a243e
-  initConf14 :: [(Data.Text.Internal.Text, TigerSres.EnvEntry)]
-  {- Unfolding: (GHC.Types.:
-                   @ (Data.Text.Internal.Text, TigerSres.EnvEntry)
-                   TigerSeman.initConf22
-                   TigerSeman.initConf15) -}
-0388f365a2c7c69daa3cea49c8a75d62
-  initConf15 :: [(Data.Text.Internal.Text, TigerSres.EnvEntry)]
-  {- Unfolding: (GHC.Types.:
-                   @ (Data.Text.Internal.Text, TigerSres.EnvEntry)
-                   TigerSeman.initConf16
-                   (GHC.Types.[] @ (Data.Text.Internal.Text, TigerSres.EnvEntry))) -}
-89e595c67ec3b223d57506d3c5dc885d
-  initConf16 :: (Data.Text.Internal.Text, TigerSres.EnvEntry)
-  {- Unfolding: ((TigerSeman.initConf20, TigerSeman.initConf17)) -}
-b5756af4d57d8698b031f1e89f11733e
-  initConf17 :: TigerSres.EnvEntry
-  {- Unfolding: (TigerSres.Func TigerSeman.initConf18) -}
-3a693220a20e744467e4295698ae2aa8
-  initConf18 ::
-    (GHC.Types.Int, Data.Text.Internal.Text, [TigerTips.Tipo],
-     TigerTips.Tipo, GHC.Types.Bool)
-  {- Unfolding: ((TigerSeman.initConf21, TigerSeman.initConf20,
-                  TigerSeman.initConf19, TigerTips.TUnit, GHC.Types.True)) -}
-a0d1ff17a0fdd1dea342f016ce351207
-  initConf19 :: [TigerTips.Tipo]
-  {- HasNoCafRefs,
-     Unfolding: (GHC.Types.:
-                   @ TigerTips.Tipo
+                   TigerSeman.initConf60
                    TigerSeman.initConf3
-                   (GHC.Types.[] @ TigerTips.Tipo)) -}
-d37843eb5356533ea145e82b2c8f3f09
-  initConf2 :: Data.Map.Base.Map TigerSymbol.Symbol TigerTips.Tipo
+                   TigerSeman.initConf1) -}
+e21f2240b2c4ce254e256c3340e98efd
+  initConf1 ::
+    Data.Map.Base.Map Data.Text.Internal.Text TigerTips.Tipo
   {- Unfolding: (case Data.Text.Show.unpackCString#
                         "string"# of dt { Data.Text.Internal.Text ipv ipv1 ipv2 ->
                  case Data.Text.Show.unpackCString#
@@ -1670,7 +1691,7 @@ d37843eb5356533ea145e82b2c8f3f09
                    ww1
                    ww2
                    ww3
-                   TigerSeman.initConf3
+                   TigerSeman.initConf2
                    (Data.Map.Base.Bin
                       @ Data.Text.Internal.Text
                       @ TigerTips.Tipo
@@ -1681,221 +1702,267 @@ d37843eb5356533ea145e82b2c8f3f09
                       (Data.Map.Base.Tip
                          @ Data.Text.Internal.Text
                          @ TigerTips.Tipo)) } }) -}
-3ee93da644ddd7843ff16c7629e451fc
-  initConf20 :: Data.Text.Internal.Text
+f63502040dbebb8b65cbc861b6b6c3f6
+  initConf10 :: [(Data.Text.Internal.Text, TigerSres.EnvEntry)]
+  {- Unfolding: (GHC.Types.:
+                   @ (Data.Text.Internal.Text, TigerSres.EnvEntry)
+                   TigerSeman.initConf30
+                   TigerSeman.initConf11) -}
+99354d79323d72b96ba6739a7298cf3c
+  initConf11 :: [(Data.Text.Internal.Text, TigerSres.EnvEntry)]
+  {- Unfolding: (GHC.Types.:
+                   @ (Data.Text.Internal.Text, TigerSres.EnvEntry)
+                   TigerSeman.initConf24
+                   TigerSeman.initConf12) -}
+7995f09a1a889f48cebf3dac30e85b0f
+  initConf12 :: [(Data.Text.Internal.Text, TigerSres.EnvEntry)]
+  {- Unfolding: (GHC.Types.:
+                   @ (Data.Text.Internal.Text, TigerSres.EnvEntry)
+                   TigerSeman.initConf20
+                   TigerSeman.initConf13) -}
+e784ddf3980b8bb0234590a812f49857
+  initConf13 :: [(Data.Text.Internal.Text, TigerSres.EnvEntry)]
+  {- Unfolding: (GHC.Types.:
+                   @ (Data.Text.Internal.Text, TigerSres.EnvEntry)
+                   TigerSeman.initConf14
+                   (GHC.Types.[] @ (Data.Text.Internal.Text, TigerSres.EnvEntry))) -}
+9866f7400c7bd443119bb059e636bf74
+  initConf14 :: (Data.Text.Internal.Text, TigerSres.EnvEntry)
+  {- Unfolding: ((TigerSeman.initConf18, TigerSeman.initConf15)) -}
+73b97ab66ace7107e0a971b20d030359
+  initConf15 :: TigerSres.EnvEntry
+  {- Unfolding: (TigerSres.Func TigerSeman.initConf16) -}
+9aea6a6a3154a8c29377aff890ae9103
+  initConf16 ::
+    (GHC.Types.Int, Data.Text.Internal.Text, [TigerTips.Tipo],
+     TigerTips.Tipo, GHC.Types.Bool)
+  {- Unfolding: ((TigerSeman.initConf19, TigerSeman.initConf18,
+                  TigerSeman.initConf17, TigerTips.TUnit, GHC.Types.True)) -}
+223b1486d12b626452c18b46b57df073
+  initConf17 :: [TigerTips.Tipo]
+  {- HasNoCafRefs,
+     Unfolding: (GHC.Types.:
+                   @ TigerTips.Tipo
+                   TigerSeman.initConf2
+                   (GHC.Types.[] @ TigerTips.Tipo)) -}
+c7204ce08a7b7805e219f86f9ebbfc1f
+  initConf18 :: Data.Text.Internal.Text
   {- Unfolding: (Data.Text.Show.unpackCString# "exit"#) -}
-7314665a9379810f04cad336b6c434d8
-  initConf21 :: GHC.Types.Int
+5fd84eb82ce9c9d44fcea2c05d987f8c
+  initConf19 :: GHC.Types.Int
   {- HasNoCafRefs, Unfolding: (GHC.Types.I# 1#) -}
-516c109ac7ba4554727832ad7b2d379b
-  initConf22 :: (Data.Text.Internal.Text, TigerSres.EnvEntry)
-  {- Unfolding: ((TigerSeman.initConf25, TigerSeman.initConf23)) -}
-4bbf5441e68c4e6e1be09c598ef1279e
-  initConf23 :: TigerSres.EnvEntry
-  {- Unfolding: (TigerSres.Func TigerSeman.initConf24) -}
-1e5e599ca70e6aec4ffddaad52b85a03
-  initConf24 ::
+b552ec1f846706142e23cdb27a99e81f
+  initConf2 :: TigerTips.Tipo
+  {- HasNoCafRefs, Strictness: m3,
+     Unfolding: (TigerTips.TInt TigerTips.RW) -}
+9fa83d36db1ff862436e3e293d87a198
+  initConf20 :: (Data.Text.Internal.Text, TigerSres.EnvEntry)
+  {- Unfolding: ((TigerSeman.initConf23, TigerSeman.initConf21)) -}
+9c0053be77c47bcacc0d9bf232c4945e
+  initConf21 :: TigerSres.EnvEntry
+  {- Unfolding: (TigerSres.Func TigerSeman.initConf22) -}
+e5761e2083318500f3130f01db5054c0
+  initConf22 ::
     (GHC.Types.Int, Data.Text.Internal.Text, [TigerTips.Tipo],
      TigerTips.Tipo, GHC.Types.Bool)
-  {- Unfolding: ((TigerSeman.initConf21, TigerSeman.initConf25,
-                  TigerSeman.initConf19, TigerSeman.initConf3, GHC.Types.True)) -}
-02377e93e60d52bd04f40aadac6fe639
-  initConf25 :: Data.Text.Internal.Text
+  {- Unfolding: ((TigerSeman.initConf19, TigerSeman.initConf23,
+                  TigerSeman.initConf17, TigerSeman.initConf2, GHC.Types.True)) -}
+eeaf712773a3bb165c1ba4f6e2a5ec76
+  initConf23 :: Data.Text.Internal.Text
   {- Unfolding: (Data.Text.Show.unpackCString# "not"#) -}
-f3a621e93afd945add397fa3f113d939
-  initConf26 :: (Data.Text.Internal.Text, TigerSres.EnvEntry)
-  {- Unfolding: ((TigerSeman.initConf31, TigerSeman.initConf27)) -}
-ca97c89b26c91f048aec51b44fba61aa
-  initConf27 :: TigerSres.EnvEntry
-  {- Unfolding: (TigerSres.Func TigerSeman.initConf28) -}
-bd7238a3cc9e788c95c2789ef6b807c3
-  initConf28 ::
+18eba270de43f6e8d7ed3005935ab88a
+  initConf24 :: (Data.Text.Internal.Text, TigerSres.EnvEntry)
+  {- Unfolding: ((TigerSeman.initConf29, TigerSeman.initConf25)) -}
+e5f3a3eda579c186c00009856bc41989
+  initConf25 :: TigerSres.EnvEntry
+  {- Unfolding: (TigerSres.Func TigerSeman.initConf26) -}
+3350a9d32fe76a522f3c6a8582de9485
+  initConf26 ::
     (GHC.Types.Int, Data.Text.Internal.Text, [TigerTips.Tipo],
      TigerTips.Tipo, GHC.Types.Bool)
-  {- Unfolding: ((TigerSeman.initConf21, TigerSeman.initConf31,
-                  TigerSeman.initConf29, TigerTips.TString, GHC.Types.True)) -}
-6156154ca09747beb0c16fdc3b572edc
-  initConf29 :: [TigerTips.Tipo]
+  {- Unfolding: ((TigerSeman.initConf19, TigerSeman.initConf29,
+                  TigerSeman.initConf27, TigerTips.TString, GHC.Types.True)) -}
+5926a153f9bd0ef4c5dc6c210e0c073d
+  initConf27 :: [TigerTips.Tipo]
   {- HasNoCafRefs,
      Unfolding: (GHC.Types.:
                    @ TigerTips.Tipo
                    TigerTips.TString
-                   TigerSeman.initConf30) -}
-f0b3ca0e8967e946f82ce0c44f38e5ef
-  initConf3 :: TigerTips.Tipo
-  {- HasNoCafRefs, Strictness: m3,
-     Unfolding: (TigerTips.TInt TigerTips.RW) -}
-0e5065efacb378d8dd35fcc508841b35
-  initConf30 :: [TigerTips.Tipo]
+                   TigerSeman.initConf28) -}
+3bba9dde889d027ab31158f6bf7b4205
+  initConf28 :: [TigerTips.Tipo]
   {- HasNoCafRefs,
      Unfolding: (GHC.Types.:
                    @ TigerTips.Tipo
                    TigerTips.TString
                    (GHC.Types.[] @ TigerTips.Tipo)) -}
-c60fd096e352e194baab55e0843f9a5b
-  initConf31 :: Data.Text.Internal.Text
+a262604e5643b6c4787737354d05e890
+  initConf29 :: Data.Text.Internal.Text
   {- Unfolding: (Data.Text.Show.unpackCString# "concat"#) -}
-5363939254e95753a4bf5d10b22408f5
-  initConf32 :: (Data.Text.Internal.Text, TigerSres.EnvEntry)
-  {- Unfolding: ((TigerSeman.initConf37, TigerSeman.initConf33)) -}
-1d452aa4ed302fd5d092edf997ae2a5b
-  initConf33 :: TigerSres.EnvEntry
-  {- Unfolding: (TigerSres.Func TigerSeman.initConf34) -}
-94cf99dd768134f3a764fa56465b46f1
-  initConf34 ::
+cfddd8483a05accac9f6869ac575e039
+  initConf3 ::
+    Data.Map.Base.Map Data.Text.Internal.Text TigerSres.EnvEntry
+  {- Unfolding: (TigerSeman.$sfromList
+                   @ TigerSres.EnvEntry
+                   TigerSeman.initConf4) -}
+924b008b9512a5eefdc912ebfff1bfa7
+  initConf30 :: (Data.Text.Internal.Text, TigerSres.EnvEntry)
+  {- Unfolding: ((TigerSeman.initConf35, TigerSeman.initConf31)) -}
+c049d3c6dfa3d7d76985f41dcb8f4f7c
+  initConf31 :: TigerSres.EnvEntry
+  {- Unfolding: (TigerSres.Func TigerSeman.initConf32) -}
+79fe02b402711c4066c383362352e013
+  initConf32 ::
     (GHC.Types.Int, Data.Text.Internal.Text, [TigerTips.Tipo],
      TigerTips.Tipo, GHC.Types.Bool)
-  {- Unfolding: ((TigerSeman.initConf21, TigerSeman.initConf37,
-                  TigerSeman.initConf35, TigerTips.TString, GHC.Types.True)) -}
-2dd1bc864815f3e710c8cc95af78ea18
-  initConf35 :: [TigerTips.Tipo]
+  {- Unfolding: ((TigerSeman.initConf19, TigerSeman.initConf35,
+                  TigerSeman.initConf33, TigerTips.TString, GHC.Types.True)) -}
+3116777d6eb0596bb4ec91b14e31092e
+  initConf33 :: [TigerTips.Tipo]
   {- HasNoCafRefs,
      Unfolding: (GHC.Types.:
                    @ TigerTips.Tipo
                    TigerTips.TString
-                   TigerSeman.initConf36) -}
-dcbf267f6457fa93d2c47a44a56ae1a4
-  initConf36 :: [TigerTips.Tipo]
+                   TigerSeman.initConf34) -}
+79e13b5f01e28e2abf4ecdaad4f7a253
+  initConf34 :: [TigerTips.Tipo]
   {- HasNoCafRefs,
      Unfolding: (GHC.Types.:
                    @ TigerTips.Tipo
-                   TigerSeman.initConf3
-                   TigerSeman.initConf19) -}
-31555030483b2ba9d8addbe149a158a1
-  initConf37 :: Data.Text.Internal.Text
+                   TigerSeman.initConf2
+                   TigerSeman.initConf17) -}
+b1a85d9a6c64290cdfa73459ff148c53
+  initConf35 :: Data.Text.Internal.Text
   {- Unfolding: (Data.Text.Show.unpackCString# "substring"#) -}
-18031d14f2d83ebd8228e691bab05228
-  initConf38 :: (Data.Text.Internal.Text, TigerSres.EnvEntry)
-  {- Unfolding: ((TigerSeman.initConf41, TigerSeman.initConf39)) -}
-1bd20d9a1cd382f6fa900a73dc4a6412
-  initConf39 :: TigerSres.EnvEntry
-  {- Unfolding: (TigerSres.Func TigerSeman.initConf40) -}
-f037afa888103c78d7d7ad31fba77755
-  initConf4 ::
-    [Data.Map.Base.Map TigerSymbol.Symbol TigerSres.EnvEntry]
-  {- Strictness: m2,
-     Unfolding: (GHC.Types.:
-                   @ (Data.Map.Base.Map TigerSymbol.Symbol TigerSres.EnvEntry)
-                   TigerSeman.initConf5
-                   (GHC.Types.[]
-                      @ (Data.Map.Base.Map TigerSymbol.Symbol TigerSres.EnvEntry))) -}
-d5e495baee3438c549bc3d29cd104033
-  initConf40 ::
+9cd61d2f4ffd02ae965620ab7cdea1e9
+  initConf36 :: (Data.Text.Internal.Text, TigerSres.EnvEntry)
+  {- Unfolding: ((TigerSeman.initConf39, TigerSeman.initConf37)) -}
+bea754f5e2d4fb676523a7e4ee9bc0ca
+  initConf37 :: TigerSres.EnvEntry
+  {- Unfolding: (TigerSres.Func TigerSeman.initConf38) -}
+8720d39a154445c395809e3781bd5bd9
+  initConf38 ::
     (GHC.Types.Int, Data.Text.Internal.Text, [TigerTips.Tipo],
      TigerTips.Tipo, GHC.Types.Bool)
-  {- Unfolding: ((TigerSeman.initConf21, TigerSeman.initConf41,
-                  TigerSeman.initConf30, TigerSeman.initConf3, GHC.Types.True)) -}
-aac82dd78be7678cb2309e8fb70ddd78
-  initConf41 :: Data.Text.Internal.Text
+  {- Unfolding: ((TigerSeman.initConf19, TigerSeman.initConf39,
+                  TigerSeman.initConf28, TigerSeman.initConf2, GHC.Types.True)) -}
+172ed481c0fbd400c25b7867c2f95421
+  initConf39 :: Data.Text.Internal.Text
   {- Unfolding: (Data.Text.Show.unpackCString# "size"#) -}
-48cffbea7d5e7bbaf5f2e2bace2285a4
-  initConf42 :: (Data.Text.Internal.Text, TigerSres.EnvEntry)
-  {- Unfolding: ((TigerSeman.initConf45, TigerSeman.initConf43)) -}
-3f2f379dfcf4ca3d525e00d8b7a58a8b
-  initConf43 :: TigerSres.EnvEntry
-  {- Unfolding: (TigerSres.Func TigerSeman.initConf44) -}
-5f6514c16fc4d692ea6d640ffb53fcbe
-  initConf44 ::
+5759d4b1722158f090326147f94fb0f1
+  initConf4 :: [(Data.Text.Internal.Text, TigerSres.EnvEntry)]
+  {- Unfolding: (GHC.Types.:
+                   @ (Data.Text.Internal.Text, TigerSres.EnvEntry)
+                   TigerSeman.initConf56
+                   TigerSeman.initConf5) -}
+388c6b782277fff997f3fca97dc32998
+  initConf40 :: (Data.Text.Internal.Text, TigerSres.EnvEntry)
+  {- Unfolding: ((TigerSeman.initConf43, TigerSeman.initConf41)) -}
+9d1e5061c3a8d2fbb7b1041d94fa27b4
+  initConf41 :: TigerSres.EnvEntry
+  {- Unfolding: (TigerSres.Func TigerSeman.initConf42) -}
+4a7c5115f29b635857e43bc7c23e99e1
+  initConf42 ::
     (GHC.Types.Int, Data.Text.Internal.Text, [TigerTips.Tipo],
      TigerTips.Tipo, GHC.Types.Bool)
-  {- Unfolding: ((TigerSeman.initConf21, TigerSeman.initConf45,
-                  TigerSeman.initConf19, TigerTips.TString, GHC.Types.True)) -}
-07c232fa6ba536f767131b5d92a30531
-  initConf45 :: Data.Text.Internal.Text
+  {- Unfolding: ((TigerSeman.initConf19, TigerSeman.initConf43,
+                  TigerSeman.initConf17, TigerTips.TString, GHC.Types.True)) -}
+06b3d842aa573bffad975d6bf168d548
+  initConf43 :: Data.Text.Internal.Text
   {- Unfolding: (Data.Text.Show.unpackCString# "chr"#) -}
-1b80b16cb29babc10858cd7398172b28
-  initConf46 :: (Data.Text.Internal.Text, TigerSres.EnvEntry)
-  {- Unfolding: ((TigerSeman.initConf49, TigerSeman.initConf47)) -}
-3ca57aa1ecbe272b032e58e5b5511bcb
-  initConf47 :: TigerSres.EnvEntry
-  {- Unfolding: (TigerSres.Func TigerSeman.initConf48) -}
-eaba95ab8342e8b0cf7d6585f687599f
-  initConf48 ::
+78e09efcc7fab7b892671eaa373d05f7
+  initConf44 :: (Data.Text.Internal.Text, TigerSres.EnvEntry)
+  {- Unfolding: ((TigerSeman.initConf47, TigerSeman.initConf45)) -}
+c5cab1d92aad679516d3a8bfb1882a22
+  initConf45 :: TigerSres.EnvEntry
+  {- Unfolding: (TigerSres.Func TigerSeman.initConf46) -}
+4279b31305b025bc7320ed4c3fbdd6eb
+  initConf46 ::
     (GHC.Types.Int, Data.Text.Internal.Text, [TigerTips.Tipo],
      TigerTips.Tipo, GHC.Types.Bool)
-  {- Unfolding: ((TigerSeman.initConf21, TigerSeman.initConf49,
-                  TigerSeman.initConf30, TigerSeman.initConf3, GHC.Types.True)) -}
-09783729154a239c1990ac0274419215
-  initConf49 :: Data.Text.Internal.Text
+  {- Unfolding: ((TigerSeman.initConf19, TigerSeman.initConf47,
+                  TigerSeman.initConf28, TigerSeman.initConf2, GHC.Types.True)) -}
+8d05587b3d0663cca6e3121c4dd91b2f
+  initConf47 :: Data.Text.Internal.Text
   {- Unfolding: (Data.Text.Show.unpackCString# "ord"#) -}
-11abc00adb7e2b0e54376c1e42c9f7aa
-  initConf5 ::
-    Data.Map.Base.Map Data.Text.Internal.Text TigerSres.EnvEntry
-  {- Unfolding: (TigerSeman.$sfromList
-                   @ TigerSres.EnvEntry
+b1996ec0e6d2329a22c47721421bbf0b
+  initConf48 :: (Data.Text.Internal.Text, TigerSres.EnvEntry)
+  {- Unfolding: ((TigerSeman.initConf51, TigerSeman.initConf49)) -}
+a5e593580cd1d8fc50e1e1af24c394eb
+  initConf49 :: TigerSres.EnvEntry
+  {- Unfolding: (TigerSres.Func TigerSeman.initConf50) -}
+464757daf107afe74d80ce2072e16513
+  initConf5 :: [(Data.Text.Internal.Text, TigerSres.EnvEntry)]
+  {- Unfolding: (GHC.Types.:
+                   @ (Data.Text.Internal.Text, TigerSres.EnvEntry)
+                   TigerSeman.initConf52
                    TigerSeman.initConf6) -}
-7b0a73a020a011535aa52925ecdd6827
-  initConf50 :: (Data.Text.Internal.Text, TigerSres.EnvEntry)
-  {- Unfolding: ((TigerSeman.initConf53, TigerSeman.initConf51)) -}
-9831b9b6516176373f72c372777d1e4d
-  initConf51 :: TigerSres.EnvEntry
-  {- Unfolding: (TigerSres.Func TigerSeman.initConf52) -}
-b67e4b7480c915021850c2c0d4a74a7c
-  initConf52 ::
+e1e5b6d5969173d01e263ab599e9769e
+  initConf50 ::
     (GHC.Types.Int, Data.Text.Internal.Text, [TigerTips.Tipo],
      TigerTips.Tipo, GHC.Types.Bool)
-  {- Unfolding: ((TigerSeman.initConf21, TigerSeman.initConf53,
+  {- Unfolding: ((TigerSeman.initConf19, TigerSeman.initConf51,
                   GHC.Types.[] @ TigerTips.Tipo, TigerTips.TString,
                   GHC.Types.True)) -}
-d7499face9669461a5fbfe2befe031a9
-  initConf53 :: Data.Text.Internal.Text
+09be63dff76c561bc56ccc0d1571b000
+  initConf51 :: Data.Text.Internal.Text
   {- Unfolding: (Data.Text.Show.unpackCString# "getchar"#) -}
-ae48994db06e0672f321a6eb7c406960
-  initConf54 :: (Data.Text.Internal.Text, TigerSres.EnvEntry)
-  {- Unfolding: ((TigerSeman.initConf57, TigerSeman.initConf55)) -}
-d2fa84cb1e9fc80f6df3b092fc5e03c4
-  initConf55 :: TigerSres.EnvEntry
-  {- Unfolding: (TigerSres.Func TigerSeman.initConf56) -}
-40cc2f2e4949ffaf48e7c546868c9f02
-  initConf56 ::
+c759127643092dec96f91706b9a937c3
+  initConf52 :: (Data.Text.Internal.Text, TigerSres.EnvEntry)
+  {- Unfolding: ((TigerSeman.initConf55, TigerSeman.initConf53)) -}
+6c3b34e1aa50f8dc2a91819081c5d5ee
+  initConf53 :: TigerSres.EnvEntry
+  {- Unfolding: (TigerSres.Func TigerSeman.initConf54) -}
+a289a1d85d3b66dfb90f5478325dd189
+  initConf54 ::
     (GHC.Types.Int, Data.Text.Internal.Text, [TigerTips.Tipo],
      TigerTips.Tipo, GHC.Types.Bool)
-  {- Unfolding: ((TigerSeman.initConf21, TigerSeman.initConf57,
+  {- Unfolding: ((TigerSeman.initConf19, TigerSeman.initConf55,
                   GHC.Types.[] @ TigerTips.Tipo, TigerTips.TUnit, GHC.Types.True)) -}
-5dc04010f45844db0583e4621237dcad
-  initConf57 :: Data.Text.Internal.Text
+40aa1dcc94e3279b590bf8a694b90a06
+  initConf55 :: Data.Text.Internal.Text
   {- Unfolding: (Data.Text.Show.unpackCString# "flush"#) -}
-cc9aae7a7c3fdd35bf4f037411e7fd20
-  initConf58 :: (Data.Text.Internal.Text, TigerSres.EnvEntry)
-  {- Unfolding: ((TigerSeman.initConf61, TigerSeman.initConf59)) -}
-9e2984b2815ff21a0d234e947693a71e
-  initConf59 :: TigerSres.EnvEntry
-  {- Unfolding: (TigerSres.Func TigerSeman.initConf60) -}
-382fa599499323f34d008f16655e6985
+2425c684508590766a905234a66e545f
+  initConf56 :: (Data.Text.Internal.Text, TigerSres.EnvEntry)
+  {- Unfolding: ((TigerSeman.initConf59, TigerSeman.initConf57)) -}
+cf106fe68986ee7158f2f009b443aa65
+  initConf57 :: TigerSres.EnvEntry
+  {- Unfolding: (TigerSres.Func TigerSeman.initConf58) -}
+09448318aeb1a1c67ca2d5091877158e
+  initConf58 ::
+    (GHC.Types.Int, Data.Text.Internal.Text, [TigerTips.Tipo],
+     TigerTips.Tipo, GHC.Types.Bool)
+  {- Unfolding: ((TigerSeman.initConf19, TigerSeman.initConf59,
+                  TigerSeman.initConf28, TigerTips.TUnit, GHC.Types.True)) -}
+955294624f796bf5ea4ae0e79662e5c7
+  initConf59 :: Data.Text.Internal.Text
+  {- Unfolding: (Data.Text.Show.unpackCString# "print"#) -}
+b02001026814b641a4e82b54d75a2b05
   initConf6 :: [(Data.Text.Internal.Text, TigerSres.EnvEntry)]
   {- Unfolding: (GHC.Types.:
                    @ (Data.Text.Internal.Text, TigerSres.EnvEntry)
-                   TigerSeman.initConf58
+                   TigerSeman.initConf48
                    TigerSeman.initConf7) -}
-eaa9a54b8e0599c23a104a4dee5a196c
-  initConf60 ::
-    (GHC.Types.Int, Data.Text.Internal.Text, [TigerTips.Tipo],
-     TigerTips.Tipo, GHC.Types.Bool)
-  {- Unfolding: ((TigerSeman.initConf21, TigerSeman.initConf61,
-                  TigerSeman.initConf30, TigerTips.TUnit, GHC.Types.True)) -}
-7b5a92b2476ee8926747570587e40c91
-  initConf61 :: Data.Text.Internal.Text
-  {- Unfolding: (Data.Text.Show.unpackCString# "print"#) -}
-20bb82537e2bea3ab917824b5b771977
-  initConf62 :: GHC.Types.Int
+af241474a3d4684448c9d1c248df0235
+  initConf60 :: GHC.Types.Int
   {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 0#) -}
-aae96fd5b9da5eaf15fd4ea67962742b
+09024906d959b8d439148841d530e2e2
   initConf7 :: [(Data.Text.Internal.Text, TigerSres.EnvEntry)]
   {- Unfolding: (GHC.Types.:
                    @ (Data.Text.Internal.Text, TigerSres.EnvEntry)
-                   TigerSeman.initConf54
+                   TigerSeman.initConf44
                    TigerSeman.initConf8) -}
-3b439b0291c04ee597abbc0081548ee4
+c3fac76b09e87eb67b8dfb5332b92608
   initConf8 :: [(Data.Text.Internal.Text, TigerSres.EnvEntry)]
   {- Unfolding: (GHC.Types.:
                    @ (Data.Text.Internal.Text, TigerSres.EnvEntry)
-                   TigerSeman.initConf50
+                   TigerSeman.initConf40
                    TigerSeman.initConf9) -}
-0654ccb2902267f8cc8aab4a406f4a8c
+7c75a5e275e265c6de5ba28d39da4cae
   initConf9 :: [(Data.Text.Internal.Text, TigerSres.EnvEntry)]
   {- Unfolding: (GHC.Types.:
                    @ (Data.Text.Internal.Text, TigerSres.EnvEntry)
-                   TigerSeman.initConf46
+                   TigerSeman.initConf36
                    TigerSeman.initConf10) -}
 7a75000351ea295eb94e15082718d765
   okOp ::
@@ -1961,16 +2028,16 @@ adf58003be2e72a0c5e6c1cfd35546b6
                  case w2 of ww { (,,) ww1 ww2 ww3 ->
                  case w3 of ww4 { (,,) ww5 ww6 ww7 ->
                  TigerSeman.$wourOrder @ a @ b @ c w1 ww1 ww5 } }) -}
-3ac425891b6e34e4589320a2bc4ac7fa
+ffbee887c944501fbb3ee9a230c6aa0d
   tEnv ::
     TigerSeman.EstadoG
-    -> [Data.Map.Base.Map TigerSymbol.Symbol TigerTips.Tipo]
+    -> Data.Map.Base.Map TigerSymbol.Symbol TigerTips.Tipo
   RecSel Left TigerSeman.EstadoG
   {- Arity: 1, HasNoCafRefs, Strictness: <S(LLS),1*U(A,A,1*U)>,
      Unfolding: InlineRule (1, True, False)
                 (\ (ds :: TigerSeman.EstadoG) ->
                  case ds of wild { TigerSeman.G ds1 ds2 ds3 -> ds3 }) -}
-972cf610610b3b94972dae5b1aeb7b6a
+581f2519b599724333140039bd3fff28
   transDecs :: TigerSeman.Manticore w => [TigerAbs.Dec] -> w a -> w a
   {- Arity: 3, Strictness: <L,A><S,1*U><S,1*U>,
      Unfolding: InlineRule (3, True, False)
@@ -1985,32 +2052,32 @@ adf58003be2e72a0c5e6c1cfd35546b6
 2b476a564de5a891f96d25a1c79a6873
   transDecs1 :: w a -> w a
   {- Strictness: x -}
-7a0d4b0cd8fd043dce737ad62d7f7abd
+b207840f915497128f2a10caacd49fe6
   transExp ::
     TigerSeman.Manticore w => TigerAbs.Exp -> w TigerTips.Tipo
   {- Arity: 1,
      Strictness: <L,U(U,U,A,A,C(C1(U)),A,C(U),C(U),A,A,A,C(C1(U)),U,A)> -}
-45fe40113ef99328e9514fb2515de5e8
+511bd181df8059407710a2395f1312aa
   transTy ::
     TigerSeman.Manticore w => TigerAbs.Ty -> w TigerTips.Tipo
   {- Arity: 2, HasNoCafRefs,
      Strictness: <S,U(A,U,A,A,A,A,A,A,C(U),A,A,A,U,A)><S,1*U> -}
-e6d6a72515d86a895e8b4593623ff11c
+73802403d27b47fedb7e966b308a7e0f
   transVar ::
     TigerSeman.Manticore w => TigerAbs.Var -> w TigerTips.Tipo
   {- Arity: 2,
      Strictness: <S,U(U,U,A,A,C(C1(U)),A,C(U),C(U),A,A,A,C(C1(U)),U,A)><S,1*U> -}
-2b0a068220072e7e04ccb99d5ab434ed
+93b0e97334a1676edd0296d5976f0054
   unique :: TigerSeman.EstadoG -> GHC.Types.Int
   RecSel Left TigerSeman.EstadoG
   {- Arity: 1, HasNoCafRefs, Strictness: <S(SLL),1*U(1*U(U),A,A)>m,
      Unfolding: InlineRule (1, True, False)
                 (\ (ds :: TigerSeman.EstadoG) ->
                  case ds of wild { TigerSeman.G ds1 ds2 ds3 -> ds1 }) -}
-f7b368d6d00b6a3c9cda4947b82bdf62
+9470dedeb1755aa3fa9e53972a165dec
   vEnv ::
     TigerSeman.EstadoG
-    -> [Data.Map.Base.Map TigerSymbol.Symbol TigerSres.EnvEntry]
+    -> Data.Map.Base.Map TigerSymbol.Symbol TigerSres.EnvEntry
   RecSel Left TigerSeman.EstadoG
   {- Arity: 1, HasNoCafRefs, Strictness: <S(LSL),1*U(A,1*U,A)>,
      Unfolding: InlineRule (1, True, False)
