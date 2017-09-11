@@ -1,11 +1,11 @@
 
 ==================== FINAL INTERFACE ====================
-2017-09-10 01:15:16.676808 UTC
+2017-09-11 05:29:42.82484 UTC
 
 interface HaskTiger-0.1.0.0-1NjWJIneMSYKOEJS7DxzEs:TigerSeman 8002
-  interface hash: a78f628cd137e068214c02f03d899089
-  ABI hash: f36070ee027075c79c0f4724d3d3a234
-  export-list hash: b36ba09f3713c72b996559b52a39ce8a
+  interface hash: 82ba6252b27ea94d2ca52a1418d531c4
+  ABI hash: c805e0c921669da57aba78b581bc1770
+  export-list hash: acfb6088be6739bfee36613b6ca22054
   orphan hash: 6ca9d3b42cc4d86b8d5daa3fc4be7680
   flag hash: e42325c67e4cbf35a695cbd293698255
   sig of: Nothing
@@ -21,6 +21,7 @@ exports:
   TigerSeman.initConf
   TigerSeman.okOp
   TigerSeman.ourOrder
+  TigerSeman.trDec
   TigerSeman.transDecs
   TigerSeman.transExp
   TigerSeman.transTy
@@ -29,8 +30,8 @@ exports:
   TigerSeman.Manticore{TigerSeman.addTypos TigerSeman.getTipoFunV TigerSeman.getTipoT TigerSeman.getTipoValV TigerSeman.insertFunV TigerSeman.insertTipoT TigerSeman.insertVRO TigerSeman.insertValV TigerSeman.showTEnv TigerSeman.showVEnv TigerSeman.tiposIguales TigerSeman.ugen}
   TigerSeman.OurState
   TigerSeman.SEErrores{TigerSeman.DiffVal TigerSeman.Internal TigerSeman.NotFound}
-module dependencies: TigerAbs TigerErrores TigerSres TigerSymbol
-                     TigerTemp TigerTips
+module dependencies: PrintEnv TigerAbs TigerErrores TigerSres
+                     TigerSymbol TigerTemp TigerTips
 package dependencies: array-0.5.1.1@array-0.5.1.1 base-4.9.1.0
                       binary-0.8.3.0@binary-0.8.3.0
                       bytestring-0.10.8.1@bytestring-0.10.8.1
@@ -38,6 +39,7 @@ package dependencies: array-0.5.1.1@array-0.5.1.1 base-4.9.1.0
                       containers-0.5.7.1@containers-0.5.7.1
                       deepseq-1.4.2.0@deepseq-1.4.2.0 ghc-prim-0.5.0.0
                       integer-gmp-1.0.0.1 mtl-2.2.1@mtl-2.2.1-BLKBelFsPB3BoFeSWSOYj6
+                      pretty-1.1.3.3@pretty-1.1.3.3
                       text-1.2.2.2@text-1.2.2.2-1cn50juu89QSL9QkUVcRY
                       transformers-0.5.2.0@transformers-0.5.2.0
 orphans: base-4.9.1.0:GHC.Base base-4.9.1.0:GHC.Float
@@ -59,7 +61,12 @@ family instance modules: base-4.9.1.0:Control.Applicative
                          containers-0.5.7.1@containers-0.5.7.1:Data.Map.Base
                          containers-0.5.7.1@containers-0.5.7.1:Data.Sequence
                          containers-0.5.7.1@containers-0.5.7.1:Data.Set.Base
+                         pretty-1.1.3.3@pretty-1.1.3.3:Text.PrettyPrint.Annotated.HughesPJ
+                         pretty-1.1.3.3@pretty-1.1.3.3:Text.PrettyPrint.HughesPJ
                          text-1.2.2.2@text-1.2.2.2-1cn50juu89QSL9QkUVcRY:Data.Text
+import  -/  PrintEnv 5b9e13297f6d2797f014e140a313479f
+  exports: 422eeda738f34ddb8f325ca88c18486d
+  renderEnv b7d4553ff04f46bf10d962f057fa171c
 import  -/  TigerAbs 37f30c082077bd2ed6390df841315dcd
   exports: 3a90fdff097973025312591ea87ea06f
   ArrayExp 7c6004bec77ad7b20c1094cbfb154bea
@@ -73,7 +80,6 @@ import  -/  TigerAbs 37f30c082077bd2ed6390df841315dcd
   Exp 49b0f3859ea1d6fd105d2ffa68df9b08
   FieldVar 6a02be9d8e8fdcee7fe9de68577dfe04
   ForExp ca7c606616d226aadf449f81ecae2b42
-  FunctionDec db1f0236b7de4394ae2d008cb4a7ddc6
   GeOp d085bad1848560d001a1a1043db1ea82
   GtOp bcd6312d51bc5afdee786fac2aa9041f
   IfExp be5b47495f73bd344ea9ecaae1815c9f
@@ -148,6 +154,7 @@ import  -/  base-4.9.1.0:GHC.List ab8c4e523e6c479c549d3bcd5fc4a439
 import  -/  base-4.9.1.0:GHC.Num 00bfaa7b2f9d6084913c0697a8a49ec8
 import  -/  base-4.9.1.0:GHC.Show a027f5ac24879eaba752f44aa90fe511
 import  -/  base-4.9.1.0:Prelude 22dd289b8469a8fa8dc81cab7b237771
+import  -/  base-4.9.1.0:System.IO e4a64a8e3dce8616da54f0ee7104f7db
 import  -/  cond-0.4.1.1@cond-0.4.1.1-2yYcKtUJ6TG4fyL0AuCq0n:Control.Conditional 50b46e7237e69486ed05e1e1810d82b7
 import  -/  containers-0.5.7.1@containers-0.5.7.1:Data.Graph db348d813df75aecf8e952806af948e3
 import  -/  containers-0.5.7.1@containers-0.5.7.1:Data.Map.Base d432f6875983131473086af8cb290590
@@ -158,11 +165,12 @@ import  -/  mtl-2.2.1@mtl-2.2.1-BLKBelFsPB3BoFeSWSOYj6:Control.Monad.Error.Class
 import  -/  mtl-2.2.1@mtl-2.2.1-BLKBelFsPB3BoFeSWSOYj6:Control.Monad.Except 3bb0e2598193c1ba00c9723945e93004
 import  -/  mtl-2.2.1@mtl-2.2.1-BLKBelFsPB3BoFeSWSOYj6:Control.Monad.State 749dca8ca0e6625b32091d445bd92b01
 import  -/  mtl-2.2.1@mtl-2.2.1-BLKBelFsPB3BoFeSWSOYj6:Control.Monad.State.Class 6d31234b0a911b56412061943d18b89e
+import  -/  pretty-1.1.3.3@pretty-1.1.3.3:Text.PrettyPrint.HughesPJ 5fd6ee2fcb3f4a1e810ed36714963e44
 import  -/  text-1.2.2.2@text-1.2.2.2-1cn50juu89QSL9QkUVcRY:Data.Text ef501398810147cc510ae8565b319c23
 import  -/  text-1.2.2.2@text-1.2.2.2-1cn50juu89QSL9QkUVcRY:Data.Text.Internal e17bbef002f291b56b1f76642ff112d3
 import  -/  text-1.2.2.2@text-1.2.2.2-1cn50juu89QSL9QkUVcRY:Data.Text.Show 4809e83bdd2e21888a17b80353f343b6
 import  -/  transformers-0.5.2.0@transformers-0.5.2.0:Control.Monad.Trans.State.Lazy 371607e50dde46b5f4103b3ab334a497
-aba2ae552f96ec00f2c9102c55acfdc0
+e411ffa4203e5e6fbd9aa9cbcc16f744
   $dmtiposIguales ::
     TigerSeman.Manticore w =>
     TigerTips.Tipo -> TigerTips.Tipo -> w GHC.Types.Bool
@@ -191,7 +199,7 @@ aba2ae552f96ec00f2c9102c55acfdc0
                             $dMonad
                             @ GHC.Types.Bool
                             (TigerTips.intiposIguales eta wild)
-                       TigerTips.RefRecord s1
+                       TigerTips.RefRecord s3
                        -> GHC.Base.$
                             @ 'GHC.Types.PtrRepLifted
                             @ TigerSymbol.Symbol
@@ -223,7 +231,7 @@ aba2ae552f96ec00f2c9102c55acfdc0
                                         c
                                         n
                                         (TigerTips.$fShowTipo_$cshow eta))
-                                     (Data.Text.Show.$fShowText_$cshow s1)))) }
+                                     (Data.Text.Show.$fShowText_$cshow s3)))) }
                  } in
                  case eta of wild {
                    DEFAULT -> fail GHC.Prim.void#
@@ -235,13 +243,13 @@ aba2ae552f96ec00f2c9102c55acfdc0
                    TigerTips.TRecord ds u
                    -> case eta1 of wild1 {
                         DEFAULT -> fail GHC.Prim.void#
-                        TigerTips.RefRecord s1
+                        TigerTips.RefRecord s3
                         -> GHC.Base.>>=
                              @ w
                              $dMonad
                              @ TigerTips.Tipo
                              @ GHC.Types.Bool
-                             (TigerSeman.getTipoT @ w $dManticore s1)
+                             (TigerSeman.getTipoT @ w $dManticore s3)
                              (\ (st :: TigerTips.Tipo) ->
                               case st of wild2 {
                                 DEFAULT
@@ -269,7 +277,7 @@ aba2ae552f96ec00f2c9102c55acfdc0
                                      (GHC.Classes.eqInt u1 u)
                                 TigerTips.RefRecord s'
                                 -> TigerSeman.tiposIguales @ w $dManticore wild wild2 }) }
-                   TigerTips.RefRecord s1
+                   TigerTips.RefRecord s3
                    -> case eta1 of wild1 {
                         DEFAULT
                         -> GHC.Base.$
@@ -296,7 +304,7 @@ aba2ae552f96ec00f2c9102c55acfdc0
                              $dMonad
                              @ TigerTips.Tipo
                              @ GHC.Types.Bool
-                             (TigerSeman.getTipoT @ w $dManticore s1)
+                             (TigerSeman.getTipoT @ w $dManticore s3)
                              (\ (st :: TigerTips.Tipo) ->
                               case st of wild2 {
                                 DEFAULT
@@ -330,17 +338,17 @@ aba2ae552f96ec00f2c9102c55acfdc0
                              $dMonad
                              @ TigerTips.Tipo
                              @ GHC.Types.Bool
-                             (TigerSeman.getTipoT @ w $dManticore s1)
-                             (\ (s2 :: TigerTips.Tipo) ->
+                             (TigerSeman.getTipoT @ w $dManticore s3)
+                             (\ (s4 :: TigerTips.Tipo) ->
                               GHC.Base.>>=
                                 @ w
                                 $dMonad
                                 @ TigerTips.Tipo
                                 @ GHC.Types.Bool
                                 (TigerSeman.getTipoT @ w $dManticore s')
-                                (\ (s3 :: TigerTips.Tipo) ->
-                                 TigerSeman.tiposIguales @ w $dManticore s2 s3)) } }) -}
-2a41a042699f747861e8943e24ac1e0a
+                                (\ (s5 :: TigerTips.Tipo) ->
+                                 TigerSeman.tiposIguales @ w $dManticore s4 s5)) } }) -}
+34c9d376a577e101b72e82ca106e3166
   $fDaemonStateT :: TigerErrores.Daemon TigerSeman.OurState
   DFunId
   {- Strictness: m, Inline: [ALWAYS] CONLIKE,
@@ -351,7 +359,7 @@ aba2ae552f96ec00f2c9102c55acfdc0
                   TigerSeman.$fDaemonStateT_$cnotfound
                   TigerSeman.$fDaemonStateT_$cdiffval
                   TigerSeman.$fDaemonStateT_$cinternal -}
-2a41a042699f747861e8943e24ac1e0a
+34c9d376a577e101b72e82ca106e3166
   $fDaemonStateT1 ::
     TigerSeman.OurState a
     -> TigerSymbol.Symbol
@@ -360,7 +368,7 @@ aba2ae552f96ec00f2c9102c55acfdc0
   {- Arity: 3, Strictness: <C(S),1*C1(U)><L,1*U(U,U,U)><L,U>,
      Unfolding: (\ @ a
                    (w :: TigerSeman.OurState a)
-                   (s1 :: TigerSymbol.Symbol)
+                   (s3 :: TigerSymbol.Symbol)
                    (eta :: TigerSeman.EstadoG) ->
                  case w `cast`
                       (Control.Monad.Trans.State.Lazy.N:StateT[0]
@@ -369,7 +377,7 @@ aba2ae552f96ec00f2c9102c55acfdc0
                            <a>_N)
                         eta of wild {
                    Data.Either.Left l
-                   -> case TigerSeman.errAppend l s1 of wild1 {
+                   -> case TigerSeman.errAppend l s3 of wild1 {
                         TigerSeman.NotFound t
                         -> Data.Either.Left
                              @ TigerSeman.SEErrores
@@ -389,19 +397,19 @@ aba2ae552f96ec00f2c9102c55acfdc0
                              (TigerSeman.Internal
                                 (TigerSymbol.addStr TigerSeman.$fDaemonStateT_g t)) }
                    Data.Either.Right r -> wild }) -}
-2a41a042699f747861e8943e24ac1e0a
+34c9d376a577e101b72e82ca106e3166
   $fDaemonStateT2 ::
     TigerSymbol.Symbol
     -> TigerSeman.EstadoG
     -> Data.Either.Either TigerSeman.SEErrores (a, TigerSeman.EstadoG)
   {- Arity: 2, HasNoCafRefs, Strictness: <L,U><L,A>m1,
      Unfolding: InlineRule (2, True, False)
-                (\ @ a (s1 :: TigerSymbol.Symbol) (eta :: TigerSeman.EstadoG) ->
+                (\ @ a (s3 :: TigerSymbol.Symbol) (eta :: TigerSeman.EstadoG) ->
                  Data.Either.Left
                    @ TigerSeman.SEErrores
                    @ (a, TigerSeman.EstadoG)
-                   (TigerSeman.Internal s1)) -}
-2a41a042699f747861e8943e24ac1e0a
+                   (TigerSeman.Internal s3)) -}
+34c9d376a577e101b72e82ca106e3166
   $fDaemonStateT_$cadder ::
     TigerSeman.OurState a
     -> TigerSymbol.Symbol -> TigerSeman.OurState a
@@ -416,7 +424,7 @@ aba2ae552f96ec00f2c9102c55acfdc0
                                <TigerSeman.EstadoG>_N
                                <Data.Either.Either TigerSeman.SEErrores>_R
                                <a>_N)) -}
-2a41a042699f747861e8943e24ac1e0a
+34c9d376a577e101b72e82ca106e3166
   $fDaemonStateT_$cderror ::
     TigerSymbol.Symbol -> TigerSeman.OurState a
   {- Arity: 2, HasNoCafRefs, Strictness: <L,U><L,A>m1,
@@ -429,61 +437,61 @@ aba2ae552f96ec00f2c9102c55acfdc0
                                <TigerSeman.EstadoG>_N
                                <Data.Either.Either TigerSeman.SEErrores>_R
                                <a>_N)) -}
-2a41a042699f747861e8943e24ac1e0a
+34c9d376a577e101b72e82ca106e3166
   $fDaemonStateT_$cdiffval ::
     TigerSymbol.Symbol -> TigerSeman.OurState a
   {- Arity: 1, Strictness: <L,1*U(U,U,U)>,
      Unfolding: InlineRule (1, True, False)
                 (\ @ a (x :: TigerSymbol.Symbol) ->
                  let {
-                   s1 :: TigerSymbol.Symbol
+                   s3 :: TigerSymbol.Symbol
                    = TigerSymbol.addStr TigerSeman.$fDaemonStateT_g1 x
                  } in
                  (\ (eta :: TigerSeman.EstadoG) ->
                   Data.Either.Left
                     @ TigerSeman.SEErrores
                     @ (a, TigerSeman.EstadoG)
-                    (TigerSeman.Internal s1))
+                    (TigerSeman.Internal s3))
                    `cast`
                  (Sym (Control.Monad.Trans.State.Lazy.N:StateT[0]
                            <TigerSeman.EstadoG>_N
                            <Data.Either.Either TigerSeman.SEErrores>_R
                            <a>_N))) -}
-2a41a042699f747861e8943e24ac1e0a
+34c9d376a577e101b72e82ca106e3166
   $fDaemonStateT_$cinternal ::
     TigerSymbol.Symbol -> TigerSeman.OurState a
   {- Arity: 1, Strictness: <L,1*U(U,U,U)>,
      Unfolding: InlineRule (1, True, False)
                 (\ @ a (x :: TigerSymbol.Symbol) ->
                  let {
-                   s1 :: TigerSymbol.Symbol
+                   s3 :: TigerSymbol.Symbol
                    = TigerSymbol.addStr TigerSeman.$fDaemonStateT_g x
                  } in
                  (\ (eta :: TigerSeman.EstadoG) ->
                   Data.Either.Left
                     @ TigerSeman.SEErrores
                     @ (a, TigerSeman.EstadoG)
-                    (TigerSeman.Internal s1))
+                    (TigerSeman.Internal s3))
                    `cast`
                  (Sym (Control.Monad.Trans.State.Lazy.N:StateT[0]
                            <TigerSeman.EstadoG>_N
                            <Data.Either.Either TigerSeman.SEErrores>_R
                            <a>_N))) -}
-2a41a042699f747861e8943e24ac1e0a
+34c9d376a577e101b72e82ca106e3166
   $fDaemonStateT_$cnotfound ::
     TigerSymbol.Symbol -> TigerSeman.OurState a
   {- Arity: 1, Strictness: <L,1*U(U,U,U)>,
      Unfolding: InlineRule (1, True, False)
                 (\ @ a (x :: TigerSymbol.Symbol) ->
                  let {
-                   s1 :: TigerSymbol.Symbol
+                   s3 :: TigerSymbol.Symbol
                    = TigerSymbol.addStr TigerSeman.$fDaemonStateT_g2 x
                  } in
                  (\ (eta :: TigerSeman.EstadoG) ->
                   Data.Either.Left
                     @ TigerSeman.SEErrores
                     @ (a, TigerSeman.EstadoG)
-                    (TigerSeman.Internal s1))
+                    (TigerSeman.Internal s3))
                    `cast`
                  (Sym (Control.Monad.Trans.State.Lazy.N:StateT[0]
                            <TigerSeman.EstadoG>_N
@@ -498,7 +506,7 @@ d712bc8496c5e6853dcec8603a63d2ef
 e3e04e9a4ec57bca4a85ad606818bd45
   $fDaemonStateT_g2 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# "Not found:"#) -}
-83e0b30925b48d92766c65e2dda0dda0
+30ba9bb49d52754d32bb564107b313bf
   $fManticoreStateT :: TigerSeman.Manticore TigerSeman.OurState
   DFunId
   {- Inline: [ALWAYS] CONLIKE,
@@ -518,7 +526,7 @@ e3e04e9a4ec57bca4a85ad606818bd45
                   TigerSeman.$fManticoreStateT_$ctiposIguales
                   TigerSeman.$fManticoreStateT_$cugen
                   TigerSeman.$fManticoreStateT_$caddTypos -}
-71b39c9ea2fd728b317538a415ade5df
+cdf93cc211418410a8aee1c17314c39b
   $fManticoreStateT1 ::
     TigerSeman.EstadoG
     -> Data.Either.Either
@@ -539,42 +547,8 @@ e3e04e9a4ec57bca4a85ad606818bd45
                        GHC.Types.I# (GHC.Prim.+# x 1#) })
                       ds1
                       ds2 })) -}
-3e3d4b398ceceaa1343fc26ba937e2b8
-  $fManticoreStateT2 ::
-    TigerSymbol.Symbol
-    -> TigerTips.Tipo
-    -> TigerSeman.OurState a
-    -> TigerSeman.EstadoG
-    -> Data.Either.Either TigerSeman.SEErrores (a, TigerSeman.EstadoG)
-  {- Arity: 4,
-     Strictness: <L,1*U(U,U,U)><L,1*U><C(S),1*C1(U)><L,U(U,U,U)>,
-     Unfolding: (\ @ a
-                   (s1 :: TigerSymbol.Symbol)
-                   (ty :: TigerTips.Tipo)
-                   (w :: TigerSeman.OurState a)
-                   (eta :: TigerSeman.EstadoG) ->
-                 case w `cast`
-                      (Control.Monad.Trans.State.Lazy.N:StateT[0]
-                           <TigerSeman.EstadoG>_N
-                           <Data.Either.Either TigerSeman.SEErrores>_R
-                           <a>_N)
-                        (case eta of wild { TigerSeman.G ds ds1 ds2 ->
-                         TigerSeman.G
-                           ds
-                           ds1
-                           (TigerSeman.$fManticoreStateT_$sgo4
-                              @ TigerTips.Tipo
-                              s1
-                              ty
-                              ds2) }) of wild {
-                   Data.Either.Left l -> wild
-                   Data.Either.Right r
-                   -> Data.Either.Right
-                        @ TigerSeman.SEErrores
-                        @ (a, TigerSeman.EstadoG)
-                        (case r of wild1 { (,) a1 s' -> a1 }, eta) }) -}
-b41dcd7d472b29ee9586da64db078a59
-  $fManticoreStateT3 ::
+9a83ba6d4822dff1887ad6666bce51d8
+  $fManticoreStateT10 ::
     TigerSymbol.Symbol
     -> TigerSeman.OurState a
     -> TigerSeman.EstadoG
@@ -582,21 +556,21 @@ b41dcd7d472b29ee9586da64db078a59
   {- Arity: 3, Strictness: <L,1*U(U,U,U)><C(S),1*C1(U)><L,U(U,U,U)>,
      Unfolding: InlineRule (3, True, False)
                 (\ @ a
-                   (s1 :: TigerSymbol.Symbol)
+                   (s3 :: TigerSymbol.Symbol)
                    (w :: TigerSeman.OurState a)
                    (eta :: TigerSeman.EstadoG) ->
-                 TigerSeman.$fManticoreStateT5
+                 TigerSeman.$fManticoreStateT12
                    @ a
-                   s1
-                   TigerSeman.$fManticoreStateT4
+                   s3
+                   TigerSeman.$fManticoreStateT11
                    w
                    eta) -}
-2e7a67bd14df00695dd22acf643a9cda
-  $fManticoreStateT4 :: TigerTips.Tipo
+a6a55bd8493594dcb280d499492565af
+  $fManticoreStateT11 :: TigerTips.Tipo
   {- HasNoCafRefs, Strictness: m3,
      Unfolding: (TigerTips.TInt TigerTips.RO) -}
-bc4f70d1c4de80f288ff4ac0fd9d8736
-  $fManticoreStateT5 ::
+9cb58c90ba114ec41d07e7697f7599aa
+  $fManticoreStateT12 ::
     TigerSymbol.Symbol
     -> TigerSres.ValEntry
     -> TigerSeman.OurState a
@@ -605,7 +579,7 @@ bc4f70d1c4de80f288ff4ac0fd9d8736
   {- Arity: 4,
      Strictness: <L,1*U(U,U,U)><L,U><C(S),1*C1(U)><L,U(U,U,U)>,
      Unfolding: (\ @ a
-                   (s1 :: TigerSymbol.Symbol)
+                   (s3 :: TigerSymbol.Symbol)
                    (ve :: TigerSres.ValEntry)
                    (w :: TigerSeman.OurState a)
                    (eta :: TigerSeman.EstadoG) ->
@@ -617,7 +591,7 @@ bc4f70d1c4de80f288ff4ac0fd9d8736
                         (case eta of wild { TigerSeman.G ds ds1 ds2 ->
                          TigerSeman.G
                            ds
-                           (case s1 of ww { Data.Text.Internal.Text ww1 ww2 ww3 ->
+                           (case s3 of ww { Data.Text.Internal.Text ww1 ww2 ww3 ->
                             TigerSeman.$w$sgo4
                               @ TigerSres.EnvEntry
                               ww1
@@ -632,8 +606,8 @@ bc4f70d1c4de80f288ff4ac0fd9d8736
                         @ TigerSeman.SEErrores
                         @ (a, TigerSeman.EstadoG)
                         (case r of wild1 { (,) a1 s' -> a1 }, eta) }) -}
-954244dc62f21cd7565d8e9ed1038a3c
-  $fManticoreStateT6 ::
+b59dc50f177cd38fa47a6dc013451daf
+  $fManticoreStateT13 ::
     TigerSymbol.Symbol
     -> TigerSres.FunEntry
     -> TigerSeman.OurState a
@@ -642,7 +616,7 @@ bc4f70d1c4de80f288ff4ac0fd9d8736
   {- Arity: 4,
      Strictness: <L,1*U(U,U,U)><L,U><C(S),1*C1(U)><L,U(U,U,U)>,
      Unfolding: (\ @ a
-                   (s1 :: TigerSymbol.Symbol)
+                   (s3 :: TigerSymbol.Symbol)
                    (fe :: TigerSres.FunEntry)
                    (w :: TigerSeman.OurState a)
                    (eta :: TigerSeman.EstadoG) ->
@@ -654,7 +628,7 @@ bc4f70d1c4de80f288ff4ac0fd9d8736
                         (case eta of wild { TigerSeman.G ds ds1 ds2 ->
                          TigerSeman.G
                            ds
-                           (case s1 of ww { Data.Text.Internal.Text ww1 ww2 ww3 ->
+                           (case s3 of ww { Data.Text.Internal.Text ww1 ww2 ww3 ->
                             TigerSeman.$w$sgo4
                               @ TigerSres.EnvEntry
                               ww1
@@ -669,34 +643,165 @@ bc4f70d1c4de80f288ff4ac0fd9d8736
                         @ TigerSeman.SEErrores
                         @ (a, TigerSeman.EstadoG)
                         (case r of wild1 { (,) a1 s' -> a1 }, eta) }) -}
-7101432d656a62281255454ae3e27500
-  $fManticoreStateT7 ::
+158eefd45ae5b4a332f5aef88c27e2ad
+  $fManticoreStateT14 ::
     GHC.Base.Functor
       (Control.Monad.Trans.State.Lazy.StateT
          s (Data.Either.Either TigerSeman.SEErrores))
-  {- Unfolding: (\ @ s1 ->
+  {- Unfolding: (\ @ s3 ->
                  Control.Monad.Trans.State.Lazy.$fFunctorStateT
                    @ (Data.Either.Either TigerSeman.SEErrores)
-                   @ s1
+                   @ s3
                    (Data.Either.$fFunctorEither @ TigerSeman.SEErrores)) -}
-e83171986c57eeda82dfe5ed065b2265
+1ca77332ccdfe5725bb3c6f2d4e2097f
+  $fManticoreStateT2 ::
+    TigerSeman.EstadoG
+    -> Data.Either.Either
+         TigerSeman.SEErrores (GHC.Types.IO (), TigerSeman.EstadoG)
+  {- Arity: 1, Strictness: <L,U(U,U,U)>m2, Inline: INLINE[0],
+     Unfolding: InlineRule (1, True, False)
+                (\ (w :: TigerSeman.EstadoG) ->
+                 case TigerSeman.$w$cshowVEnv w of ww { Unit# ww1 ->
+                 Data.Either.Right
+                   @ TigerSeman.SEErrores
+                   @ (GHC.Types.IO (), TigerSeman.EstadoG)
+                   ww1 }) -}
+45eebeedc3c6fa14bf4fc1a65de5cd22
+  $fManticoreStateT3 :: [GHC.Types.Char]
+  {- HasNoCafRefs,
+     Unfolding: (GHC.Types.:
+                   @ GHC.Types.Char
+                   GHC.Show.shows6
+                   (GHC.Types.[] @ GHC.Types.Char)) -}
+7c357195944bb7acc4d6fb3b097813a4
+  $fManticoreStateT4 ::
+    TigerSymbol.Symbol
+    -> TigerSeman.EstadoG
+    -> Data.Either.Either
+         TigerSeman.SEErrores (TigerTips.Tipo, TigerSeman.EstadoG)
+  {- Arity: 2, Strictness: <S,U(U,U,U)><S(LLS),1*U(U,U,U)>,
+     Inline: INLINE[0],
+     Unfolding: InlineRule (2, True, False)
+                (\ (w :: TigerSymbol.Symbol) (w1 :: TigerSeman.EstadoG) ->
+                 case w of ww { Data.Text.Internal.Text ww1 ww2 ww3 ->
+                 case w1 of ww4 { TigerSeman.G ww5 ww6 ww7 ->
+                 TigerSeman.$w$cgetTipoT ww1 ww2 ww3 ww5 ww6 ww7 } }) -}
+826986ca85dca425b9f30313d655591d
+  $fManticoreStateT5 ::
+    TigerSymbol.Symbol
+    -> TigerSeman.EstadoG
+    -> Data.Either.Either
+         TigerSeman.SEErrores (TigerSres.ValEntry, TigerSeman.EstadoG)
+  {- Arity: 2, Strictness: <S,U(U,U,U)><S(LSL),1*U(U,U,U)>,
+     Inline: INLINE[0],
+     Unfolding: InlineRule (2, True, False)
+                (\ (w :: TigerSymbol.Symbol) (w1 :: TigerSeman.EstadoG) ->
+                 case w of ww { Data.Text.Internal.Text ww1 ww2 ww3 ->
+                 case w1 of ww4 { TigerSeman.G ww5 ww6 ww7 ->
+                 TigerSeman.$w$cgetTipoValV ww1 ww2 ww3 ww5 ww6 ww7 } }) -}
+dfd6ddd8e303371d4c2f7ce005c7e9f7
+  $fManticoreStateT6 ::
+    Control.Monad.Trans.State.Lazy.StateT
+      TigerSeman.EstadoG
+      (Data.Either.Either TigerSeman.SEErrores)
+      TigerSres.ValEntry
+  {- Strictness: x -}
+f1aa2022bfc48165f3e930e45309b0b6
+  $fManticoreStateT7 ::
+    TigerSymbol.Symbol
+    -> TigerSeman.EstadoG
+    -> Data.Either.Either
+         TigerSeman.SEErrores (TigerSres.FunEntry, TigerSeman.EstadoG)
+  {- Arity: 2, Strictness: <S,U(U,U,U)><S(LSL),1*U(U,U,U)>,
+     Inline: INLINE[0],
+     Unfolding: InlineRule (2, True, False)
+                (\ (w :: TigerSymbol.Symbol) (w1 :: TigerSeman.EstadoG) ->
+                 case w of ww { Data.Text.Internal.Text ww1 ww2 ww3 ->
+                 case w1 of ww4 { TigerSeman.G ww5 ww6 ww7 ->
+                 TigerSeman.$w$cgetTipoFunV ww1 ww2 ww3 ww5 ww6 ww7 } }) -}
+0dad5c2fdc84f38d6af236b62fa9d6a6
+  $fManticoreStateT8 ::
+    Control.Monad.Trans.State.Lazy.StateT
+      TigerSeman.EstadoG
+      (Data.Either.Either TigerSeman.SEErrores)
+      TigerSres.FunEntry
+  {- Strictness: x -}
+4d331a03cd55049275f6b44009c322d1
+  $fManticoreStateT9 ::
+    TigerSymbol.Symbol
+    -> TigerTips.Tipo
+    -> TigerSeman.OurState a
+    -> TigerSeman.EstadoG
+    -> Data.Either.Either TigerSeman.SEErrores (a, TigerSeman.EstadoG)
+  {- Arity: 4,
+     Strictness: <L,1*U(U,U,U)><L,1*U><C(S),1*C1(U)><L,U(U,U,U)>,
+     Unfolding: (\ @ a
+                   (s3 :: TigerSymbol.Symbol)
+                   (ty :: TigerTips.Tipo)
+                   (w :: TigerSeman.OurState a)
+                   (eta :: TigerSeman.EstadoG) ->
+                 case w `cast`
+                      (Control.Monad.Trans.State.Lazy.N:StateT[0]
+                           <TigerSeman.EstadoG>_N
+                           <Data.Either.Either TigerSeman.SEErrores>_R
+                           <a>_N)
+                        (case eta of wild { TigerSeman.G ds ds1 ds2 ->
+                         TigerSeman.G
+                           ds
+                           ds1
+                           (TigerSeman.$fManticoreStateT_$sgo4
+                              @ TigerTips.Tipo
+                              s3
+                              ty
+                              ds2) }) of wild {
+                   Data.Either.Left l -> wild
+                   Data.Either.Right r
+                   -> Data.Either.Right
+                        @ TigerSeman.SEErrores
+                        @ (a, TigerSeman.EstadoG)
+                        (case r of wild1 { (,) a1 s' -> a1 }, eta) }) -}
+26c62d4da9b163e84d68534eedb851bd
   $fManticoreStateT_$caddTypos ::
     [(TigerSymbol.Symbol, TigerAbs.Ty, TigerAbs.Pos)]
     -> TigerSeman.OurState ()
   {- Strictness: x -}
-9e3887331c34e4330db140623a0d5be4
+f288f08d09950010fdef38efe3c5eabd
   $fManticoreStateT_$cgetTipoFunV ::
     TigerSymbol.Symbol -> TigerSeman.OurState TigerSres.FunEntry
-  {- Strictness: x -}
-10a5e74fcf1af2769491360480a314bf
+  {- Arity: 2, Strictness: <S,U(U,U,U)><S(LSL),1*U(U,U,U)>,
+     Unfolding: InlineRule (0, True, True)
+                TigerSeman.$fManticoreStateT7
+                  `cast`
+                (<TigerSymbol.Symbol>_R
+                 ->_R Sym (Control.Monad.Trans.State.Lazy.N:StateT[0]
+                               <TigerSeman.EstadoG>_N
+                               <Data.Either.Either TigerSeman.SEErrores>_R
+                               <TigerSres.FunEntry>_N)) -}
+682a10020a8afd7f678e08e6df031cab
   $fManticoreStateT_$cgetTipoT ::
     TigerSymbol.Symbol -> TigerSeman.OurState TigerTips.Tipo
-  {- Strictness: x -}
-e9a27a7988f4b8e79a089719d7465722
+  {- Arity: 2, Strictness: <S,U(U,U,U)><S(LLS),1*U(U,U,U)>,
+     Unfolding: InlineRule (0, True, True)
+                TigerSeman.$fManticoreStateT4
+                  `cast`
+                (<TigerSymbol.Symbol>_R
+                 ->_R Sym (Control.Monad.Trans.State.Lazy.N:StateT[0]
+                               <TigerSeman.EstadoG>_N
+                               <Data.Either.Either TigerSeman.SEErrores>_R
+                               <TigerTips.Tipo>_N)) -}
+cbbd9d222fb3cbcc2f75a06ae058f593
   $fManticoreStateT_$cgetTipoValV ::
     TigerSymbol.Symbol -> TigerSeman.OurState TigerSres.ValEntry
-  {- Strictness: x -}
-46a3ea1d846b032686eaa9e9af32ac9d
+  {- Arity: 2, Strictness: <S,U(U,U,U)><S(LSL),1*U(U,U,U)>,
+     Unfolding: InlineRule (0, True, True)
+                TigerSeman.$fManticoreStateT5
+                  `cast`
+                (<TigerSymbol.Symbol>_R
+                 ->_R Sym (Control.Monad.Trans.State.Lazy.N:StateT[0]
+                               <TigerSeman.EstadoG>_N
+                               <Data.Either.Either TigerSeman.SEErrores>_R
+                               <TigerSres.ValEntry>_N)) -}
+6622663a0925867a9b1f2d1dc4c0b6db
   $fManticoreStateT_$cinsertFunV ::
     TigerSymbol.Symbol
     -> TigerSres.FunEntry
@@ -705,7 +810,7 @@ e9a27a7988f4b8e79a089719d7465722
   {- Arity: 4,
      Strictness: <L,1*U(U,U,U)><L,U><C(S),1*C1(U)><L,U(U,U,U)>,
      Unfolding: InlineRule (0, True, True)
-                TigerSeman.$fManticoreStateT6
+                TigerSeman.$fManticoreStateT13
                   `cast`
                 (forall (a :: <*>_N).
                  <TigerSymbol.Symbol>_R
@@ -715,14 +820,14 @@ e9a27a7988f4b8e79a089719d7465722
                                <TigerSeman.EstadoG>_N
                                <Data.Either.Either TigerSeman.SEErrores>_R
                                <a>_N)) -}
-919823feb0da3616f8580f04eb3e3aee
+be43fb0fed0b61e9cb366c83813eb4bc
   $fManticoreStateT_$cinsertTipoT ::
     TigerSymbol.Symbol
     -> TigerTips.Tipo -> TigerSeman.OurState a -> TigerSeman.OurState a
   {- Arity: 4,
      Strictness: <L,1*U(U,U,U)><L,1*U><C(S),1*C1(U)><L,U(U,U,U)>,
      Unfolding: InlineRule (0, True, True)
-                TigerSeman.$fManticoreStateT2
+                TigerSeman.$fManticoreStateT9
                   `cast`
                 (forall (a :: <*>_N).
                  <TigerSymbol.Symbol>_R
@@ -732,13 +837,13 @@ e9a27a7988f4b8e79a089719d7465722
                                <TigerSeman.EstadoG>_N
                                <Data.Either.Either TigerSeman.SEErrores>_R
                                <a>_N)) -}
-a83b2f27cc15b68e2d1d222601879ed3
+d3ab3b334e0f909b3f2897ae582fdcc5
   $fManticoreStateT_$cinsertVRO ::
     TigerSymbol.Symbol
     -> TigerSeman.OurState a -> TigerSeman.OurState a
   {- Arity: 3, Strictness: <L,1*U(U,U,U)><C(S),1*C1(U)><L,U(U,U,U)>,
      Unfolding: InlineRule (0, True, True)
-                TigerSeman.$fManticoreStateT3
+                TigerSeman.$fManticoreStateT10
                   `cast`
                 (forall (a :: <*>_N).
                  <TigerSymbol.Symbol>_R
@@ -747,7 +852,7 @@ a83b2f27cc15b68e2d1d222601879ed3
                                <TigerSeman.EstadoG>_N
                                <Data.Either.Either TigerSeman.SEErrores>_R
                                <a>_N)) -}
-5a7b48418df861c4f1b3b5bb9a0b3d09
+b3cff5f3076323a1ef7a930a38a48412
   $fManticoreStateT_$cinsertValV ::
     TigerSymbol.Symbol
     -> TigerSres.ValEntry
@@ -756,7 +861,7 @@ a83b2f27cc15b68e2d1d222601879ed3
   {- Arity: 4,
      Strictness: <L,1*U(U,U,U)><L,U><C(S),1*C1(U)><L,U(U,U,U)>,
      Unfolding: InlineRule (0, True, True)
-                TigerSeman.$fManticoreStateT5
+                TigerSeman.$fManticoreStateT12
                   `cast`
                 (forall (a :: <*>_N).
                  <TigerSymbol.Symbol>_R
@@ -766,25 +871,33 @@ a83b2f27cc15b68e2d1d222601879ed3
                                <TigerSeman.EstadoG>_N
                                <Data.Either.Either TigerSeman.SEErrores>_R
                                <a>_N)) -}
-bfad035eaeabf9bd629304d9ac483710
+f99f1baff06249dc2c0d587683f4b087
   $fManticoreStateT_$cp2Manticore ::
     GHC.Base.Monad TigerSeman.OurState
   {- Strictness: m,
      Unfolding: InlineRule (0, True, True)
                 (TigerSeman.$fManticoreStateT_$s$fMonadStateT
                    @ TigerSeman.EstadoG) -}
-967c91d9e2a0879064254154ec24aa64
+2ef7ba39b6764d5aa394fc4f6266f8f4
   $fManticoreStateT_$cshowTEnv :: TigerSeman.OurState ()
   {- Strictness: x -}
-f2ec6f92793e7673a2271835e6aaacef
-  $fManticoreStateT_$cshowVEnv :: TigerSeman.OurState ()
-  {- Strictness: x -}
-1acde45297da11022c129300656fbc49
+1e80dc40d2883b515c71425e554057ba
+  $fManticoreStateT_$cshowVEnv ::
+    TigerSeman.OurState (GHC.Types.IO ())
+  {- Arity: 1, Strictness: <L,U(U,U,U)>m2,
+     Unfolding: InlineRule (0, True, True)
+                TigerSeman.$fManticoreStateT2
+                  `cast`
+                (Sym (Control.Monad.Trans.State.Lazy.N:StateT[0]
+                          <TigerSeman.EstadoG>_N
+                          <Data.Either.Either TigerSeman.SEErrores>_R
+                          <GHC.Types.IO ()>_N)) -}
+ed7b39c4d635da0ffc8d184a791dfe22
   $fManticoreStateT_$ctiposIguales ::
     TigerTips.Tipo
     -> TigerTips.Tipo -> TigerSeman.OurState GHC.Types.Bool
   {- Arity: 2, Strictness: <S,U><S,U> -}
-99d6e5f60a05058f6f4bec7b0e0508b9
+ecc8fb233e7991f75184d742fd283762
   $fManticoreStateT_$cugen :: TigerSeman.OurState TigerTips.Unique
   {- Arity: 1, HasNoCafRefs, Strictness: <L,U(U(U),U,U)>m2,
      Unfolding: InlineRule (0, True, True)
@@ -800,29 +913,29 @@ b354c5f10b1bc76a286714122b665d6b
   {- Strictness: m,
      Unfolding: InlineRule (0, True, True)
                 (Data.Either.$fFunctorEither @ TigerSeman.SEErrores) -}
-6bdf518bc10cf584c3fa18cd398086cd
+648be12041321d9f0bfdd03c12f375ea
   $fManticoreStateT_$s$fApplicativeStateT ::
     GHC.Base.Applicative
       (Control.Monad.Trans.State.Lazy.StateT
          s (Data.Either.Either TigerSeman.SEErrores))
   {- Strictness: m, Inline: [ALWAYS] CONLIKE,
-     Unfolding: DFun: @ s1.
+     Unfolding: DFun: @ s3.
                   @ (Control.Monad.Trans.State.Lazy.StateT
-                       s1 (Data.Either.Either TigerSeman.SEErrores))
-                  (TigerSeman.$fManticoreStateT7 @ s1)
-                  (TigerSeman.$fManticoreStateT_$s$fApplicativeStateT_$cpure @ s1)
-                  (TigerSeman.$fManticoreStateT_$s$fApplicativeStateT_$c<*> @ s1)
+                       s3 (Data.Either.Either TigerSeman.SEErrores))
+                  (TigerSeman.$fManticoreStateT14 @ s3)
+                  (TigerSeman.$fManticoreStateT_$s$fApplicativeStateT_$cpure @ s3)
+                  (TigerSeman.$fManticoreStateT_$s$fApplicativeStateT_$c<*> @ s3)
                   (Control.Monad.Trans.State.Lazy.$fApplicativeStateT_$c*>
                      @ (Data.Either.Either TigerSeman.SEErrores)
-                     @ s1
+                     @ s3
                      TigerSeman.$fManticoreStateT_$dFunctor
                      (Data.Either.$fMonadEither @ TigerSeman.SEErrores))
                   (Control.Monad.Trans.State.Lazy.$fApplicativeStateT_$c<*
                      @ (Data.Either.Either TigerSeman.SEErrores)
-                     @ s1
+                     @ s3
                      TigerSeman.$fManticoreStateT_$dFunctor
                      (Data.Either.$fMonadEither @ TigerSeman.SEErrores)) -}
-322d9aca0a8fd15bbb0146e9a79a56ba
+1a8249c6eadde2a1fe946ad57ee4f91d
   $fManticoreStateT_$s$fApplicativeStateT_$c<*> ::
     Control.Monad.Trans.State.Lazy.StateT
       s (Data.Either.Either TigerSeman.SEErrores) (a -> b)
@@ -834,53 +947,53 @@ b354c5f10b1bc76a286714122b665d6b
      Strictness: <C(S),1*C1(U)><L,1*C1(U)><L,U>,
      Inline: INLINE (sat-args=2),
      Unfolding: InlineRule (2, False, False)
-                (\ @ s1
+                (\ @ s3
                    @ a
                    @ b
                    (ds :: Control.Monad.Trans.State.Lazy.StateT
-                            s1 (Data.Either.Either TigerSeman.SEErrores) (a -> b))
+                            s3 (Data.Either.Either TigerSeman.SEErrores) (a -> b))
                    (ds1 :: Control.Monad.Trans.State.Lazy.StateT
-                             s1 (Data.Either.Either TigerSeman.SEErrores) a) ->
+                             s3 (Data.Either.Either TigerSeman.SEErrores) a) ->
                  GHC.Base.$
                    @ 'GHC.Types.PtrRepLifted
-                   @ (s1 -> Data.Either.Either TigerSeman.SEErrores (b, s1))
+                   @ (s3 -> Data.Either.Either TigerSeman.SEErrores (b, s3))
                    @ (Control.Monad.Trans.State.Lazy.StateT
-                        s1 (Data.Either.Either TigerSeman.SEErrores) b)
-                   (\ (tpl :: s1
-                              -> Data.Either.Either TigerSeman.SEErrores (b, s1)) ->
+                        s3 (Data.Either.Either TigerSeman.SEErrores) b)
+                   (\ (tpl :: s3
+                              -> Data.Either.Either TigerSeman.SEErrores (b, s3)) ->
                     tpl)
                      `cast`
-                   (<s1 -> Data.Either.Either TigerSeman.SEErrores (b, s1)>_R
+                   (<s3 -> Data.Either.Either TigerSeman.SEErrores (b, s3)>_R
                     ->_R Sym (Control.Monad.Trans.State.Lazy.N:StateT[0]
-                                  <s1>_N <Data.Either.Either TigerSeman.SEErrores>_R <b>_N))
-                   (\ (s2 :: s1) ->
+                                  <s3>_N <Data.Either.Either TigerSeman.SEErrores>_R <b>_N))
+                   (\ (s4 :: s3) ->
                     Data.Either.$fMonadEither_$c>>=
                       @ TigerSeman.SEErrores
-                      @ (a -> b, s1)
-                      @ (b, s1)
+                      @ (a -> b, s3)
+                      @ (b, s3)
                       (ds
                          `cast`
                        (Control.Monad.Trans.State.Lazy.N:StateT[0]
-                            <s1>_N <Data.Either.Either TigerSeman.SEErrores>_R <a -> b>_N)
-                         s2)
-                      (\ (ds2 :: (a -> b, s1))[OneShot] ->
+                            <s3>_N <Data.Either.Either TigerSeman.SEErrores>_R <a -> b>_N)
+                         s4)
+                      (\ (ds2 :: (a -> b, s3))[OneShot] ->
                        Data.Either.$fMonadEither_$c>>=
                          @ TigerSeman.SEErrores
-                         @ (a, s1)
-                         @ (b, s1)
+                         @ (a, s3)
+                         @ (b, s3)
                          (ds1
                             `cast`
                           (Control.Monad.Trans.State.Lazy.N:StateT[0]
-                               <s1>_N <Data.Either.Either TigerSeman.SEErrores>_R <a>_N)
+                               <s3>_N <Data.Either.Either TigerSeman.SEErrores>_R <a>_N)
                             (case ds2 of wild { (,) f s' -> s' }))
-                         (\ (ds3 :: (a, s1))[OneShot] ->
+                         (\ (ds3 :: (a, s3))[OneShot] ->
                           Data.Either.$fMonadEither_$creturn
                             @ TigerSeman.SEErrores
-                            @ (b, s1)
+                            @ (b, s3)
                             (case ds2 of wild { (,) f s' ->
                              f (case ds3 of wild1 { (,) x s'' -> x }) },
                              case ds3 of wild { (,) x s'' -> s'' }))))) -}
-a2cbbc11c2b6d5744fadaa2772105917
+54a9ce3d12e4ac49ef011000ee9ce41d
   $fManticoreStateT_$s$fApplicativeStateT_$cpure ::
     a
     -> Control.Monad.Trans.State.Lazy.StateT
@@ -888,42 +1001,42 @@ a2cbbc11c2b6d5744fadaa2772105917
   {- Arity: 2, HasNoCafRefs, Strictness: <L,U><L,U>m2,
      Inline: INLINE (sat-args=1),
      Unfolding: InlineRule (1, False, False)
-                (\ @ s1 @ a (a1 :: a) ->
+                (\ @ s3 @ a (a1 :: a) ->
                  GHC.Base.$
                    @ 'GHC.Types.PtrRepLifted
-                   @ (s1 -> Data.Either.Either TigerSeman.SEErrores (a, s1))
+                   @ (s3 -> Data.Either.Either TigerSeman.SEErrores (a, s3))
                    @ (Control.Monad.Trans.State.Lazy.StateT
-                        s1 (Data.Either.Either TigerSeman.SEErrores) a)
-                   (\ (tpl :: s1
-                              -> Data.Either.Either TigerSeman.SEErrores (a, s1)) ->
+                        s3 (Data.Either.Either TigerSeman.SEErrores) a)
+                   (\ (tpl :: s3
+                              -> Data.Either.Either TigerSeman.SEErrores (a, s3)) ->
                     tpl)
                      `cast`
-                   (<s1 -> Data.Either.Either TigerSeman.SEErrores (a, s1)>_R
+                   (<s3 -> Data.Either.Either TigerSeman.SEErrores (a, s3)>_R
                     ->_R Sym (Control.Monad.Trans.State.Lazy.N:StateT[0]
-                                  <s1>_N <Data.Either.Either TigerSeman.SEErrores>_R <a>_N))
-                   (\ (s2 :: s1) ->
+                                  <s3>_N <Data.Either.Either TigerSeman.SEErrores>_R <a>_N))
+                   (\ (s4 :: s3) ->
                     Data.Either.$fMonadEither_$creturn
                       @ TigerSeman.SEErrores
-                      @ (a, s1)
-                      (a1, s2))) -}
-5fb44c0426c481b9b32214f653cb07ea
+                      @ (a, s3)
+                      (a1, s4))) -}
+7372a950069e22cfd7562d6c21213562
   $fManticoreStateT_$s$fMonadStateT ::
     GHC.Base.Monad
       (Control.Monad.Trans.State.Lazy.StateT
          s (Data.Either.Either TigerSeman.SEErrores))
   {- Strictness: m, Inline: [ALWAYS] CONLIKE,
-     Unfolding: DFun: @ s1.
+     Unfolding: DFun: @ s3.
                   @ (Control.Monad.Trans.State.Lazy.StateT
-                       s1 (Data.Either.Either TigerSeman.SEErrores))
-                  (TigerSeman.$fManticoreStateT_$s$fMonadStateT_$cp1Monad @ s1)
-                  (TigerSeman.$fManticoreStateT_$s$fMonadStateT_$c>>= @ s1)
-                  (TigerSeman.$fManticoreStateT_$s$fMonadStateT_$c>> @ s1)
+                       s3 (Data.Either.Either TigerSeman.SEErrores))
+                  (TigerSeman.$fManticoreStateT_$s$fMonadStateT_$cp1Monad @ s3)
+                  (TigerSeman.$fManticoreStateT_$s$fMonadStateT_$c>>= @ s3)
+                  (TigerSeman.$fManticoreStateT_$s$fMonadStateT_$c>> @ s3)
                   (Control.Monad.Trans.State.Lazy.$fMonadStateT_$creturn
                      @ (Data.Either.Either TigerSeman.SEErrores)
-                     @ s1
+                     @ s3
                      (Data.Either.$fMonadEither @ TigerSeman.SEErrores))
-                  (TigerSeman.$fManticoreStateT_$s$fMonadStateT_$cfail @ s1) -}
-4e6dc4107607f058ab8d8568be70dad3
+                  (TigerSeman.$fManticoreStateT_$s$fMonadStateT_$cfail @ s3) -}
+f84813d7eddc43b5c117858e068e1061
   $fManticoreStateT_$s$fMonadStateT_$c>> ::
     Control.Monad.Trans.State.Lazy.StateT
       s (Data.Either.Either TigerSeman.SEErrores) a
@@ -935,44 +1048,44 @@ a2cbbc11c2b6d5744fadaa2772105917
      Strictness: <C(S),1*C1(U)><L,1*C1(U)><L,U>,
      Inline: INLINE (sat-args=2),
      Unfolding: InlineRule (2, False, False)
-                (\ @ s1
+                (\ @ s3
                    @ a
                    @ b
                    (m1 :: Control.Monad.Trans.State.Lazy.StateT
-                            s1 (Data.Either.Either TigerSeman.SEErrores) a)
+                            s3 (Data.Either.Either TigerSeman.SEErrores) a)
                    (k :: Control.Monad.Trans.State.Lazy.StateT
-                           s1 (Data.Either.Either TigerSeman.SEErrores) b) ->
+                           s3 (Data.Either.Either TigerSeman.SEErrores) b) ->
                  GHC.Base.$
                    @ 'GHC.Types.PtrRepLifted
-                   @ (s1 -> Data.Either.Either TigerSeman.SEErrores (b, s1))
+                   @ (s3 -> Data.Either.Either TigerSeman.SEErrores (b, s3))
                    @ (Control.Monad.Trans.State.Lazy.StateT
-                        s1 (Data.Either.Either TigerSeman.SEErrores) b)
-                   (\ (tpl :: s1
-                              -> Data.Either.Either TigerSeman.SEErrores (b, s1)) ->
+                        s3 (Data.Either.Either TigerSeman.SEErrores) b)
+                   (\ (tpl :: s3
+                              -> Data.Either.Either TigerSeman.SEErrores (b, s3)) ->
                     tpl)
                      `cast`
-                   (<s1 -> Data.Either.Either TigerSeman.SEErrores (b, s1)>_R
+                   (<s3 -> Data.Either.Either TigerSeman.SEErrores (b, s3)>_R
                     ->_R Sym (Control.Monad.Trans.State.Lazy.N:StateT[0]
-                                  <s1>_N <Data.Either.Either TigerSeman.SEErrores>_R <b>_N))
-                   (\ (s2 :: s1) ->
+                                  <s3>_N <Data.Either.Either TigerSeman.SEErrores>_R <b>_N))
+                   (\ (s4 :: s3) ->
                     Data.Either.$fMonadEither_$c>>=
                       @ TigerSeman.SEErrores
-                      @ (a, s1)
-                      @ (b, s1)
+                      @ (a, s3)
+                      @ (b, s3)
                       (Control.Monad.Trans.State.Lazy.runStateT
-                         @ s1
+                         @ s3
                          @ (Data.Either.Either TigerSeman.SEErrores)
                          @ a
                          m1
-                         s2)
-                      (\ (ds :: (a, s1))[OneShot] ->
+                         s4)
+                      (\ (ds :: (a, s3))[OneShot] ->
                        Control.Monad.Trans.State.Lazy.runStateT
-                         @ s1
+                         @ s3
                          @ (Data.Either.Either TigerSeman.SEErrores)
                          @ b
                          k
                          (case ds of wild { (,) a1 s' -> s' })))) -}
-72271f908577f44c97f383cf8f2b3401
+d4f59a4e6fb99b2a858c82abad9f1d8b
   $fManticoreStateT_$s$fMonadStateT_$c>>= ::
     Control.Monad.Trans.State.Lazy.StateT
       s (Data.Either.Either TigerSeman.SEErrores) a
@@ -985,70 +1098,70 @@ a2cbbc11c2b6d5744fadaa2772105917
      Strictness: <C(S),1*C1(U)><L,1*C1(C1(U))><L,U>,
      Inline: INLINE (sat-args=2),
      Unfolding: InlineRule (2, False, False)
-                (\ @ s1
+                (\ @ s3
                    @ a
                    @ b
                    (m1 :: Control.Monad.Trans.State.Lazy.StateT
-                            s1 (Data.Either.Either TigerSeman.SEErrores) a)
+                            s3 (Data.Either.Either TigerSeman.SEErrores) a)
                    (k :: a
                          -> Control.Monad.Trans.State.Lazy.StateT
-                              s1 (Data.Either.Either TigerSeman.SEErrores) b) ->
+                              s3 (Data.Either.Either TigerSeman.SEErrores) b) ->
                  GHC.Base.$
                    @ 'GHC.Types.PtrRepLifted
-                   @ (s1 -> Data.Either.Either TigerSeman.SEErrores (b, s1))
+                   @ (s3 -> Data.Either.Either TigerSeman.SEErrores (b, s3))
                    @ (Control.Monad.Trans.State.Lazy.StateT
-                        s1 (Data.Either.Either TigerSeman.SEErrores) b)
-                   (\ (tpl :: s1
-                              -> Data.Either.Either TigerSeman.SEErrores (b, s1)) ->
+                        s3 (Data.Either.Either TigerSeman.SEErrores) b)
+                   (\ (tpl :: s3
+                              -> Data.Either.Either TigerSeman.SEErrores (b, s3)) ->
                     tpl)
                      `cast`
-                   (<s1 -> Data.Either.Either TigerSeman.SEErrores (b, s1)>_R
+                   (<s3 -> Data.Either.Either TigerSeman.SEErrores (b, s3)>_R
                     ->_R Sym (Control.Monad.Trans.State.Lazy.N:StateT[0]
-                                  <s1>_N <Data.Either.Either TigerSeman.SEErrores>_R <b>_N))
-                   (\ (s2 :: s1) ->
+                                  <s3>_N <Data.Either.Either TigerSeman.SEErrores>_R <b>_N))
+                   (\ (s4 :: s3) ->
                     Data.Either.$fMonadEither_$c>>=
                       @ TigerSeman.SEErrores
-                      @ (a, s1)
-                      @ (b, s1)
+                      @ (a, s3)
+                      @ (b, s3)
                       (Control.Monad.Trans.State.Lazy.runStateT
-                         @ s1
+                         @ s3
                          @ (Data.Either.Either TigerSeman.SEErrores)
                          @ a
                          m1
-                         s2)
-                      (\ (ds :: (a, s1))[OneShot] ->
+                         s4)
+                      (\ (ds :: (a, s3))[OneShot] ->
                        Control.Monad.Trans.State.Lazy.runStateT
-                         @ s1
+                         @ s3
                          @ (Data.Either.Either TigerSeman.SEErrores)
                          @ b
                          (k (case ds of wild { (,) a1 s' -> a1 }))
                          (case ds of wild { (,) a1 s' -> s' })))) -}
-ae89c4bcecab37897c2316d1c5c75ddb
+5aabe178561790745db2e5738477ad27
   $fManticoreStateT_$s$fMonadStateT_$cfail ::
     GHC.Base.String
     -> Control.Monad.Trans.State.Lazy.StateT
          s (Data.Either.Either TigerSeman.SEErrores) a
   {- Arity: 2, Strictness: <B,U><B,A>x, Inline: INLINE (sat-args=1),
      Unfolding: InlineRule (1, False, False)
-                (\ @ s1 @ a (str :: GHC.Base.String) ->
+                (\ @ s3 @ a (str :: GHC.Base.String) ->
                  GHC.Base.$
                    @ 'GHC.Types.PtrRepLifted
-                   @ (s1 -> Data.Either.Either TigerSeman.SEErrores (a, s1))
+                   @ (s3 -> Data.Either.Either TigerSeman.SEErrores (a, s3))
                    @ (Control.Monad.Trans.State.Lazy.StateT
-                        s1 (Data.Either.Either TigerSeman.SEErrores) a)
-                   (\ (tpl :: s1
-                              -> Data.Either.Either TigerSeman.SEErrores (a, s1)) ->
+                        s3 (Data.Either.Either TigerSeman.SEErrores) a)
+                   (\ (tpl :: s3
+                              -> Data.Either.Either TigerSeman.SEErrores (a, s3)) ->
                     tpl)
                      `cast`
-                   (<s1 -> Data.Either.Either TigerSeman.SEErrores (a, s1)>_R
+                   (<s3 -> Data.Either.Either TigerSeman.SEErrores (a, s3)>_R
                     ->_R Sym (Control.Monad.Trans.State.Lazy.N:StateT[0]
-                                  <s1>_N <Data.Either.Either TigerSeman.SEErrores>_R <a>_N))
-                   (\ (ds :: s1) ->
+                                  <s3>_N <Data.Either.Either TigerSeman.SEErrores>_R <a>_N))
+                   (\ (ds :: s3) ->
                     Data.Either.$fMonadEither_$cfail
                       @ TigerSeman.SEErrores
-                      @ (a, s1)
+                      @ (a, s3)
                       str)) -}
-5e70588b8339646e594d1668ce221155
+4b0d82039b769da34575653ff03541b8
   $fManticoreStateT_$s$fMonadStateT_$cp1Monad ::
     GHC.Base.Applicative
       (Control.Monad.Trans.State.Lazy.StateT
@@ -1071,7 +1184,13 @@ b22d085f747c77a4461f3ae8fc0ca873
                    (w2 :: Data.Map.Base.Map Data.Text.Internal.Text a1) ->
                  case w of ww { Data.Text.Internal.Text ww1 ww2 ww3 ->
                  TigerSeman.$w$sgo4 @ a1 ww1 ww2 ww3 w1 w2 }) -}
-2a41a042699f747861e8943e24ac1e0a
+583afbff5e8ec9b21d8ef889c409eab7
+  $fManticoreStateT_go10 ::
+    [GHC.Types.Char]
+    -> Data.Map.Base.Map Data.Text.Internal.Text TigerSres.EnvEntry
+    -> [GHC.Types.Char]
+  {- Arity: 2, Strictness: <L,1*U><S,1*U> -}
+34c9d376a577e101b72e82ca106e3166
   $fShowEstadoG :: GHC.Show.Show TigerSeman.EstadoG
   DFunId
   {- Strictness: m, Inline: [ALWAYS] CONLIKE,
@@ -1080,7 +1199,7 @@ b22d085f747c77a4461f3ae8fc0ca873
                   TigerSeman.$fShowEstadoG_$cshowsPrec
                   TigerSeman.$fShowEstadoG_$cshow
                   TigerSeman.$fShowEstadoG_$cshowList -}
-2a41a042699f747861e8943e24ac1e0a
+34c9d376a577e101b72e82ca106e3166
   $fShowEstadoG1 :: TigerSeman.EstadoG -> GHC.Show.ShowS
   {- Arity: 1,
      Unfolding: (\ (w :: TigerSeman.EstadoG) ->
@@ -1104,7 +1223,7 @@ fa36dd6e96799bcf608659afb00a99c5
 eb92f72a25bbddf0b7e4d8ca5bc6a181
   $fShowEstadoG7 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# "G {"#) -}
-2a41a042699f747861e8943e24ac1e0a
+34c9d376a577e101b72e82ca106e3166
   $fShowEstadoG_$cshow :: TigerSeman.EstadoG -> GHC.Base.String
   {- Arity: 1, Strictness: <S,1*U(U(U),1*U,1*U)>,
      Unfolding: InlineRule (1, True, False)
@@ -1113,13 +1232,13 @@ eb92f72a25bbddf0b7e4d8ca5bc6a181
                    GHC.Show.shows22
                    x
                    (GHC.Types.[] @ GHC.Types.Char)) -}
-2a41a042699f747861e8943e24ac1e0a
+34c9d376a577e101b72e82ca106e3166
   $fShowEstadoG_$cshowList :: [TigerSeman.EstadoG] -> GHC.Show.ShowS
   {- Arity: 2,
      Unfolding: (GHC.Show.showList__
                    @ TigerSeman.EstadoG
                    TigerSeman.$fShowEstadoG1) -}
-2a41a042699f747861e8943e24ac1e0a
+34c9d376a577e101b72e82ca106e3166
   $fShowEstadoG_$cshowsPrec ::
     GHC.Types.Int -> TigerSeman.EstadoG -> GHC.Show.ShowS
   {- Arity: 2, Strictness: <S(S),1*U(U)><S,1*U(U(U),1*U,1*U)>,
@@ -1351,6 +1470,153 @@ a951cc879525f37579ceaddb0aba788a
   {- HasNoCafRefs, Strictness: m1,
      Unfolding: (GHC.Types.TrNameS
                    "HaskTiger-0.1.0.0-1NjWJIneMSYKOEJS7DxzEs"#) -}
+d79d3eccd594984dd63bac9b93671ab9
+  $w$cgetTipoFunV ::
+    GHC.Prim.ByteArray#
+    -> GHC.Prim.Int#
+    -> GHC.Prim.Int#
+    -> GHC.Types.Int
+    -> Data.Map.Base.Map TigerSymbol.Symbol TigerSres.EnvEntry
+    -> Data.Map.Base.Map TigerSymbol.Symbol TigerTips.Tipo
+    -> Data.Either.Either
+         TigerSeman.SEErrores (TigerSres.FunEntry, TigerSeman.EstadoG)
+  {- Arity: 6, Strictness: <L,U><L,U><L,U><L,U><S,U><L,U>,
+     Inline: [0],
+     Unfolding: (\ (ww :: GHC.Prim.ByteArray#)
+                   (ww1 :: GHC.Prim.Int#)
+                   (ww2 :: GHC.Prim.Int#)
+                   (ww3 :: GHC.Types.Int)
+                   (ww4 :: Data.Map.Base.Map TigerSymbol.Symbol TigerSres.EnvEntry)
+                   (ww5 :: Data.Map.Base.Map TigerSymbol.Symbol TigerTips.Tipo) ->
+                 case TigerSeman.$wpoly_go10
+                        @ TigerSres.EnvEntry
+                        ww
+                        ww1
+                        ww2
+                        ww4 of wild {
+                   GHC.Base.Nothing
+                   -> Data.Either.Left
+                        @ TigerSeman.SEErrores
+                        @ (TigerSres.FunEntry, TigerSeman.EstadoG)
+                        (TigerSeman.Internal
+                           (TigerSymbol.addStr
+                              TigerSeman.$fDaemonStateT_g
+                              (Data.Text.Internal.Text ww ww1 ww2)))
+                   GHC.Base.Just ds
+                   -> case ds of wild1 {
+                        TigerSres.Var ipv
+                        -> case TigerSeman.$fManticoreStateT8
+                           ret_ty (Data.Either.Either
+                                     TigerSeman.SEErrores (TigerSres.FunEntry, TigerSeman.EstadoG))
+                           of {}
+                        TigerSres.Func f
+                        -> Data.Either.Right
+                             @ TigerSeman.SEErrores
+                             @ (TigerSres.FunEntry, TigerSeman.EstadoG)
+                             (f, TigerSeman.G ww3 ww4 ww5) } }) -}
+08fb601f30bb3cd9c4bcc89986bb9dfc
+  $w$cgetTipoT ::
+    GHC.Prim.ByteArray#
+    -> GHC.Prim.Int#
+    -> GHC.Prim.Int#
+    -> GHC.Types.Int
+    -> Data.Map.Base.Map TigerSymbol.Symbol TigerSres.EnvEntry
+    -> Data.Map.Base.Map TigerSymbol.Symbol TigerTips.Tipo
+    -> Data.Either.Either
+         TigerSeman.SEErrores (TigerTips.Tipo, TigerSeman.EstadoG)
+  {- Arity: 6, Strictness: <L,U><L,U><L,U><L,U><L,U><S,U>,
+     Inline: [0],
+     Unfolding: (\ (ww :: GHC.Prim.ByteArray#)
+                   (ww1 :: GHC.Prim.Int#)
+                   (ww2 :: GHC.Prim.Int#)
+                   (ww3 :: GHC.Types.Int)
+                   (ww4 :: Data.Map.Base.Map TigerSymbol.Symbol TigerSres.EnvEntry)
+                   (ww5 :: Data.Map.Base.Map TigerSymbol.Symbol TigerTips.Tipo) ->
+                 case TigerSeman.$wpoly_go10
+                        @ TigerTips.Tipo
+                        ww
+                        ww1
+                        ww2
+                        ww5 of wild {
+                   GHC.Base.Nothing
+                   -> Data.Either.Left
+                        @ TigerSeman.SEErrores
+                        @ (TigerTips.Tipo, TigerSeman.EstadoG)
+                        (TigerSeman.Internal
+                           (TigerSymbol.addStr
+                              TigerSeman.$fDaemonStateT_g
+                              (Data.Text.Internal.Text ww ww1 ww2)))
+                   GHC.Base.Just ty
+                   -> Data.Either.Right
+                        @ TigerSeman.SEErrores
+                        @ (TigerTips.Tipo, TigerSeman.EstadoG)
+                        (ty, TigerSeman.G ww3 ww4 ww5) }) -}
+b3d9c333b2b609a46b498b561dc8d0d8
+  $w$cgetTipoValV ::
+    GHC.Prim.ByteArray#
+    -> GHC.Prim.Int#
+    -> GHC.Prim.Int#
+    -> GHC.Types.Int
+    -> Data.Map.Base.Map TigerSymbol.Symbol TigerSres.EnvEntry
+    -> Data.Map.Base.Map TigerSymbol.Symbol TigerTips.Tipo
+    -> Data.Either.Either
+         TigerSeman.SEErrores (TigerSres.ValEntry, TigerSeman.EstadoG)
+  {- Arity: 6, Strictness: <L,U><L,U><L,U><L,U><S,U><L,U>,
+     Inline: [0],
+     Unfolding: (\ (ww :: GHC.Prim.ByteArray#)
+                   (ww1 :: GHC.Prim.Int#)
+                   (ww2 :: GHC.Prim.Int#)
+                   (ww3 :: GHC.Types.Int)
+                   (ww4 :: Data.Map.Base.Map TigerSymbol.Symbol TigerSres.EnvEntry)
+                   (ww5 :: Data.Map.Base.Map TigerSymbol.Symbol TigerTips.Tipo) ->
+                 case TigerSeman.$wpoly_go10
+                        @ TigerSres.EnvEntry
+                        ww
+                        ww1
+                        ww2
+                        ww4 of wild {
+                   GHC.Base.Nothing
+                   -> Data.Either.Left
+                        @ TigerSeman.SEErrores
+                        @ (TigerSres.ValEntry, TigerSeman.EstadoG)
+                        (TigerSeman.Internal
+                           (TigerSymbol.addStr
+                              TigerSeman.$fDaemonStateT_g
+                              (Data.Text.Internal.Text ww ww1 ww2)))
+                   GHC.Base.Just ds
+                   -> case ds of wild1 {
+                        TigerSres.Var v
+                        -> Data.Either.Right
+                             @ TigerSeman.SEErrores
+                             @ (TigerSres.ValEntry, TigerSeman.EstadoG)
+                             (v, TigerSeman.G ww3 ww4 ww5)
+                        TigerSres.Func ipv
+                        -> case TigerSeman.$fManticoreStateT6
+                           ret_ty (Data.Either.Either
+                                     TigerSeman.SEErrores (TigerSres.ValEntry, TigerSeman.EstadoG))
+                           of {} } }) -}
+1e82d4e9d33399d188f9ddd0557e6e90
+  $w$cshowVEnv ::
+    TigerSeman.EstadoG -> (# (GHC.Types.IO (), TigerSeman.EstadoG) #)
+  {- Arity: 1, Strictness: <L,U(U,U,U)>, Inline: [0],
+     Unfolding: (\ (w :: TigerSeman.EstadoG) ->
+                 (# ((\ (eta :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                      GHC.IO.Handle.Text.hPutStr2
+                        GHC.IO.Handle.FD.stdout
+                        (GHC.Types.:
+                           @ GHC.Types.Char
+                           GHC.Show.shows6
+                           (case w of wild { TigerSeman.G ds ds1 ds2 ->
+                            GHC.Show.showLitString
+                              (TigerSeman.$fManticoreStateT_go10
+                                 (GHC.Types.[] @ GHC.Types.Char)
+                                 ds1)
+                              TigerSeman.$fManticoreStateT3 }))
+                        GHC.Types.True
+                        eta)
+                       `cast`
+                     (Sym (GHC.Types.N:IO[0] <()>_R)),
+                     w) #)) -}
 a57fc5219e330337d26632c310b02d8f
   $w$cshowsPrec ::
     GHC.Prim.Int#
@@ -1547,6 +1813,15 @@ e06495d3bf6152c86c3e385db826712a
           Data.Text.Internal.Text #)
   {- Arity: 5, Strictness: <L,U><L,U><S,1*U><S,U><S,U>,
      Inline: [0] -}
+29318aaa0c4bddd1560c51d67f11b12b
+  $wpoly_go10 ::
+    GHC.Prim.ByteArray#
+    -> GHC.Prim.Int#
+    -> GHC.Prim.Int#
+    -> Data.Map.Base.Map TigerSymbol.Symbol a
+    -> GHC.Base.Maybe a
+  {- Arity: 4, HasNoCafRefs, Strictness: <L,U><L,U><L,U><S,1*U>,
+     Inline: [0] -}
 725eb918db1ec1fcd556456484c595e4
   $wpoly_go4 ::
     GHC.Prim.Int#
@@ -1554,12 +1829,12 @@ e06495d3bf6152c86c3e385db826712a
     -> [(Data.Text.Internal.Text, a)]
     -> Data.Map.Base.Map Data.Text.Internal.Text a
   {- Arity: 3, Strictness: <L,U><S,1*U><S,1*U>, Inline: [0] -}
-2a41a042699f747861e8943e24ac1e0a
+34c9d376a577e101b72e82ca106e3166
   data EstadoG
     = G {unique :: GHC.Types.Int,
          vEnv :: Data.Map.Base.Map TigerSymbol.Symbol TigerSres.EnvEntry,
          tEnv :: Data.Map.Base.Map TigerSymbol.Symbol TigerTips.Tipo}
-83e0b30925b48d92766c65e2dda0dda0
+30ba9bb49d52754d32bb564107b313bf
   class (TigerErrores.Daemon w, GHC.Base.Monad w) =>
         Manticore (w :: * -> *) where
     insertValV :: TigerSymbol.Symbol
@@ -1571,7 +1846,7 @@ e06495d3bf6152c86c3e385db826712a
     getTipoFunV :: TigerSymbol.Symbol -> w TigerSres.FunEntry
     getTipoValV :: TigerSymbol.Symbol -> w TigerSres.ValEntry
     getTipoT :: TigerSymbol.Symbol -> w TigerTips.Tipo
-    showVEnv :: w ()
+    showVEnv :: w (GHC.Types.IO ())
     showTEnv :: w ()
     tiposIguales :: TigerTips.Tipo
                     -> TigerTips.Tipo -> w GHC.Types.Bool
@@ -1581,7 +1856,7 @@ e06495d3bf6152c86c3e385db826712a
     {-# MINIMAL insertValV, insertFunV, insertVRO, insertTipoT,
                 getTipoFunV, getTipoValV, getTipoT, showVEnv, showTEnv, ugen,
                 addTypos #-}
-2a41a042699f747861e8943e24ac1e0a
+34c9d376a577e101b72e82ca106e3166
   type OurState =
     Control.Monad.Trans.State.Lazy.StateT
       TigerSeman.EstadoG (Data.Either.Either TigerSeman.SEErrores)
@@ -1591,7 +1866,7 @@ e06495d3bf6152c86c3e385db826712a
     = NotFound Data.Text.Internal.Text
     | DiffVal Data.Text.Internal.Text
     | Internal Data.Text.Internal.Text
-3d15e712f9aea4f4335c3655806e0df8
+b205aff06f6731b59d9b4c964d831633
   addpos ::
     (TigerErrores.Daemon w, GHC.Show.Show b) => w a -> b -> w a
   {- Arity: 4,
@@ -1612,11 +1887,11 @@ e06495d3bf6152c86c3e385db826712a
                     case GHC.Magic.runRW#
                            @ 'GHC.Types.PtrRepLifted
                            @ Data.Text.Internal.Text
-                           (\ (s1 :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                           (\ (s3 :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
                             case GHC.Prim.newByteArray#
                                    @ GHC.Prim.RealWorld
                                    10#
-                                   s1 of ds1 { (#,#) ipv ipv1 ->
+                                   s3 of ds1 { (#,#) ipv ipv1 ->
                             TigerSeman.$wouter ipv1 4# dt 0# ipv }) of ds1 { (#,#) ipv ipv1 ->
                     ipv1 } })) -}
 beb9519557c4e6a241e96764ad079fc1
@@ -1625,7 +1900,7 @@ beb9519557c4e6a241e96764ad079fc1
     -> [(TigerSymbol.Symbol, TigerTips.Tipo, GHC.Types.Int)]
     -> GHC.Base.Maybe TigerTips.Tipo
   {- Arity: 2, HasNoCafRefs, Strictness: <L,1*U(U,U,U)><S,1*U> -}
-8f868bfd7ed5ddfbba352a421316fb81
+551358d800c1a1886ac744a5a4b0d4c9
   cmpZip ::
     TigerSeman.Manticore m =>
     [(TigerSymbol.Symbol, TigerTips.Tipo)]
@@ -1633,21 +1908,21 @@ beb9519557c4e6a241e96764ad079fc1
     -> m GHC.Types.Bool
   {- Arity: 3, HasNoCafRefs,
      Strictness: <S(LSLLLLLLLLLLLL),U(A,U,A,A,A,A,A,A,A,A,A,C(C1(U)),A,A)><S,1*U><S,1*U> -}
-f5c4a8ee6585ebfba0044da2357ebde7
+e23c877e1713c05f6f63fa77648b6e9c
   depend :: TigerAbs.Ty -> [TigerSymbol.Symbol]
   {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U>,
      Unfolding: (\ (ds :: TigerAbs.Ty) ->
                  case ds of wild {
-                   TigerAbs.NameTy s1
+                   TigerAbs.NameTy s3
                    -> GHC.Types.:
                         @ TigerSymbol.Symbol
-                        s1
+                        s3
                         (GHC.Types.[] @ TigerSymbol.Symbol)
                    TigerAbs.RecordTy ts -> TigerSeman.depend_go ts
-                   TigerAbs.ArrayTy s1
+                   TigerAbs.ArrayTy s3
                    -> GHC.Types.:
                         @ TigerSymbol.Symbol
-                        s1
+                        s3
                         (GHC.Types.[] @ TigerSymbol.Symbol) }) -}
 003097d0611cd0a33656a91da393cf85
   depend_go ::
@@ -1658,7 +1933,7 @@ ccb3979d285fd4cfb962c2778ca37d7c
   errAppend ::
     TigerSeman.SEErrores -> TigerSymbol.Symbol -> TigerSeman.SEErrores
   {- Arity: 2, Strictness: <S,1*U><L,1*U(U,U,U)> -}
-5a04f268a97b9217eb256c0ad1179ea2
+d51f1a92e07ba3458015941659a56366
   fromTy :: TigerSeman.Manticore w => TigerAbs.Ty -> w TigerTips.Tipo
   {- Arity: 2,
      Strictness: <S(LLLLLLLLC(S)LLLLL),1*U(A,A,A,A,A,A,A,A,1*C1(U),A,A,A,A,A)><S,1*U>,
@@ -1668,11 +1943,11 @@ ccb3979d285fd4cfb962c2778ca37d7c
                    (ds :: TigerAbs.Ty) ->
                  case ds of wild {
                    DEFAULT -> TigerSeman.fromTy1 @ w
-                   TigerAbs.NameTy s1 -> TigerSeman.getTipoT @ w $dManticore s1 }) -}
+                   TigerAbs.NameTy s3 -> TigerSeman.getTipoT @ w $dManticore s3 }) -}
 a754d03fef58260d4d2748315545c7ba
   fromTy1 :: w TigerTips.Tipo
   {- Strictness: x -}
-3487bd99bbc1d5ef0f3c9d271114d965
+4ca9ddc26df100eb810e424b8f6515ce
   initConf :: TigerSeman.EstadoG
   {- Strictness: m,
      Unfolding: (TigerSeman.G
@@ -2028,7 +2303,7 @@ adf58003be2e72a0c5e6c1cfd35546b6
                  case w2 of ww { (,,) ww1 ww2 ww3 ->
                  case w3 of ww4 { (,,) ww5 ww6 ww7 ->
                  TigerSeman.$wourOrder @ a @ b @ c w1 ww1 ww5 } }) -}
-ffbee887c944501fbb3ee9a230c6aa0d
+3654f7ebe5ac303e65454148f4f88ffe
   tEnv ::
     TigerSeman.EstadoG
     -> Data.Map.Base.Map TigerSymbol.Symbol TigerTips.Tipo
@@ -2037,44 +2312,38 @@ ffbee887c944501fbb3ee9a230c6aa0d
      Unfolding: InlineRule (1, True, False)
                 (\ (ds :: TigerSeman.EstadoG) ->
                  case ds of wild { TigerSeman.G ds1 ds2 ds3 -> ds3 }) -}
-581f2519b599724333140039bd3fff28
+7329c788c6378e7502554b9bed67d5f3
+  trDec ::
+    TigerSeman.Manticore w => TigerAbs.Dec -> w a -> w TigerTips.Tipo
+  {- Arity: 1,
+     Strictness: <L,U(U,U,C(C1(C1(U))),A,C(C1(U)),A,C(U),C(U),C(U),A,A,C(C1(U)),U,A)> -}
+f03f4876fffdf4300f695a8d51a6aa9f
   transDecs :: TigerSeman.Manticore w => [TigerAbs.Dec] -> w a -> w a
-  {- Arity: 3, Strictness: <L,A><S,1*U><S,1*U>,
-     Unfolding: InlineRule (3, True, False)
-                (\ @ (w :: * -> *)
-                   @ a
-                   ($dManticore :: TigerSeman.Manticore w)
-                   (ds :: [TigerAbs.Dec])
-                   (eta :: w a) ->
-                 case ds of wild {
-                   [] -> case TigerSeman.transDecs1 ret_ty (w a) of {}
-                   : ds1 xs -> case ds1 of wild1 { DEFAULT -> eta } }) -}
-2b476a564de5a891f96d25a1c79a6873
-  transDecs1 :: w a -> w a
-  {- Strictness: x -}
-b207840f915497128f2a10caacd49fe6
+  {- Arity: 3,
+     Strictness: <S(LSLLLLLLLLLLLL),U(U,U,C(C1(C1(U))),A,C(C1(U)),A,C(U),C(U),C(U),A,A,C(C1(U)),U,A)><S,1*U><L,U> -}
+f0e0d63a74b4058e7b5f6f4bbd328458
   transExp ::
     TigerSeman.Manticore w => TigerAbs.Exp -> w TigerTips.Tipo
   {- Arity: 1,
-     Strictness: <L,U(U,U,A,A,C(C1(U)),A,C(U),C(U),A,A,A,C(C1(U)),U,A)> -}
-511bd181df8059407710a2395f1312aa
+     Strictness: <L,U(U,U,C(C1(C1(U))),A,C(C1(U)),A,C(U),C(U),C(U),A,A,C(C1(U)),U,A)> -}
+88dd3724f75d63969fce35b684997ae6
   transTy ::
     TigerSeman.Manticore w => TigerAbs.Ty -> w TigerTips.Tipo
   {- Arity: 2, HasNoCafRefs,
      Strictness: <S,U(A,U,A,A,A,A,A,A,C(U),A,A,A,U,A)><S,1*U> -}
-73802403d27b47fedb7e966b308a7e0f
+5b40dec1d3e58d7682e70e9d22884820
   transVar ::
     TigerSeman.Manticore w => TigerAbs.Var -> w TigerTips.Tipo
   {- Arity: 2,
-     Strictness: <S,U(U,U,A,A,C(C1(U)),A,C(U),C(U),A,A,A,C(C1(U)),U,A)><S,1*U> -}
-93b0e97334a1676edd0296d5976f0054
+     Strictness: <S,U(U,U,C(C1(C1(U))),A,C(C1(U)),A,C(U),C(U),C(U),A,A,C(C1(U)),U,A)><S,1*U> -}
+e872f314ddc4f31a52ec06c7219ce3ee
   unique :: TigerSeman.EstadoG -> GHC.Types.Int
   RecSel Left TigerSeman.EstadoG
   {- Arity: 1, HasNoCafRefs, Strictness: <S(SLL),1*U(1*U(U),A,A)>m,
      Unfolding: InlineRule (1, True, False)
                 (\ (ds :: TigerSeman.EstadoG) ->
                  case ds of wild { TigerSeman.G ds1 ds2 ds3 -> ds1 }) -}
-9470dedeb1755aa3fa9e53972a165dec
+981f97a7bf134b8991f35fcbffc29bb2
   vEnv ::
     TigerSeman.EstadoG
     -> Data.Map.Base.Map TigerSymbol.Symbol TigerSres.EnvEntry
@@ -2091,7 +2360,7 @@ instance GHC.Show.Show [TigerSeman.EstadoG]
   = TigerSeman.$fShowEstadoG
 instance GHC.Show.Show [TigerSeman.SEErrores]
   = TigerSeman.$fShowSEErrores
-"SPEC/TigerSeman $fApplicativeStateT @ (Either SEErrores) _" [ALWAYS] forall @ s1
+"SPEC/TigerSeman $fApplicativeStateT @ (Either SEErrores) _" [ALWAYS] forall @ s3
                                                                              ($dMonad :: GHC.Base.Monad
                                                                                            (Data.Either.Either
                                                                                               TigerSeman.SEErrores))
@@ -2100,11 +2369,11 @@ instance GHC.Show.Show [TigerSeman.SEErrores]
                                                                                                 TigerSeman.SEErrores))
   Control.Monad.Trans.State.Lazy.$fApplicativeStateT @ (Data.Either.Either
                                                           TigerSeman.SEErrores)
-                                                     @ s1
+                                                     @ s3
                                                      $dFunctor
                                                      $dMonad
-  = TigerSeman.$fManticoreStateT_$s$fApplicativeStateT @ s1
-"SPEC/TigerSeman $fApplicativeStateT_$c<*> @ (Either SEErrores) _" [ALWAYS] forall @ s1
+  = TigerSeman.$fManticoreStateT_$s$fApplicativeStateT @ s3
+"SPEC/TigerSeman $fApplicativeStateT_$c<*> @ (Either SEErrores) _" [ALWAYS] forall @ s3
                                                                                    ($dMonad :: GHC.Base.Monad
                                                                                                  (Data.Either.Either
                                                                                                     TigerSeman.SEErrores))
@@ -2113,11 +2382,11 @@ instance GHC.Show.Show [TigerSeman.SEErrores]
                                                                                                       TigerSeman.SEErrores))
   Control.Monad.Trans.State.Lazy.$fApplicativeStateT_$c<*> @ (Data.Either.Either
                                                                 TigerSeman.SEErrores)
-                                                           @ s1
+                                                           @ s3
                                                            $dFunctor
                                                            $dMonad
-  = TigerSeman.$fManticoreStateT_$s$fApplicativeStateT_$c<*> @ s1
-"SPEC/TigerSeman $fApplicativeStateT_$cpure @ (Either SEErrores) _" [ALWAYS] forall @ s1
+  = TigerSeman.$fManticoreStateT_$s$fApplicativeStateT_$c<*> @ s3
+"SPEC/TigerSeman $fApplicativeStateT_$cpure @ (Either SEErrores) _" [ALWAYS] forall @ s3
                                                                                     ($dMonad :: GHC.Base.Monad
                                                                                                   (Data.Either.Either
                                                                                                      TigerSeman.SEErrores))
@@ -2126,55 +2395,55 @@ instance GHC.Show.Show [TigerSeman.SEErrores]
                                                                                                        TigerSeman.SEErrores))
   Control.Monad.Trans.State.Lazy.$fApplicativeStateT_$cpure @ (Data.Either.Either
                                                                  TigerSeman.SEErrores)
-                                                            @ s1
+                                                            @ s3
                                                             $dFunctor
                                                             $dMonad
-  = TigerSeman.$fManticoreStateT_$s$fApplicativeStateT_$cpure @ s1
-"SPEC/TigerSeman $fMonadStateT @ (Either SEErrores) _" [ALWAYS] forall @ s1
+  = TigerSeman.$fManticoreStateT_$s$fApplicativeStateT_$cpure @ s3
+"SPEC/TigerSeman $fMonadStateT @ (Either SEErrores) _" [ALWAYS] forall @ s3
                                                                        ($dMonad :: GHC.Base.Monad
                                                                                      (Data.Either.Either
                                                                                         TigerSeman.SEErrores))
   Control.Monad.Trans.State.Lazy.$fMonadStateT @ (Data.Either.Either
                                                     TigerSeman.SEErrores)
-                                               @ s1
+                                               @ s3
                                                $dMonad
-  = TigerSeman.$fManticoreStateT_$s$fMonadStateT @ s1
-"SPEC/TigerSeman $fMonadStateT_$c>> @ (Either SEErrores) _" [ALWAYS] forall @ s1
+  = TigerSeman.$fManticoreStateT_$s$fMonadStateT @ s3
+"SPEC/TigerSeman $fMonadStateT_$c>> @ (Either SEErrores) _" [ALWAYS] forall @ s3
                                                                             ($dMonad :: GHC.Base.Monad
                                                                                           (Data.Either.Either
                                                                                              TigerSeman.SEErrores))
   Control.Monad.Trans.State.Lazy.$fMonadStateT_$c>> @ (Data.Either.Either
                                                          TigerSeman.SEErrores)
-                                                    @ s1
+                                                    @ s3
                                                     $dMonad
-  = TigerSeman.$fManticoreStateT_$s$fMonadStateT_$c>> @ s1
-"SPEC/TigerSeman $fMonadStateT_$c>>= @ (Either SEErrores) _" [ALWAYS] forall @ s1
+  = TigerSeman.$fManticoreStateT_$s$fMonadStateT_$c>> @ s3
+"SPEC/TigerSeman $fMonadStateT_$c>>= @ (Either SEErrores) _" [ALWAYS] forall @ s3
                                                                              ($dMonad :: GHC.Base.Monad
                                                                                            (Data.Either.Either
                                                                                               TigerSeman.SEErrores))
   Control.Monad.Trans.State.Lazy.$fMonadStateT_$c>>= @ (Data.Either.Either
                                                           TigerSeman.SEErrores)
-                                                     @ s1
+                                                     @ s3
                                                      $dMonad
-  = TigerSeman.$fManticoreStateT_$s$fMonadStateT_$c>>= @ s1
-"SPEC/TigerSeman $fMonadStateT_$cfail @ (Either SEErrores) _" [ALWAYS] forall @ s1
+  = TigerSeman.$fManticoreStateT_$s$fMonadStateT_$c>>= @ s3
+"SPEC/TigerSeman $fMonadStateT_$cfail @ (Either SEErrores) _" [ALWAYS] forall @ s3
                                                                               ($dMonad :: GHC.Base.Monad
                                                                                             (Data.Either.Either
                                                                                                TigerSeman.SEErrores))
   Control.Monad.Trans.State.Lazy.$fMonadStateT_$cfail @ (Data.Either.Either
                                                            TigerSeman.SEErrores)
-                                                      @ s1
+                                                      @ s3
                                                       $dMonad
-  = TigerSeman.$fManticoreStateT_$s$fMonadStateT_$cfail @ s1
-"SPEC/TigerSeman $fMonadStateT_$cp1Monad @ (Either SEErrores) _" [ALWAYS] forall @ s1
+  = TigerSeman.$fManticoreStateT_$s$fMonadStateT_$cfail @ s3
+"SPEC/TigerSeman $fMonadStateT_$cp1Monad @ (Either SEErrores) _" [ALWAYS] forall @ s3
                                                                                  ($dMonad :: GHC.Base.Monad
                                                                                                (Data.Either.Either
                                                                                                   TigerSeman.SEErrores))
   Control.Monad.Trans.State.Lazy.$fMonadStateT_$cp1Monad @ (Data.Either.Either
                                                               TigerSeman.SEErrores)
-                                                         @ s1
+                                                         @ s3
                                                          $dMonad
-  = TigerSeman.$fManticoreStateT_$s$fMonadStateT_$cp1Monad @ s1
+  = TigerSeman.$fManticoreStateT_$s$fMonadStateT_$cp1Monad @ s3
 "SPEC/TigerSeman fromList @ Text _" [ALWAYS] forall @ a
                                                     ($dOrd :: GHC.Classes.Ord
                                                                 Data.Text.Internal.Text)

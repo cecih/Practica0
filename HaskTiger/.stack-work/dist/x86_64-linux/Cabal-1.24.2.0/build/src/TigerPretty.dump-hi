@@ -1,10 +1,10 @@
 
 ==================== FINAL INTERFACE ====================
-2017-09-10 01:13:36.564452 UTC
+2017-09-10 03:02:29.687048 UTC
 
 interface HaskTiger-0.1.0.0-1NjWJIneMSYKOEJS7DxzEs:TigerPretty 8002
-  interface hash: 41affe555550c371a8bed1ff4dc6fec8
-  ABI hash: cab4810d8c6fb58e419839b4d191c2af
+  interface hash: 359baa79f479ce589ae448c8867dd559
+  ABI hash: 1b46b4779db77d1f56f3ba11a724b179
   export-list hash: 518a5846cdc622613170653ecbd1c9a1
   orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
   flag hash: ab396f11155bd696ab63895436e6f1df
@@ -92,7 +92,6 @@ import  -/  TigerAbs 37f30c082077bd2ed6390df841315dcd
 import  -/  TigerSymbol 7f64bcc3e38a9378b34cbe06e8c0cb9e
   exports: 461431869c9d4f5bf206765437ddd561
 import  -/  base-4.9.1.0:GHC.Base c4231c43c07e46080a26bf94094c7aa1
-import  -/  base-4.9.1.0:GHC.Err 3bba35a16538d33d424682ce66876cdd
 import  -/  base-4.9.1.0:GHC.Show a027f5ac24879eaba752f44aa90fe511
 import  -/  base-4.9.1.0:Prelude 22dd289b8469a8fa8dc81cab7b237771
 import  -/  pretty-1.1.3.3@pretty-1.1.3.3:Text.PrettyPrint abe8aeb00d775221281f89090d9fbe2a
@@ -119,20 +118,20 @@ e2c091f31b26dc1ae4e30fe3f5de3d91
 594ff381f33439d5f48d152b4cd32af3
   prettyExp :: TigerAbs.Exp -> Text.PrettyPrint.HughesPJ.Doc
   {- Arity: 1, Strictness: <S,1*U> -}
-6572d0ea2be50e884d457e0d8f1858a0
+c86752a481271c8085354f6e0284fee1
   prettyField :: [TigerAbs.Field] -> Text.PrettyPrint.HughesPJ.Doc
   {- Arity: 1, Strictness: <S,1*U>m3, Inline: INLINE[0],
      Unfolding: InlineRule (1, True, False)
                 (\ (w :: [TigerAbs.Field]) ->
                  let {
-                   s20 :: GHC.Base.String = TigerPretty.prettyField1 w
+                   s21 :: GHC.Base.String = TigerPretty.prettyField1 w
                  } in
-                 case GHC.List.$wlenAcc @ GHC.Types.Char s20 0# of ww2 { DEFAULT ->
+                 case GHC.List.$wlenAcc @ GHC.Types.Char s21 0# of ww2 { DEFAULT ->
                  (Text.PrettyPrint.Annotated.HughesPJ.TextBeside
                     @ ()
                     (Text.PrettyPrint.Annotated.HughesPJ.NoAnnot
                        @ ()
-                       (Text.PrettyPrint.Annotated.HughesPJ.Str s20)
+                       (Text.PrettyPrint.Annotated.HughesPJ.Str s21)
                        ww2)
                     (Text.PrettyPrint.Annotated.HughesPJ.Empty @ ()))
                    `cast`
@@ -430,21 +429,21 @@ e390a972951b91b4f0627fb038dd7288
 30bd3d875b158b3b12704c961943bf20
   prettyOp_s9 :: GHC.Base.String
   {- Unfolding: (GHC.CString.unpackCString# "+"#) -}
-263c79a6f1c626442880852e9413c397
+eb58a2677ef7168f7d6eecdca454c978
   prettyTy :: TigerAbs.Ty -> Text.PrettyPrint.HughesPJ.Doc
   {- Arity: 1, Strictness: <S,1*U>m3, Inline: INLINE[0],
      Unfolding: InlineRule (1, True, False)
                 (\ (w :: TigerAbs.Ty) ->
                  let {
-                   s20 :: GHC.Base.String
+                   s21 :: GHC.Base.String
                    = TigerAbs.$w$cshowsPrec2 0# w (GHC.Types.[] @ GHC.Types.Char)
                  } in
-                 case GHC.List.$wlenAcc @ GHC.Types.Char s20 0# of ww2 { DEFAULT ->
+                 case GHC.List.$wlenAcc @ GHC.Types.Char s21 0# of ww2 { DEFAULT ->
                  (Text.PrettyPrint.Annotated.HughesPJ.TextBeside
                     @ ()
                     (Text.PrettyPrint.Annotated.HughesPJ.NoAnnot
                        @ ()
-                       (Text.PrettyPrint.Annotated.HughesPJ.Str s20)
+                       (Text.PrettyPrint.Annotated.HughesPJ.Str s21)
                        ww2)
                     (Text.PrettyPrint.Annotated.HughesPJ.Empty @ ()))
                    `cast`
@@ -452,7 +451,7 @@ e390a972951b91b4f0627fb038dd7288
 2382ab37c51c921b484c2967c541b3f4
   prettyVar :: TigerAbs.Var -> Text.PrettyPrint.HughesPJ.Doc
   {- Arity: 1, Strictness: <S,1*U> -}
-e6eba5d1f6b5ce13d11093f7d6438f40
+d0c72cd574127d8cd84bd2cca3f492ea
   renderExp :: TigerAbs.Exp -> GHC.Base.String
   {- Arity: 1, Strictness: <L,1*U>,
      Unfolding: (\ (x :: TigerAbs.Exp) ->
@@ -467,7 +466,7 @@ e6eba5d1f6b5ce13d11093f7d6438f40
                    (TigerPretty.prettyExp x)
                      `cast`
                    (Text.PrettyPrint.HughesPJ.N:Doc[0])) -}
-3018954aa46903da95bea007ad6e3348
+69385edc3709d3fe0c15386a60ac238c
   renderExp1 ::
     Text.PrettyPrint.Annotated.HughesPJ.AnnotDetails ()
     -> GHC.Base.String -> GHC.Base.String
@@ -477,14 +476,14 @@ e6eba5d1f6b5ce13d11093f7d6438f40
                    (eta :: GHC.Base.String)[OneShot] ->
                  case ds of wild {
                    DEFAULT -> eta
-                   Text.PrettyPrint.Annotated.HughesPJ.NoAnnot s20 dt1
-                   -> case s20 of wild1 {
+                   Text.PrettyPrint.Annotated.HughesPJ.NoAnnot s21 dt1
+                   -> case s21 of wild1 {
                         Text.PrettyPrint.Annotated.HughesPJ.Chr dt
                         -> GHC.Types.: @ GHC.Types.Char (GHC.Types.C# dt) eta
-                        Text.PrettyPrint.Annotated.HughesPJ.Str s21
-                        -> GHC.Base.++ @ GHC.Types.Char s21 eta
-                        Text.PrettyPrint.Annotated.HughesPJ.PStr s21
-                        -> GHC.Base.++ @ GHC.Types.Char s21 eta } }) -}
+                        Text.PrettyPrint.Annotated.HughesPJ.Str s22
+                        -> GHC.Base.++ @ GHC.Types.Char s22 eta
+                        Text.PrettyPrint.Annotated.HughesPJ.PStr s22
+                        -> GHC.Base.++ @ GHC.Types.Char s22 eta } }) -}
 3ad8ea76c7294c2899bc50c4f6197a58
   tabWidth :: GHC.Types.Int
   {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 8#) -}

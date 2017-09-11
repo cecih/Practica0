@@ -264,10 +264,51 @@ fromTy _ = P.error "no debería haber una definición de tipos en los args..."
 
 -- Acá agregamos los tipos, clase 04/09/17
 transDecs :: (Manticore w) => [Dec] -> w a -> w a
-transDecs (FunctionDec{} : xs) = id
-transDecs (VarDec{}: xs)       = id
-transDecs (TypeDec{}: xs)      = id
+--transDecs (FunctionDec{} : xs)= id
+transDecs (VarDec name  escape typ init' pos': xs) w  = 
+  do
+     t <- trDec (VarDec name  escape typ init' pos') w --w Tipo
+     insertValV name t w
+     res <- transDecs xs w
+     return res 
+transDecs (TypeDec ds: xs) w = 
+  do
+    trDec (TypeDec ds) w
+    res <- transDecs xs w
+    return res 
 
+trDec :: (Manticore w) => Dec -> w a -> w Tipo
+{-trDec (FunctionDec xs) w = 
+ do venv' <- foldr (\(symb,params,result,body,pos) -> insdec symb params result body pos  w) [] xs
+    tybodys <- map (\(_,_,_,body,_) -> transExp body) xs 
+    return TUnit --Revisar -}
+trDec (VarDec symb escape typ einit pos) w =
+  do tyinit' <- transExp einit --w Tipo
+     case typ of
+      Nothing -> do
+                    b <- tiposIguales tyinit' TNil
+                    if b then P.error "El tipo de la expresion no debe ser nil" else return tyinit'
+      Just s ->  do t' <- transTy (NameTy s) --w Tipo
+                    C.unlessM(tiposIguales tyinit' t') $ P.error "Los tipos son distintos"                             
+                    return t'
+trDec (TypeDec ds) w =
+ do
+  foldr (\(sym,ty,pos) t -> do 
+                             ty' <- transTy ty
+                             t' <- t
+                             C.unlessM (tiposIguales ty' t') $ P.error "Tipos distintos"
+                             return ty') (return TUnit) ds --Reeeviisaaaarrrrr
+                    
+{-insdec :: Symbol -> [Field] -> Maybe Symbol -> Exp -> Pos  -> w a -> w a
+insdec symb params result body pos w = 
+  do
+    params' <- map (\(sym,esc,ty) -> transTy ty) params
+    result' <- case result of
+                    Nothing -> TUnit
+                    Just s  -> transTy (NameTy s)
+    u       <- ugen                
+    venv    <-  insertFunV symb (Func (u, pack symb, params', result',False)) w
+    return venv --Revisar  -}
 
 transExp :: (Manticore w) => Exp -> w Tipo
 transExp (VarExp v p)             = addpos (transVar v) p

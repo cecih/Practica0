@@ -69,7 +69,7 @@ data Exp where
     WhileExp :: Exp -> Exp -> Pos -> Exp
     -- | Bucle for.
     ForExp :: Symbol -> Bool -> Exp -> Exp -> Exp -> Pos -> Exp
-    -- | Expresiones tipo let. Es el único lugar donde pueden declarar nuevas
+    -- | Expresiones tipo let. Es el único lugar d(onde pueden declarar nuevas
     -- varibles, tipos y funciones. Ej: let var a := 3 in a end genera el árbol:
     -- LetExp [VarDec "a" Nothing Nothing (IntExp 3 Pos) Pos] (SimpleVar "a")
     -- Pos
