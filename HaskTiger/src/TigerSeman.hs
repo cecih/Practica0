@@ -250,7 +250,7 @@ transTy (RecordTy flds) =
      flds' <- mapM transTy z 
      return (TRecord (zip3 x flds' [0..length y]) u)
 transTy (ArrayTy s)     = 
-  do u <- ugen
+  do u  <- ugen
      s' <- getTipoT s
      return (TArray s' u) 
 
@@ -264,20 +264,17 @@ fromTy _ = P.error "no debería haber una definición de tipos en los args..."
 
 -- Acá agregamos los tipos, clase 04/09/17
 transDecs :: (Manticore w) => [Dec] -> w a -> w a
-transDecs [] w = w 
+transDecs [] w                                      = w 
 {-transDecs (FunctionDec fs : xs) w = 
   do
    t <- trDec (FunctionDec fs) w
    insertFunV w -}
-transDecs (VarDec name  escape typ init' pos': xs) w  = 
-  do
-     t <- trDec (VarDec name  escape typ init' pos') w --w Tipo
+transDecs (VarDec name  escape typ init' pos':xs) w = 
+  do t <- trDec (VarDec name  escape typ init' pos') w --w Tipo
      insertValV name t (transDecs xs w)
-     
-transDecs (TypeDec ds: xs) w = 
-  do
-    trDec (TypeDec ds) w
-    transDecs xs w
+transDecs (TypeDec ds:xs) w                         = 
+  do trDec (TypeDec ds) w
+     transDecs xs w
     
 
 trDec :: (Manticore w) => Dec -> w a -> w Tipo
@@ -288,18 +285,15 @@ trDec :: (Manticore w) => Dec -> w a -> w Tipo
 trDec (VarDec symb escape typ einit pos) w =
   do tyinit' <- transExp einit --w Tipo
      case typ of
-      Nothing -> do
-                    b <- tiposIguales tyinit' TNil
-                    if b then P.error "El tipo de la expresion no debe ser nil" else return tyinit'
-      Just s ->  do t' <- transTy (NameTy s) --w Tipo
-                    C.unlessM(tiposIguales tyinit' t') $ P.error "Los tipos son distintos"
-                    --insertValV symb t' w
-                    return t'
-trDec (TypeDec []) w = return TUnit                    
-trDec (TypeDec ((sym,ty,pos):ds)) w =
- do
-  ty' <- transTy ty
-  insertTipoT  sym ty' (trDec (TypeDec ds) w) 
+       Nothing -> do b <- tiposIguales tyinit' TNil
+                     if b then P.error "El tipo de la expresion no debe ser nil" else return tyinit'
+       Just s  -> do t' <- transTy (NameTy s) --w Tipo
+                     C.unlessM(tiposIguales tyinit' t') $ P.error "Los tipos son distintos"
+                     return t'
+trDec (TypeDec []) w                       = return TUnit                    
+trDec (TypeDec ((sym,ty,pos):ds)) w        =
+ do ty' <- transTy ty
+    insertTipoT  sym ty' (trDec (TypeDec ds) w) 
   
                     
 {-insdec :: Symbol -> [Field] -> Maybe Symbol -> Exp -> Pos  -> w a -> w a

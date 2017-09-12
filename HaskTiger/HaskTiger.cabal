@@ -27,6 +27,7 @@ library
         , TigerSymbol
         , TigerTemp
         , TigerTips
+        , PrintEnv
   build-depends:       base
                        , containers
                        , text
