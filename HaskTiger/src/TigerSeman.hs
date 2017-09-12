@@ -264,18 +264,18 @@ fromTy _ = P.error "no debería haber una definición de tipos en los args..."
 
 -- Acá agregamos los tipos, clase 04/09/17
 transDecs :: (Manticore w) => [Dec] -> w a -> w a
+transDecs [] w = w 
 --transDecs (FunctionDec{} : xs)= id
 transDecs (VarDec name  escape typ init' pos': xs) w  = 
   do
      t <- trDec (VarDec name  escape typ init' pos') w --w Tipo
-     insertValV name t w
-     res <- transDecs xs w
-     return res 
+     insertValV name t (transDecs xs w)
+     
 transDecs (TypeDec ds: xs) w = 
   do
-    trDec (TypeDec ds) w
-    res <- transDecs xs w
-    return res 
+    t <- trDec (TypeDec ds) w
+    transDecs xs w
+    
 
 trDec :: (Manticore w) => Dec -> w a -> w Tipo
 {-trDec (FunctionDec xs) w = 
@@ -289,15 +289,15 @@ trDec (VarDec symb escape typ einit pos) w =
                     b <- tiposIguales tyinit' TNil
                     if b then P.error "El tipo de la expresion no debe ser nil" else return tyinit'
       Just s ->  do t' <- transTy (NameTy s) --w Tipo
-                    C.unlessM(tiposIguales tyinit' t') $ P.error "Los tipos son distintos"                             
+                    C.unlessM(tiposIguales tyinit' t') $ P.error "Los tipos son distintos"
+                    --insertValV symb t' w
                     return t'
-trDec (TypeDec ds) w =
+trDec (TypeDec []) w = return TUnit                    
+trDec (TypeDec ((sym,ty,pos):ds)) w =
  do
-  foldr (\(sym,ty,pos) t -> do 
-                             ty' <- transTy ty
-                             t' <- t
-                             C.unlessM (tiposIguales ty' t') $ P.error "Tipos distintos"
-                             return ty') (return TUnit) ds --Reeeviisaaaarrrrr
+  ty' <- transTy ty
+  insertTipoT  sym ty' (trDec (TypeDec ds) w) 
+  
                     
 {-insdec :: Symbol -> [Field] -> Maybe Symbol -> Exp -> Pos  -> w a -> w a
 insdec symb params result body pos w = 
