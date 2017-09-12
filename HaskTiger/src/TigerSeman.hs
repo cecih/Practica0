@@ -265,7 +265,10 @@ fromTy _ = P.error "no debería haber una definición de tipos en los args..."
 -- Acá agregamos los tipos, clase 04/09/17
 transDecs :: (Manticore w) => [Dec] -> w a -> w a
 transDecs [] w = w 
---transDecs (FunctionDec{} : xs)= id
+{-transDecs (FunctionDec fs : xs) w = 
+  do
+   t <- trDec (FunctionDec fs) w
+   insertFunV w -}
 transDecs (VarDec name  escape typ init' pos': xs) w  = 
   do
      t <- trDec (VarDec name  escape typ init' pos') w --w Tipo
@@ -273,7 +276,7 @@ transDecs (VarDec name  escape typ init' pos': xs) w  =
      
 transDecs (TypeDec ds: xs) w = 
   do
-    t <- trDec (TypeDec ds) w
+    trDec (TypeDec ds) w
     transDecs xs w
     
 
