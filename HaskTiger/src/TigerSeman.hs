@@ -133,6 +133,8 @@ instance Manticore OurState where
   ugen               = do u <- get                             
                           put (u {unique = unique u + 1})
                           return $ unique u + 1 
+  --addTypos :: [(Symbol, Ty, Pos)] -> w ()
+  --addTypos tys       = do  
 
 -- Podemos definir el estado inicial como:
 initConf :: EstadoG
@@ -263,12 +265,12 @@ fromTy (NameTy s) = getTipoT s
 fromTy _ = P.error "no debería haber una definición de tipos en los args..."
 
 -- Acá agregamos los tipos, clase 04/09/17
-transDecs :: (Manticore w) => [Dec] -> w a -> w a
+transDecs :: (Manticore w) => [Dec] -> (w a -> w a)
 transDecs [] w                                      = w 
-{-transDecs (FunctionDec fs : xs) w = 
-  do
-   t <- trDec (FunctionDec fs) w
-   insertFunV w -}
+transDecs (FunctionDec fs : xs) w = 
+  trDec (FunctionDec fs) (mapM insdec fs)
+      --t <- trDec (FunctionDec fs) w
+     --insertFunV w --Revisar
 transDecs (VarDec name  escape typ init' pos':xs) w = 
   do t <- trDec (VarDec name  escape typ init' pos') w --w Tipo
      insertValV name t (transDecs xs w)
@@ -276,12 +278,23 @@ transDecs (TypeDec ds:xs) w                         =
   do trDec (TypeDec ds) w
      transDecs xs w
     
+aux:: (Symbol, Ty) -> [(Symbol, Symbol)]
+aux (sym, NameTy ns) = [(ns, sym)]
+aux (sym, ArrayTy as) = [(as,sym)]
+aux (sym, RecordTy fl) = map (\(s, _, t) -> case t of
+                                                 RecordTy _ -> []
+                                                 _          -> aux (s,t)) fl
+    
 
-trDec :: (Manticore w) => Dec -> w a -> w Tipo
-{-trDec (FunctionDec xs) w = 
- do venv' <- foldr (\(symb,params,result,body,pos) -> insdec symb params result body pos  w) [] xs
-    tybodys <- map (\(_,_,_,body,_) -> transExp body) xs 
-    return TUnit --Revisar -}
+trDec :: (Manticore w) => Dec -> w a -> w a
+trDec (FunctionDec xs) w = 
+  do mapM (\(_, _, res, body, _) -> 
+             case res of
+               Nothing  -> transExp body
+               Just sym -> do tyres <- getTipoT sym
+                              tybod <- transExp body
+                              C.unlessM (tiposIguales tyres tybod) $ P.error "No es el tipo de retorno esperado") xs
+     return w
 trDec (VarDec symb escape typ einit pos) w =
   do tyinit' <- transExp einit --w Tipo
      case typ of
@@ -290,22 +303,18 @@ trDec (VarDec symb escape typ einit pos) w =
        Just s  -> do t' <- transTy (NameTy s) --w Tipo
                      C.unlessM(tiposIguales tyinit' t') $ P.error "Los tipos son distintos"
                      return t'
-trDec (TypeDec []) w                       = return TUnit                    
+trDec (TypeDec []) w                       = w                    
 trDec (TypeDec ((sym,ty,pos):ds)) w        =
  do ty' <- transTy ty
     insertTipoT  sym ty' (trDec (TypeDec ds) w) 
   
                     
-{-insdec :: Symbol -> [Field] -> Maybe Symbol -> Exp -> Pos  -> w a -> w a
-insdec symb params result body pos w = 
-  do
-    params' <- map (\(sym,esc,ty) -> transTy ty) params
-    result' <- case result of
-                    Nothing -> TUnit
-                    Just s  -> transTy (NameTy s)
-    u       <- ugen                
-    venv    <-  insertFunV symb (Func (u, pack symb, params', result',False)) w
-    return venv --Revisar  -}
+insdec :: (Symbol, [Field], Maybe Symbol, Exp, Pos) -> w a -> w a
+insdec (symb, params, result, body, pos) w = 
+  do params' <- mapM (\(sym,esc,ty) -> transTy ty) params
+     u       <- ugen                
+     insertFunV symb (Func (u, pack symb, params', result, False)) w
+     --Revisar  
 
 transExp :: (Manticore w) => Exp -> w Tipo
 transExp (VarExp v p)             = addpos (transVar v) p
@@ -352,7 +361,12 @@ transExp (OpExp el' oper er' p)   =
       GeOp     -> ifM ((tiposIguales el $ TInt RW) <||> (tiposIguales el TString))
                       (return $ TInt RW)
                       (P.error ("Elementos de tipo" ++ show el ++ "no son comparables"))
-transExp(RecordExp flds rt p)     = return TUnit -- Completar
+transExp(RecordExp flds rt p)     = 
+  do let (sym, e) = unzip $ sortBy  order' flds
+     e' <- mapM transExp e
+     u <- ugen
+     return  $ TRecord (zip3 sym e' [0..length e]) u 
+        where order' (sym1, _) (sym2, _)= if sym1 < sym2 then LT     else if sym1 > sym2 then GT else EQ 
 transExp(SeqExp es p)             = 
   do -- Va gratis
     es' <- mapM transExp es
