@@ -44,7 +44,7 @@ class (Daemon w, Monad w) => Manticore w where
   -- | Busca un tipo en el entorno
     getTipoT :: Symbol -> w Tipo
   -- | Funciones de Debugging!
-    showVEnv :: w (IO ())
+    showVEnv :: w (IO ()) --debugtrace funcion para printear
     showTEnv :: w ()
     --
     -- | Función monadica que determina si dos tipos son iguales.
@@ -267,53 +267,65 @@ fromTy _ = P.error "no debería haber una definición de tipos en los args..."
 -- Acá agregamos los tipos, clase 04/09/17
 transDecs :: (Manticore w) => [Dec] -> (w a -> w a)
 transDecs [] w                                      = w 
-transDecs (FunctionDec fs : xs) w = 
+{-transDecs (FunctionDec fs : xs) w = 
   trDec (FunctionDec fs) (mapM insdec fs)
       --t <- trDec (FunctionDec fs) w
-     --insertFunV w --Revisar
+      --insertFunV w --Revisar-}
 transDecs (VarDec name  escape typ init' pos':xs) w = 
-  do t <- trDec (VarDec name  escape typ init' pos') w --w Tipo
-     insertValV name t (transDecs xs w)
+     transDecs xs (trDec (VarDec name  escape typ init' pos') w)
+     --insertValV name t (transDecs xs w)
 transDecs (TypeDec ds:xs) w                         = 
   do trDec (TypeDec ds) w
      transDecs xs w
-    
-aux:: (Symbol, Ty) -> [(Symbol, Symbol)]
-aux (sym, NameTy ns) = [(ns, sym)]
-aux (sym, ArrayTy as) = [(as,sym)]
-aux (sym, RecordTy fl) = map (\(s, _, t) -> case t of
-                                                 RecordTy _ -> []
-                                                 _          -> aux (s,t)) fl
-    
 
+--arma pares pred/succ     
+predsucc:: (Symbol, Ty) -> [(Symbol, Symbol)]
+predsucc (sym, NameTy ns) = [(ns, sym)]
+predsucc (sym, ArrayTy as) = [(as,sym)]
+predsucc (sym, RecordTy fl) = concat $ map (\(s, _, t) -> case t of
+                                                            RecordTy _ -> []
+                                                            _          -> predsucc (s,t)) fl
+    
+infixl -?-
+
+(-?-) :: Eq a => [a] -> a -> [a]
+[] -?- _ = []
+(h:t) -?- e = if h == e then t -?- e else h : (t -?- e)
+
+    
 trDec :: (Manticore w) => Dec -> w a -> w a
-trDec (FunctionDec xs) w = 
+{-trDec (FunctionDec xs) w = 
   do mapM (\(_, _, res, body, _) -> 
              case res of
                Nothing  -> transExp body
                Just sym -> do tyres <- getTipoT sym
                               tybod <- transExp body
                               C.unlessM (tiposIguales tyres tybod) $ P.error "No es el tipo de retorno esperado") xs
-     return w
+                              return w-}
 trDec (VarDec symb escape typ einit pos) w =
   do tyinit' <- transExp einit --w Tipo
      case typ of
-       Nothing -> do b <- tiposIguales tyinit' TNil
-                     if b then P.error "El tipo de la expresion no debe ser nil" else return tyinit'
+       Nothing -> ifM (tiposIguales tyinit' TNil) (P.error "El tipo de la expresion no debe ser nil") (insertValV symb tyinit' w) 
+                      
+                     --if b then P.error "El tipo de la expresion no debe ser nil" else return tyinit'
        Just s  -> do t' <- transTy (NameTy s) --w Tipo
-                     C.unlessM(tiposIguales tyinit' t') $ P.error "Los tipos son distintos"
-                     return t'
+                     ifM (tiposIguales tyinit' t') (P.error "Los tipos son distintos") (insertValV symb t' w)
+                     
 trDec (TypeDec []) w                       = w                    
 trDec (TypeDec ((sym,ty,pos):ds)) w        =
  do ty' <- transTy ty
     insertTipoT  sym ty' (trDec (TypeDec ds) w) 
   
                     
-insdec :: (Symbol, [Field], Maybe Symbol, Exp, Pos) -> w a -> w a
+insdec :: (Manticore w )=> (Symbol, [Field], Maybe Symbol, Exp, Pos) -> w a -> w a
 insdec (symb, params, result, body, pos) w = 
   do params' <- mapM (\(sym,esc,ty) -> transTy ty) params
-     u       <- ugen                
-     insertFunV symb (Func (u, pack symb, params', result, False)) w
+     u       <- ugen
+     case result of --dado que result es un Maybe
+          Nothing -> insertFunV symb (u, symb, params', TUnit, False) w
+          Just s  -> do t <- transTy (NameTy s)  
+                        insertFunV symb (u, symb, params', t, False) w
+     
      --Revisar  
 
 transExp :: (Manticore w) => Exp -> w Tipo
