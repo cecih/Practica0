@@ -289,7 +289,7 @@ predsucc (sym, RecordTy fl) = concat $ map (\(s, _, t) -> case t of
 infixl -?-
 
 (-?-) :: Eq a => [a] -> a -> [a]
-[] -?- _ = []
+[] -?- _    = []
 (h:t) -?- e = if h == e then t -?- e else h : (t -?- e)
 
     
@@ -306,15 +306,14 @@ trDec (VarDec symb escape typ einit pos) w =
   do tyinit' <- transExp einit --w Tipo
      case typ of
        Nothing -> ifM (tiposIguales tyinit' TNil) (P.error "El tipo de la expresion no debe ser nil") (insertValV symb tyinit' w) 
-                      
-                     --if b then P.error "El tipo de la expresion no debe ser nil" else return tyinit'
+                  --if b then P.error "El tipo de la expresion no debe ser nil" else return tyinit'
        Just s  -> do t' <- transTy (NameTy s) --w Tipo
                      ifM (tiposIguales tyinit' t') (P.error "Los tipos son distintos") (insertValV symb t' w)
                      
 trDec (TypeDec []) w                       = w                    
 trDec (TypeDec ((sym,ty,pos):ds)) w        =
- do ty' <- transTy ty
-    insertTipoT  sym ty' (trDec (TypeDec ds) w) 
+  do ty' <- transTy ty
+     insertTipoT  sym ty' (trDec (TypeDec ds) w) 
   
                     
 insdec :: (Manticore w )=> (Symbol, [Field], Maybe Symbol, Exp, Pos) -> w a -> w a
@@ -325,7 +324,6 @@ insdec (symb, params, result, body, pos) w =
           Nothing -> insertFunV symb (u, symb, params', TUnit, False) w
           Just s  -> do t <- transTy (NameTy s)  
                         insertFunV symb (u, symb, params', t, False) w
-     
      --Revisar  
 
 transExp :: (Manticore w) => Exp -> w Tipo
