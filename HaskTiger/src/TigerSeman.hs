@@ -165,6 +165,8 @@ aux1 l1 l2 = let
 (-??-) :: Eq a => [a] -> [a] -> [a]
 l1 -??- l2 = aux1 l1 l2
         --foldr (\l e -> l -?- e) l1 l2 --> Elimina elementos de l2 en l1?? Si es asi, ver funcion aux1
+        
+        
 
 
 -- Podemos definir el estado inicial como:
@@ -310,6 +312,11 @@ transDecs (TypeDec ds:xs) w                         =
      transDecs xs w
     
 trDec :: (Manticore w) => Dec -> w a -> w a
+trDec (FunctionDec xs) w = 
+  do vEnv <- foldM (\(sym, args, res, e, pos) w' -> insdec (sym, args, res, e, pos) w) w xs --foldr que definio guido usando el insdec
+     bodylist <- mapM (\(_, _, _, body, _) -> transExp body) xs --analiza los tipos de cada cuerpo de funcion 
+     
+     --Nota IMPORTANTE: revisar antes de compilar!!!!
 {-trDec (FunctionDec xs) w = 
   do mapM (\(_, _, res, body, _) -> 
              case res of
@@ -341,6 +348,8 @@ insdec (symb, params, result, body, pos) w =
           Just s  -> do t <- transTy (NameTy s)  
                         insertFunV symb (u, symb, params', t, False) w
      --Revisar  
+     
+
 
 transExp :: (Manticore w) => Exp -> w Tipo
 transExp (VarExp v p)             = addpos (transVar v) p
