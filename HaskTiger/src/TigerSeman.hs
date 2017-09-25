@@ -153,8 +153,18 @@ infixl -??-
 [] -?- _    = []
 (h:t) -?- e = if h == e then t -?- e else h : (t -?- e)
 
+--en teoria haria, lo que Guido definio como foldr. Igual preguntar --- que definio Guido
+aux1 :: Eq a => [a] -> [a] -> [a]
+aux1 l1 [] = l1
+aux1 l1 l2 = let 
+               e = head l2
+               rest = tail l2
+               res1 = l1 -?- e
+             in if null rest then res1 else aux1 res1 rest   
+
 (-??-) :: Eq a => [a] -> [a] -> [a]
-l1 -??- l2 = foldr (\l e -> l -?- e) l1 l2
+l1 -??- l2 = aux1 l1 l2
+        --foldr (\l e -> l -?- e) l1 l2 --> Elimina elementos de l2 en l1?? Si es asi, ver funcion aux1
 
 
 -- Podemos definir el estado inicial como:
