@@ -60,8 +60,7 @@ prettyDec (VarDec s _ Nothing e _)  =
   text " = " <> 
   prettyExp e
 prettyDec (TypeDec f)               = vcat $ map typeDec f
-	where
-		typeDec (s, ty, _) = text "type " <> 
+  where typeDec (s, ty, _) = text "type " <> 
                              (text $ unpack s) <> 
                              text " = " <> prettyTy ty
 

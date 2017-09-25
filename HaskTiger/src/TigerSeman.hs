@@ -44,7 +44,7 @@ class (Daemon w, Monad w) => Manticore w where
   -- | Busca un tipo en el entorno
     getTipoT :: Symbol -> w Tipo
   -- | Funciones de Debugging!
-    showVEnv :: w (IO ()) --debugtrace funcion para printear
+    showVEnv :: w () --debugtrace funcion para printear
     showTEnv :: w ()
     --
     -- | Función monadica que determina si dos tipos son iguales.
@@ -129,12 +129,33 @@ instance Manticore OurState where
                             Just ty -> return ty 
                             Nothing -> internal s   
   showVEnv           = do st <- get
-                          return $ print $ concat (map (\(k, v) -> unpack k ++ renderEnv v) (M.toList $ vEnv st))    
+                          trace (show $ vEnv st) (return ())    
+  showTEnv           = do st <- get
+                          trace (show $ tEnv st) (return ())    
   ugen               = do u <- get                             
                           put (u {unique = unique u + 1})
                           return $ unique u + 1 
   --addTypos :: [(Symbol, Ty, Pos)] -> w ()
   --addTypos tys       = do  
+
+--arma pares pred/succ     
+predSucc:: (Symbol, Ty) -> [(Symbol, Symbol)]
+predSucc (sym, NameTy ns)   = [(ns, sym)]
+predSucc (sym, ArrayTy as)  = [(as,sym)]
+predSucc (sym, RecordTy fl) = concat $ map (\(s, _, t) -> case t of
+                                                            RecordTy _ -> []
+                                                            _          -> [(s, sym)]) fl
+
+infixl -?-
+infixl -??-
+
+(-?-) :: Eq a => [a] -> a -> [a]
+[] -?- _    = []
+(h:t) -?- e = if h == e then t -?- e else h : (t -?- e)
+
+(-??-) :: Eq a => [a] -> [a] -> [a]
+l1 -??- l2 = foldr (\l e -> l -?- e) l1 l2
+
 
 -- Podemos definir el estado inicial como:
 initConf :: EstadoG
@@ -277,21 +298,6 @@ transDecs (VarDec name  escape typ init' pos':xs) w =
 transDecs (TypeDec ds:xs) w                         = 
   do trDec (TypeDec ds) w
      transDecs xs w
-
---arma pares pred/succ     
-predsucc:: (Symbol, Ty) -> [(Symbol, Symbol)]
-predsucc (sym, NameTy ns) = [(ns, sym)]
-predsucc (sym, ArrayTy as) = [(as,sym)]
-predsucc (sym, RecordTy fl) = concat $ map (\(s, _, t) -> case t of
-                                                            RecordTy _ -> []
-                                                            _          -> predsucc (s,t)) fl
-    
-infixl -?-
-
-(-?-) :: Eq a => [a] -> a -> [a]
-[] -?- _    = []
-(h:t) -?- e = if h == e then t -?- e else h : (t -?- e)
-
     
 trDec :: (Manticore w) => Dec -> w a -> w a
 {-trDec (FunctionDec xs) w = 
