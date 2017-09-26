@@ -136,15 +136,31 @@ instance Manticore OurState where
                           put (u {unique = unique u + 1})
                           return $ unique u + 1 
   --addTypos :: [(Symbol, Ty, Pos)] -> w ()
-  --addTypos tys       = do  
+  addTypos tys       = do let elems = map (\(x, y, _) -> x) tys 
+                          --let pares = concat $ map predSucc $ map (\(x, y, _) -> (x, y)) tys
+                          --ciclo pares elems
+                          return ()
+                        
+
+topoSort :: [(Symbol, Ty)] -> [Symbol] 
+topoSort []    = []
+topoSort elems = ciclo (concat $ map predSucc elems) e : (topoSort $ tail elems)
+  where e = map (\(x, _) -> x) elems ++ [pack "int", pack "string"]
+        c = ciclo (concat $ map predSucc elems) e
 
 --arma pares pred/succ     
-predSucc:: (Symbol, Ty) -> [(Symbol, Symbol)]
+predSucc :: (Symbol, Ty) -> [(Symbol, Symbol)]
 predSucc (sym, NameTy ns)   = [(ns, sym)]
 predSucc (sym, ArrayTy as)  = [(as,sym)]
 predSucc (sym, RecordTy fl) = concat $ map (\(s, _, t) -> case t of
                                                             RecordTy _ -> []
                                                             _          -> [(s, sym)]) fl
+
+ciclo :: [(Symbol, Symbol)] -> [Symbol] -> Symbol
+ciclo pares elems = case preds pares elems of
+                      [] -> P.error "Hay ciclo\n"
+                      l  -> head l
+    where preds x y = y -??- map (\(f, s) -> s) x
 
 infixl -?-
 infixl -??-
@@ -156,18 +172,13 @@ infixl -??-
 --en teoria haria, lo que Guido definio como foldr. Igual preguntar --- que definio Guido
 aux1 :: Eq a => [a] -> [a] -> [a]
 aux1 l1 [] = l1
-aux1 l1 l2 = let 
-               e = head l2
-               rest = tail l2
-               res1 = l1 -?- e
-             in if null rest then res1 else aux1 res1 rest   
+aux1 l1 l2 = if null rest then res1 else aux1 res1 rest   
+  where rest = tail l2
+        res1 = l1 -?- (head l2)
 
 (-??-) :: Eq a => [a] -> [a] -> [a]
 l1 -??- l2 = aux1 l1 l2
         --foldr (\l e -> l -?- e) l1 l2 --> Elimina elementos de l2 en l1?? Si es asi, ver funcion aux1
-        
-        
-
 
 -- Podemos definir el estado inicial como:
 initConf :: EstadoG
@@ -312,12 +323,12 @@ transDecs (TypeDec ds:xs) w                         =
      transDecs xs w
     
 trDec :: (Manticore w) => Dec -> w a -> w a
-trDec (FunctionDec xs) w = 
+{-trDec (FunctionDec xs) w = 
   do vEnv <- foldM (\(sym, args, res, e, pos) w' -> insdec (sym, args, res, e, pos) w) w xs --foldr que definio guido usando el insdec
      bodylist <- mapM (\(_, _, _, body, _) -> transExp body) xs --analiza los tipos de cada cuerpo de funcion 
      
      --Nota IMPORTANTE: revisar antes de compilar!!!!
-{-trDec (FunctionDec xs) w = 
+trDec (FunctionDec xs) w = 
   do mapM (\(_, _, res, body, _) -> 
              case res of
                Nothing  -> transExp body
