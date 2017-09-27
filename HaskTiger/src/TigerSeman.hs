@@ -22,6 +22,7 @@ import           Prelude              as P
 
 import qualified Data.Graph           as G
 import qualified Data.Text            as T
+import qualified Data.Set             as S(fromAscList)
 import Text.PrettyPrint.HughesPJ
 
 import           Debug.Trace
@@ -136,30 +137,40 @@ instance Manticore OurState where
                           put (u {unique = unique u + 1})
                           return $ unique u + 1 
   --addTypos :: [(Symbol, Ty, Pos)] -> w ()
-  addTypos tys       = do let elems = map (\(x, y, _) -> x) tys 
-                          --let pares = concat $ map predSucc $ map (\(x, y, _) -> (x, y)) tys
-                          --ciclo pares elems
-                          return ()
-                        
-
+  {-addTypos tys       = do let tys' = map (\(x, y, _) -> (x, y)) tys
+                          let ts   = topoSort tys'
+                          let m    = M.fromList tys'   
+                          mapM_ (\x -> insertTipoT x (m M.! x) $ return ()) ts
+-}
 topoSort :: [(Symbol, Ty)] -> [Symbol] 
-topoSort []    = []
-topoSort elems = ciclo (concat $ map predSucc elems) e : (topoSort $ tail elems)
-  where e = map (\(x, _) -> x) elems ++ [pack "int", pack "string"]
-        c = ciclo (concat $ map predSucc elems) e
+topoSort elems 
+  | ciclo ps elems' = P.error "Hay ciclo\n"
+  | otherwise       = 
+    fromEdges (G.topSort $ G.buildG (1, len) (toEdges ps m)) (M.toList m) \\ [pack "int", pack "string"]
+  where ps     = concat $ map predSucc elems
+        len    = length elems + 2
+        elems' = concat $ map (\(x, y) -> [x, y]) ps
+        m      = M.fromList $ zip elems' [1..len] 
 
---arma pares pred/succ     
+toEdges :: [(Symbol, Symbol)] -> M.Map Symbol Int -> [G.Edge]
+toEdges pares ht = map (\(x, y) -> (ht M.! x, ht M.! y)) pares
+
+fromEdges :: [G.Vertex] -> [(Symbol, Int)] -> [Symbol]
+fromEdges [] _     = []
+fromEdges (x:xs) m = case find (\y -> x == snd y) m of
+                       Nothing -> []
+                       Just v  -> fst v : (fromEdges xs m)   
+
+-- Arma pares pred/succ     
 predSucc :: (Symbol, Ty) -> [(Symbol, Symbol)]
 predSucc (sym, NameTy ns)   = [(ns, sym)]
-predSucc (sym, ArrayTy as)  = [(as,sym)]
+predSucc (sym, ArrayTy as)  = [(as, sym)]
 predSucc (sym, RecordTy fl) = concat $ map (\(s, _, t) -> case t of
                                                             RecordTy _ -> []
                                                             _          -> [(s, sym)]) fl
 
-ciclo :: [(Symbol, Symbol)] -> [Symbol] -> Symbol
-ciclo pares elems = case preds pares elems of
-                      [] -> P.error "Hay ciclo\n"
-                      l  -> head l
+ciclo :: [(Symbol, Symbol)] -> [Symbol] -> Bool
+ciclo pares elems = null $ preds pares elems
     where preds x y = y -??- map (\(f, s) -> s) x
 
 infixl -?-
@@ -169,16 +180,14 @@ infixl -??-
 [] -?- _    = []
 (h:t) -?- e = if h == e then t -?- e else h : (t -?- e)
 
---en teoria haria, lo que Guido definio como foldr. Igual preguntar --- que definio Guido
-aux1 :: Eq a => [a] -> [a] -> [a]
-aux1 l1 [] = l1
-aux1 l1 l2 = if null rest then res1 else aux1 res1 rest   
+(-??-) :: Eq a => [a] -> [a] -> [a]
+l1 -??- l2 = aux l1 l2
+
+aux :: Eq a => [a] -> [a] -> [a]
+aux l1 [] = l1
+aux l1 l2 = if null rest then res1 else aux res1 rest   
   where rest = tail l2
         res1 = l1 -?- (head l2)
-
-(-??-) :: Eq a => [a] -> [a] -> [a]
-l1 -??- l2 = aux1 l1 l2
-        --foldr (\l e -> l -?- e) l1 l2 --> Elimina elementos de l2 en l1?? Si es asi, ver funcion aux1
 
 -- Podemos definir el estado inicial como:
 initConf :: EstadoG
