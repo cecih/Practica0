@@ -136,22 +136,36 @@ instance Manticore OurState where
   ugen               = do u <- get                             
                           put (u {unique = unique u + 1})
                           return $ unique u + 1 
-  --addTypos :: [(Symbol, Ty, Pos)] -> w ()
+  --addTypos :: [(Symbol, Ty, Pos)] -> w a -> w a
   addTypos tys       = do let (rs, tys') =  partition (\(x, y) -> isRecord y) (map (\(x, y, _) -> (x, y)) tys)
                           let ts   = topoSort tys'
                           let m    = M.fromList tys'    
-                          addLoop ts m (return ())
-                          mapM_ (\r -> do let fields = fList $ snd r) rs 
-    where isRecord (RecordTy _) = True
-          isRecord  _           = False
-          fList (RecordTy fl)   = fl
+                          addLoop ts m w
+                          mapM_ (\r -> do let fields = sortBy ourOrder (fList $ snd r)
+                                          insertTipoT (fst r)
+                                          res <- mapM (\(f1, f2, f3) -> 
+                                                  if isName f3 then (f1, RefRecord $ fst r, ) else P.error "blabla")) rs 
+    where fList (RecordTy fl)   = fl
           --addTypo s ty w        = do ty' <- transTy ty  
           --                           insertTipoT s ty' w
           --addLoop [] m w        = return ()
-          --addLoop (x:xs) m w    = addLoop xs m (addTypo x (m M.! x) w) 
+          --addLoop (x:xs) m w    = addLoop xs m (addTypo x (m M.! x) w)
           
-addLoop :: Manticore w => [Symbol] -> M.Map Symbol Ty -> w () -> w () 
-addLoop [] m w     = return ()
+          
+isRecord :: Ty -> Bool
+isRecord (RecordTy _) = True
+isRecord _            = False
+          
+{-Example: type lista = {item:int, resto:lista}
+Tenemos una lista de records
+Dado un record, primero tenemos que ordenar los campos de acuerdo al orden alfabetico de los nombres
+con ourOrder 
+Insertamos los tipos de los campos, de acuerdo al campo ty:
+a) Si es un recordTy , entonces hacemos un RefRecord
+b)Si no es, hacemos un transTy ty-}          
+          
+addLoop :: Manticore w => [Symbol] -> M.Map Symbol Ty -> w a -> w a 
+addLoop [] m w     = w
 addLoop (x:xs) m w = addLoop xs m (do ty <- transTy $ m M.! x
                                       insertTipoT x ty (return ()))
  
@@ -366,10 +380,10 @@ trDec (VarDec symb escape typ einit pos) w =
        Just s  -> do t' <- transTy (NameTy s) --w Tipo
                      ifM (tiposIguales tyinit' t') (P.error "Los tipos son distintos") (insertValV symb t' w)
                      
-trDec (TypeDec []) w                       = w                    
-trDec (TypeDec ((sym,ty,pos):ds)) w        =
+trDec (TypeDec ds) w                       = mapM_ addTypos ds                    
+{-trDec (TypeDec ((sym,ty,pos):ds)) w        =
   do ty' <- transTy ty
-     insertTipoT  sym ty' (trDec (TypeDec ds) w) 
+  insertTipoT  sym ty' (trDec (TypeDec ds) w) -}
   
                     
 insdec :: (Manticore w )=> (Symbol, [Field], Maybe Symbol, Exp, Pos) -> w a -> w a
