@@ -140,16 +140,21 @@ instance Manticore OurState where
   addTypos tys       = do let (rs, tys') =  partition (\(x, y) -> isRecord y) (map (\(x, y, _) -> (x, y)) tys)
                           let ts   = topoSort tys'
                           let m    = M.fromList tys'    
-                          aux1 ts m (return ())
-                          
-                          --mapM_ (\x -> insertTipoT x (m M.! x) $ return ()) ts
+                          addLoop ts m (return ())
+                          mapM_ (\r -> do let fields = fList $ snd r) rs 
     where isRecord (RecordTy _) = True
           isRecord  _           = False
-          addTypo s ty w        = do ty' <- transTy ty  
-                                     insertTipoT s ty' w
-          aux1 [] m w      = return ()
-          aux1 (x:xs) m w  = addTypo x (m M.! x) w 
-           
+          fList (RecordTy fl)   = fl
+          --addTypo s ty w        = do ty' <- transTy ty  
+          --                           insertTipoT s ty' w
+          --addLoop [] m w        = return ()
+          --addLoop (x:xs) m w    = addLoop xs m (addTypo x (m M.! x) w) 
+          
+addLoop :: Manticore w => [Symbol] -> M.Map Symbol Ty -> w () -> w () 
+addLoop [] m w     = return ()
+addLoop (x:xs) m w = addLoop xs m (do ty <- transTy $ m M.! x
+                                      insertTipoT x ty (return ()))
+ 
 topoSort :: [(Symbol, Ty)] -> [Symbol] 
 topoSort elems 
   | ciclo ps elems' = P.error "Hay ciclo\n"
