@@ -137,26 +137,48 @@ instance Manticore OurState where
                           put (u {unique = unique u + 1})
                           return $ unique u + 1 
   --addTypos :: [(Symbol, Ty, Pos)] -> w a -> w a
-  addTypos tys       = do let (rs, tys') =  partition (\(x, y) -> isRecord y) (map (\(x, y, _) -> (x, y)) tys)
-                          let ts   = topoSort tys'
-                          let m    = M.fromList tys'    
-                          addLoop ts m w
-                          mapM_ (\r -> do let fields = sortBy ourOrder (fList $ snd r)
-                                          insertTipoT (fst r)
-                                          res <- mapM (\(f1, f2, f3) -> 
-                                                  if isName f3 then (f1, RefRecord $ fst r, ) else P.error "blabla")) rs 
-    where fList (RecordTy fl)   = fl
+  addTypos tys w  = do let (rs, tys') =  partition (\(x, y) -> isRecord y) (map (\(x, y, _) -> (x, y)) tys)
+                       let ts   = topoSort tys'
+                       let m    = M.fromList tys'    
+                       w' <- addLoop ts m w -- w' es la nueva monada luego de haber agregado los elementos de ts 
+                       --De aca en adelante, nos ocuparemos de rs:
+                       --rs = [RecordTy fl, RecordTy fl1, RecordTy fl2,....] 
+                       let rss = map (\r -> sortBy ouOrder (flist r)) rs
+                           -- sortBy es de tipo [(Symbol,Bool,Ty)]
+                           --rss es de tipo [[(Symbol, Bool, Ty)]]
+                           -- fields es de tipo [(Symbol, Bool, Ty)]
+                       r <- mapM_ (\fields -> mapM (\(sym, b, ty) -> do ty' <- transTy ty
+                                                                        insertTipoT sym ty' w' -- agrego los tipos usando el w'
+                                                                       res <- if isName ty then return (RefRecord s) else P.error "Error interno\n") fields) rss    
+                       --s es el nombre que tiene el record, que hay que ver como buscarlo
+                       
+                      {- mapM_ (\r -> do let fields = sortBy ourOrder (fList $ fst r) 
+                                           insertTipoT (fst r) w
+                                           res <- mapM (\(f1, f2, f3) -> 
+                                           if isName f3 then (f1, RefRecord $ fst r, ) else P.error "blabla")) rs -}
+        where fList (RecordTy fl)   = fl --fl :: [(Symbol, Bool, Ty)]
           --addTypo s ty w        = do ty' <- transTy ty  
           --                           insertTipoT s ty' w
           --addLoop [] m w        = return ()
           --addLoop (x:xs) m w    = addLoop xs m (addTypo x (m M.! x) w)
-          
+
+{-Revisar desde la linea que dice "De aca en adelante, nos ocuparemos de rs.
+Lo unico que hice fue reacomodar un poco el mapM_ que esta comentado abajo.
+Dentro de maM, en res, no estoy segura si habria que hacer un return RefRecord cuando ty 
+es un NameTy.
+-}
           
 isRecord :: Ty -> Bool
 isRecord (RecordTy _) = True
 isRecord _            = False
+
+isName :: Ty -> Bool
+isName (NameTy _) = True
+isName _          = False
           
 {-Example: type lista = {item:int, resto:lista}
+RecordTy [("item", False, NameTy "int"), ("resto", False, NameTy "lista")]
+
 Tenemos una lista de records
 Dado un record, primero tenemos que ordenar los campos de acuerdo al orden alfabetico de los nombres
 con ourOrder 
@@ -167,7 +189,7 @@ b)Si no es, hacemos un transTy ty-}
 addLoop :: Manticore w => [Symbol] -> M.Map Symbol Ty -> w a -> w a 
 addLoop [] m w     = w
 addLoop (x:xs) m w = addLoop xs m (do ty <- transTy $ m M.! x
-                                      insertTipoT x ty (return ()))
+                                      insertTipoT x ty w) --en insertTipoT parto desde la monada que le paso
  
 topoSort :: [(Symbol, Ty)] -> [Symbol] 
 topoSort elems 
