@@ -138,12 +138,13 @@ instance Manticore OurState where
                           return $ unique u + 1 
   --addTypos :: [(Symbol, Ty, Pos)] -> w a -> w a
   addTypos tys w  = do let (rs, tys') = partition (\(x, y) -> isRecord y) (map (\(x, y, _) -> (x, y)) tys)
+                       let (syms, ls) = partition (\(x,y) -> elem (name y) rs) tys'  
                        let ts         = topoSort tys'
                        let m          = M.fromList tys'    
-                       --addLoop ts m w 
+                       -- addLoop ls m w 
                        --De aca en adelante, nos ocuparemos de rs:
-                       --rs = [RecordTy fl, RecordTy fl1, RecordTy fl2,....] 
-                       let rs' = map (\r -> sortBy ouOrder $ fList r) rs
+                       --rs = [(s1,RecordTy fl), (s2,RecordTy fl1), (s3,RecordTy fl2),....] 
+                       let rs' = map (\(s,ty) -> sortBy ouOrder $ fList ty) rs
                            -- sortBy es de tipo [(Symbol,Bool,Ty)]
                            --rss es de tipo [[(Symbol, Bool, Ty)]]
                            -- fields es de tipo [(Symbol, Bool, Ty)]
@@ -160,6 +161,8 @@ instance Manticore OurState where
                                            res <- mapM (\(f1, f2, f3) -> 
                                            if isName f3 then (f1, RefRecord $ fst r, ) else P.error "blabla")) rs -}
         where fList (RecordTy fl)   = fl --fl :: [(Symbol, Bool, Ty)]
+              name (ArrayTy sym) = sym
+              name (NameTy sym)  = sym
           --addTypo s ty w        = do ty' <- transTy ty  
           --                           insertTipoT s ty' w
           --addLoop [] m w        = return ()
@@ -188,15 +191,16 @@ con ourOrder
 Insertamos los tipos de los campos, de acuerdo al campo ty:
 a) Si es un recordTy , entonces hacemos un RefRecord
 b)Si no es, hacemos un transTy ty-}          
-          
-addLoop :: Manticore w => [Symbol] -> M.Map Symbol Ty -> w a -> w a 
+
+--toma una lista que no son records
+addLoop :: Manticore w => [Symbol] ->M.Map Symbol Ty -> w a -> w a 
 addLoop [] _ w     = w
-addLoop (x:xs) m w = addLoop xs m (do let ty = m M.! x
-                                      case isRecord ty of 
-                                        True -> insertTipoT x ty (RefRecord x)
-                                        _    -> do ty' <- transTy ty
-                                                   insertTipoT x ty)
- 
+addLoop (x:xs) m w = addLoop xs rs m (do let ty = m M.! x
+                                         ty' <- transTy ty
+                                         insertTipoT x ty' w)
+                                                                             
+
+                                                   
 topoSort :: [(Symbol, Ty)] -> [Symbol] 
 topoSort elems 
   | ciclo ps elems' = P.error "Hay ciclo\n"
