@@ -13,6 +13,7 @@ import           PrintEnv
 
 import           Control.Conditional as C ((<||>), ifM, unless, unlessM)
 import           Control.Monad
+import           Control.Monad.Loops
 import           Control.Monad.Error.Class
 import           Control.Monad.Except (throwError, catchError)
 import           Control.Monad.State
@@ -75,7 +76,7 @@ class (Daemon w, Monad w) => Manticore w where
     --
     ugen :: w Unique -- unique generator
     --
-    addTypos :: [(Symbol, Ty, Pos)] -> w ()
+    addTypos :: [(Symbol, Ty, Pos)] -> w a -> w a
 
 addpos :: (Daemon w, Show b) => w a -> b -> w a
 addpos t p = E.adder t (pack $ show p)
@@ -136,44 +137,25 @@ instance Manticore OurState where
   ugen               = do u <- get                             
                           put (u {unique = unique u + 1})
                           return $ unique u + 1 
-  --addTypos :: [(Symbol, Ty, Pos)] -> w a -> w a
-  addTypos tys w  = do let (rs, tys') = partition (\(x, y) -> isRecord y) (map (\(x, y, _) -> (x, y)) tys)
-                       let (syms, ls) = partition (\(x,y) -> elem (name y) rs) tys'  
-                       let ts         = topoSort tys'
-                       let m          = M.fromList tys'    
-                       -- addLoop ls m w 
-                       --De aca en adelante, nos ocuparemos de rs:
-                       --rs = [(s1,RecordTy fl), (s2,RecordTy fl1), (s3,RecordTy fl2),....] 
-                       let rs' = map (\(s,ty) -> sortBy ouOrder $ fList ty) rs
-                           -- sortBy es de tipo [(Symbol,Bool,Ty)]
-                           --rss es de tipo [[(Symbol, Bool, Ty)]]
-                           -- fields es de tipo [(Symbol, Bool, Ty)]
-                       mapM_ (\r -> do case ) rs' 
+  -- TODO: reemplazar RefRecords por los Records
+  addTypos tys w  = 
+    foldl (\b a -> do let (sf, b, ty) = unzip3 (snd a)
+                      ty' <- mapM (\t -> if elem (name t) frs then return $ RefRecord (name t) 
+                                           else getTipoT (name t)) ty
+                      u   <- ugen
+                      insertTipoT (fst a) (TRecord (zip3 sf ty' [0..length $ snd a]) u) w) 
+          (foldl (\b' a' -> insertTipoT (fst a') (RefRecord $ name (snd a')) b') (addLoop (map fst sim) m w) ref)
+          rs' 
+    where (rs, tys')          = partition (\(x, y) -> isRecord y) (map (\(x, y, _) -> (x, y)) tys)
+          (ref, sim)          = partition (\(x,y) -> elem (name y) frs) tys'  
+          (ts, m)             = (topoSort sim, M.fromList sim)
+          rs'                 = map (\(s, ty) -> (s, sortBy ourOrder $ fList ty)) rs
+          frs                 = map fst rs
+          fList (RecordTy fl) = fl --fl :: [(Symbol, Bool, Ty)]
+          name (ArrayTy sym)  = sym
+          name (NameTy sym)   = sym
+          name _              = P.error "Error interno"
 
-{-mapM (\(sym, b, ty) -> 
-                                                     do ty' <- transTy ty
-                                                        insertTipoT sym ty' w' -- agrego los tipos usando el w'
-                                                     res <- if isName ty then return (RefRecord s) else P.error "Error interno\n") fields) rss    
-  -}                     --s es el nombre que tiene el record, que hay que ver como buscarlo
-                       
-                      {- mapM_ (\r -> do let fields = sortBy ourOrder (fList $ fst r) 
-                                           insertTipoT (fst r) w
-                                           res <- mapM (\(f1, f2, f3) -> 
-                                           if isName f3 then (f1, RefRecord $ fst r, ) else P.error "blabla")) rs -}
-        where fList (RecordTy fl)   = fl --fl :: [(Symbol, Bool, Ty)]
-              name (ArrayTy sym) = sym
-              name (NameTy sym)  = sym
-          --addTypo s ty w        = do ty' <- transTy ty  
-          --                           insertTipoT s ty' w
-          --addLoop [] m w        = return ()
-          --addLoop (x:xs) m w    = addLoop xs m (addTypo x (m M.! x) w)
-
-{-Revisar desde la linea que dice "De aca en adelante, nos ocuparemos de rs.
-Lo unico que hice fue reacomodar un poco el mapM_ que esta comentado abajo.
-Dentro de maM, en res, no estoy segura si habria que hacer un return RefRecord cuando ty 
-es un NameTy.
--}
-          
 isRecord :: Ty -> Bool
 isRecord (RecordTy _) = True
 isRecord _            = False
@@ -182,24 +164,12 @@ isName :: Ty -> Bool
 isName (NameTy _) = True
 isName _          = False
           
-{-Example: type lista = {item:int, resto:lista}
-RecordTy [("item", False, NameTy "int"), ("resto", False, NameTy "lista")]
-
-Tenemos una lista de records
-Dado un record, primero tenemos que ordenar los campos de acuerdo al orden alfabetico de los nombres
-con ourOrder 
-Insertamos los tipos de los campos, de acuerdo al campo ty:
-a) Si es un recordTy , entonces hacemos un RefRecord
-b)Si no es, hacemos un transTy ty-}          
-
 --toma una lista que no son records
 addLoop :: Manticore w => [Symbol] ->M.Map Symbol Ty -> w a -> w a 
 addLoop [] _ w     = w
-addLoop (x:xs) m w = addLoop xs rs m (do let ty = m M.! x
-                                         ty' <- transTy ty
-                                         insertTipoT x ty' w)
-                                                                             
-
+addLoop (x:xs) m w = addLoop xs m (do let ty = m M.! x
+                                      ty' <- transTy ty
+                                      insertTipoT x ty' w)
                                                    
 topoSort :: [(Symbol, Ty)] -> [Symbol] 
 topoSort elems 
@@ -390,6 +360,7 @@ transDecs (TypeDec ds:xs) w                         =
   do trDec (TypeDec ds) w
      transDecs xs w
     
+-- TODO: terminar casos de funciones y revisar el caso de variables
 trDec :: (Manticore w) => Dec -> w a -> w a
 {-trDec (FunctionDec xs) w = 
   do vEnv <- foldM (\(sym, args, res, e, pos) w' -> insdec (sym, args, res, e, pos) w) w xs --foldr que definio guido usando el insdec
@@ -412,11 +383,7 @@ trDec (VarDec symb escape typ einit pos) w =
        Just s  -> do t' <- transTy (NameTy s) --w Tipo
                      ifM (tiposIguales tyinit' t') (P.error "Los tipos son distintos") (insertValV symb t' w)
                      
-trDec (TypeDec ds) w                       = mapM_ addTypos ds                    
-{-trDec (TypeDec ((sym,ty,pos):ds)) w        =
-  do ty' <- transTy ty
-  insertTipoT  sym ty' (trDec (TypeDec ds) w) -}
-  
+trDec (TypeDec ds) w                       = addTypos ds w                    
                     
 insdec :: (Manticore w )=> (Symbol, [Field], Maybe Symbol, Exp, Pos) -> w a -> w a
 insdec (symb, params, result, body, pos) w = 

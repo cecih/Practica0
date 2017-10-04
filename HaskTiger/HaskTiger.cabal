@@ -36,6 +36,7 @@ library
                        , pretty
                        , cond
                        , transformers
+                       , monad-loops
   default-language:    Haskell2010
 
 executable HaskTiger
