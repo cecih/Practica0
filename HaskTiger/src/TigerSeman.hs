@@ -138,19 +138,38 @@ instance Manticore OurState where
                           put (u {unique = unique u + 1})
                           return $ unique u + 1 
   -- TODO: reemplazar RefRecords por los Records
+  -- Por que??, No conviene dejar los RefRecords??
+  --Duda: reemplazar RefRecords por TRecords??
+  -- TODO UPDATE: hice algo, de todas formas, mirar lo comentado. Dice "Reviseee!!"
+  -- addTypos :: [(Symbol, Ty, Pos)] -> w a -> w a
+  -- tys :: [(Symbol, Ty, Pos)]
   addTypos tys w  = 
     foldl (\b a -> do let (sf, b, ty) = unzip3 (snd a)
                       ty' <- mapM (\t -> if elem (name t) frs then return $ RefRecord (name t) 
                                            else getTipoT (name t)) ty
+                                           {- do let fls' = filter (==name t) frs
+                                                     fres = filter (==head fls') (snd rs')
+                                                     u <- ugen
+                                                     return  $ TRecord fres u
+                                                     
+                                                     es esto lo que decis??
+                                                     Reviseee!!!-}    
                       u   <- ugen
                       insertTipoT (fst a) (TRecord (zip3 sf ty' [0..length $ snd a]) u) w) 
           (foldl (\b' a' -> insertTipoT (fst a') (RefRecord $ name (snd a')) b') (addLoop (map fst sim) m w) ref)
+          -- idem que el anterior, no lo hago hasta estar segura que el anterior vale
           rs' 
     where (rs, tys')          = partition (\(x, y) -> isRecord y) (map (\(x, y, _) -> (x, y)) tys)
-          (ref, sim)          = partition (\(x,y) -> elem (name y) frs) tys'  
+          -- tys ahora tiene tipo [(Symbol, Ty)]
+          -- rs :: [(Symbol, RecordTy fls)]  y tys' :: [(Symbol, NameTy s o ArrayTy s)]
+          (ref, sim)          = partition (\(x,y) -> elem (name y) frs) tys'
+          -- tengo una tupla de listas donde ref es una lista de referencia a records
+          -- y sim los que no hacen referencia a un record
           (ts, m)             = (topoSort sim, M.fromList sim)
           rs'                 = map (\(s, ty) -> (s, sortBy ourOrder $ fList ty)) rs
+          -- rs' es tipo (s, [(sym,b,ty)]) pero con orden por el 1er campo de las field list
           frs                 = map fst rs
+          -- frs :: [Symbol]
           fList (RecordTy fl) = fl --fl :: [(Symbol, Bool, Ty)]
           name (ArrayTy sym)  = sym
           name (NameTy sym)   = sym
@@ -164,7 +183,7 @@ isName :: Ty -> Bool
 isName (NameTy _) = True
 isName _          = False
           
---toma una lista que no son records
+--toma una lista de Symbol, una tabla hash de tipos con sus simbolos y un entorno
 addLoop :: Manticore w => [Symbol] ->M.Map Symbol Ty -> w a -> w a 
 addLoop [] _ w     = w
 addLoop (x:xs) m w = addLoop xs m (do let ty = m M.! x
@@ -303,6 +322,10 @@ buscarM s [] = Nothing
 buscarM s ((s',t,_):xs) 
   | s == s' = Just t
   | otherwise = buscarM s xs
+  
+ourOrder :: (Eq a, Ord a) => (a, b, c) -> (a, b, c) -> Ordering
+ourOrder (x1, _, _) (x2, _, _) = if x1 > x2 then GT else
+                                     if x1 == x2 then EQ else LT  
 
 transVar :: (Manticore w) => Var -> w Tipo
 transVar (SimpleVar s)      = getTipoValV s
@@ -338,9 +361,6 @@ transTy (ArrayTy s)     =
      s' <- getTipoT s
      return (TArray s' u) 
 
-ourOrder :: (Eq a, Ord a) => (a, b, c) -> (a, b, c) -> Ordering
-ourOrder (x1, _, _) (x2, _, _) = if x1 > x2 then GT else
-                                     if x1 == x2 then EQ else LT
 
 fromTy :: (Manticore w) => Ty -> w Tipo
 fromTy (NameTy s) = getTipoT s
@@ -348,11 +368,8 @@ fromTy _ = P.error "no debería haber una definición de tipos en los args..."
 
 -- Acá agregamos los tipos, clase 04/09/17
 transDecs :: (Manticore w) => [Dec] -> (w a -> w a)
-transDecs [] w                                      = w 
-{-transDecs (FunctionDec fs : xs) w = 
-  trDec (FunctionDec fs) (mapM insdec fs)
-      --t <- trDec (FunctionDec fs) w
-      --insertFunV w --Revisar-}
+transDecs [] w                    = w 
+transDecs (FunctionDec fs : xs) w = transDecs xs (trDec (FunctionDec fs) w)
 transDecs (VarDec name  escape typ init' pos':xs) w = 
      transDecs xs (trDec (VarDec name  escape typ init' pos') w)
      --insertValV name t (transDecs xs w)
@@ -361,41 +378,63 @@ transDecs (TypeDec ds:xs) w                         =
      transDecs xs w
     
 -- TODO: terminar casos de funciones y revisar el caso de variables
+-- TODO UPDATE: revisar y leer el super comentario a continuacion para el caso de las funciones
+-- y caso e variables solo cambio estetico. En ambos casos revisar y preguntar!!
+{-en el caso de la funcion, ene cada body de la funcion tenemos que hacer:
+1)En params tenemos lista de tuplas (sym, b, ty) y debemos hacer:
+a) ver que tipo tiene(transTy)
+b) agregar al entorno que tenemos luego haber insertado la lista de tipos, result y nombres de funcion(insdec), los 
+nombres de los argumentos(lease i,j, k etcc), esto ultimo lo hacemos con insertValV. 
+
+Tanto a) y b) se hacen en la funcion insnombargs.
+
+Todo lo anterior lo realice con foldM. Esta parte en la carpeta falta; va antes de hacer el transExp con el entorno
+que agrega los nombres de la funcion junto con los tipos de parametros y result que menciona guido en la carpeta.
+
+
+En el caso de variables: solamente cambios esteticos. Fijarse si prefiere asi.
+Lo anterior esta comentado-}
 trDec :: (Manticore w) => Dec -> w a -> w a
-{-trDec (FunctionDec xs) w = 
-  do vEnv <- foldM (\(sym, args, res, e, pos) w' -> insdec (sym, args, res, e, pos) w) w xs --foldr que definio guido usando el insdec
-     bodylist <- mapM (\(_, _, _, body, _) -> transExp body) xs --analiza los tipos de cada cuerpo de funcion 
-     
-     --Nota IMPORTANTE: revisar antes de compilar!!!!
 trDec (FunctionDec xs) w = 
-  do mapM (\(_, _, res, body, _) -> 
-             case res of
-               Nothing  -> transExp body
-               Just sym -> do tyres <- getTipoT sym
-                              tybod <- transExp body
-                              C.unlessM (tiposIguales tyres tybod) $ P.error "No es el tipo de retorno esperado") xs
-                              return w-}
+  do wnew <- foldM (\(sym, args, res, e, pos) w' -> insdec (sym, args, res, e, pos) w) w xs --foldr que definio guido usando el insdec
+     rs <- mapM (\(sym, params, result, body, pos) -> do foldM (\(sy,b,ty) went-> insnombargs (sy,b,ty) went) wnew params                                                                 
+                                                      -- agrego al entorno wnew los nombres de los argumentos junto con su tipo
+                                                      -- lo hago con la funcion insnombargs
+                                                      --ahora teniendo esto, puedo buscar el tipo del body de cada funcion.
+                                                      -- duda: ver si debe asignarse el foldM, para poder usarse en transExp. 
+                                                      -- Creo que no.-->revisar
+                                                         transExp body) xs --analiza los tipos de cada cuerpo de funcion 
+     return wnew -- Devolvemos el entorno definimos cuando agregamos los nombres de la funciones y sus tipos de argumentos y de retorno
+     
 trDec (VarDec symb escape typ einit pos) w =
   do tyinit' <- transExp einit --w Tipo
      case typ of
-       Nothing -> ifM (tiposIguales tyinit' TNil) (P.error "El tipo de la expresion no debe ser nil") (insertValV symb tyinit' w) 
+       Nothing -> do b <- tiposIguales tyinit' TNil
+                     return (if b then P.error "El tipo de la expresion no debe ser nil\n" else insertValV symb tyinit' w)
+                  --ifM (tiposIguales tyinit' TNil) (P.error "El tipo de la expresion no debe ser nil") (insertValV symb tyinit' w) 
                   --if b then P.error "El tipo de la expresion no debe ser nil" else return tyinit'
        Just s  -> do t' <- transTy (NameTy s) --w Tipo
-                     ifM (tiposIguales tyinit' t') (P.error "Los tipos son distintos") (insertValV symb t' w)
+                     b <- tiposIguales tyinit' t'
+                     return (if b then P.error "Los tipos son distintos\n" else insertValV symb t' w)
+                     --ifM (tiposIguales tyinit' t') (P.error "Los tipos son distintos") (insertValV symb t' w)
                      
 trDec (TypeDec ds) w                       = addTypos ds w                    
-                    
+
+-- insdec toma la tupla de una funcion y el entorno de ese momento. Devolvemos
+-- el entorno con la funcion y sus parametros agregados.
 insdec :: (Manticore w )=> (Symbol, [Field], Maybe Symbol, Exp, Pos) -> w a -> w a
 insdec (symb, params, result, body, pos) w = 
   do params' <- mapM (\(sym,esc,ty) -> transTy ty) params
      u       <- ugen
-     case result of --dado que result es un Maybe
+     case result of --dado que result es un Maybe, analizo que tipo debo ingresar en el entorno
           Nothing -> insertFunV symb (u, symb, params', TUnit, False) w
           Just s  -> do t <- transTy (NameTy s)  
                         insertFunV symb (u, symb, params', t, False) w
-     --Revisar  
      
-
+-- agrega el nombre del argumento y su tipo al entorno     
+insnombargs :: (Manticore w)=> (Symbol, Bool, Ty) -> w a -> w a
+insnombargs (sym, b, ty) w = do ty' <- transTy ty
+                                insertValV sym ty' w
 
 transExp :: (Manticore w) => Exp -> w Tipo
 transExp (VarExp v p)             = addpos (transVar v) p
