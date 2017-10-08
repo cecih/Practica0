@@ -350,14 +350,16 @@ fromTy _ = P.error "no debería haber una definición de tipos en los args..."
 
 -- Acá agregamos los tipos, clase 04/09/17
 transDecs :: (Manticore w) => [Dec] -> (w a -> w a)
-transDecs [] w                    = w 
-transDecs (FunctionDec fs : xs) w = transDecs xs (trDec (FunctionDec fs) w)
-transDecs (VarDec name  escape typ init' pos':xs) w = 
-     transDecs xs (trDec (VarDec name  escape typ init' pos') w)
+transDecs [] w         = w 
+transDecs (ds : dds) w = transDecs dds (trDec ds w)                
+{-transDecs (FunctionDec fs : dds) w = transDecs dds (trDec (FunctionDec fs) w)
+transDecs (VarDec name  escape typ init pos : dds) w = 
+     transDecs dds (trDec (VarDec name  escape typ init pos) w)
      --insertValV name t (transDecs xs w)
-transDecs (TypeDec ds:xs) w                         = 
+transDecs (TypeDec ds : dds) w     = 
   do trDec (TypeDec ds) w
-     transDecs xs w
+     transDecs dds w
+-}
     
 -- TODO: terminar casos de funciones y revisar el caso de variables
 -- TODO UPDATE: revisar y leer el super comentario a continuacion para el caso de las funciones
@@ -376,35 +378,36 @@ que agrega los nombres de la funcion junto con los tipos de parametros y result 
 
 En el caso de variables: solamente cambios esteticos. Fijarse si prefiere asi.
 Lo anterior esta comentado-}
-trDec :: (Manticore w) => Dec -> w a -> w a
-{-trDec (FunctionDec xs) w = 
-  do wnew <- foldM (\(sym, args, res, e, pos) w' -> insdec (sym, args, res, e, pos) w) w xs --foldr que definio guido usando el insdec
-     rs <- mapM (\(sym, params, result, body, pos) -> do foldM (\(sy,b,ty) went-> insNombArgs (sy,b,ty) went) wnew params                                                                 
+{-trDec :: (Manticore w) => Dec -> w a -> w a
+trDec (FunctionDec ds) w                   = 
+  do wnew <- foldM (\(sym, args, res, e, pos) w' -> insDec (sym, args, res, e, pos) w) w ds --foldr que definio guido usando el insdec
+     rs   <- mapM (\(sym, params, result, body, pos) -> 
+                     do foldM (\(sy,b,ty) went -> insNombArgs (sy,b,ty) went) wnew params
+                        transExp body) ds                                                                 
                                                       -- agrego al entorno wnew los nombres de los argumentos junto con su tipo
                                                       -- lo hago con la funcion insnombargs
                                                       --ahora teniendo esto, puedo buscar el tipo del body de cada funcion.
                                                       -- duda: ver si debe asignarse el foldM, para poder usarse en transExp. 
                                                       -- Creo que no.-->revisar
-                                                         transExp body) xs --analiza los tipos de cada cuerpo de funcion 
+                                                      --   transExp body) xs --analiza los tipos de cada cuerpo de funcion 
      return wnew -- Devolvemos el entorno definimos cuando agregamos los nombres de la funciones y sus tipos de argumentos y de retorno
+-}
 trDec (VarDec symb escape typ einit pos) w =
   do tyinit' <- transExp einit --w Tipo
      case typ of
        Nothing -> do b <- tiposIguales tyinit' TNil
-                     return (if b then P.error "El tipo de la expresion no debe ser nil\n" else insertValV symb tyinit' w)
-                  --ifM (tiposIguales tyinit' TNil) (P.error "El tipo de la expresion no debe ser nil") (insertValV symb tyinit' w) 
-                  --if b then P.error "El tipo de la expresion no debe ser nil" else return tyinit'
+                     if b then P.error "El tipo de la expresion no debe ser nil\n" 
+                       else insertValV symb tyinit' w
        Just s  -> do t' <- transTy (NameTy s) --w Tipo
-                     b <- tiposIguales tyinit' t'
-                     return (if b then P.error "Los tipos son distintos\n" else insertValV symb t' w)
-                     --ifM (tiposIguales tyinit' t') (P.error "Los tipos son distintos") (insertValV symb t' w)
--}
+                     b  <- tiposIguales tyinit' t'
+                     if b then P.error "Los tipos son distintos\n" 
+                       else insertValV symb t' w
 trDec (TypeDec ds) w                       = addTypos ds w                    
 
 -- insdec toma la tupla de una funcion y el entorno de ese momento. Devolvemos
 -- el entorno con la funcion y sus parametros agregados.
-insdec :: (Manticore w )=> (Symbol, [Field], Maybe Symbol, Exp, Pos) -> w a -> w a
-insdec (symb, params, result, body, pos) w = 
+insDec :: (Manticore w) => (Symbol, [Field], Maybe Symbol, Exp, Pos) -> w a -> w a
+insDec (symb, params, result, body, pos) w = 
   do params' <- mapM (\(sym,esc,ty) -> transTy ty) params
      u       <- ugen
      case result of --dado que result es un Maybe, analizo que tipo debo ingresar en el entorno
@@ -413,7 +416,7 @@ insdec (symb, params, result, body, pos) w =
                         insertFunV symb (u, symb, params', t, False) w
      
 -- Agrega el nombre del argumento y su tipo al entorno     
-insNombArgs :: (Manticore w)=> (Symbol, Bool, Ty) -> w a -> w a
+insNombArgs :: (Manticore w) => (Symbol, Bool, Ty) -> w a -> w a
 insNombArgs (sym, b, ty) w = do ty' <- transTy ty
                                 insertValV sym ty' w
 
