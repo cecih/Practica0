@@ -51,6 +51,5 @@ main = do
     sourceCode <- readFile s
     either (\err -> error $ "Parser error..." ++ show err) 
        (\ast ->
-        calculoEscapadas ast opts' -- OJOTA: Efectos secundarios
-        >>
-        print "Genial!") (runParser expression () s sourceCode)
+        do res <- calculoEscapadas ast opts' -- OJOTA: Efectos secundarios
+           either (\a -> print $ "Error: " ++ show a) (\b -> print $ show b) (runLion res)) (runParser expression () s sourceCode)

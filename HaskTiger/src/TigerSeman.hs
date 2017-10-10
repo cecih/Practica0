@@ -145,7 +145,9 @@ instance Manticore OurState where
                                                   else getTipoT (name t)) ty
                              u   <- ugen
                              insertTipoT (fst a) (TRecord (zip3 sf ty' [0..length $ snd a]) u) b) 
-                 (foldl (\b' a' -> insertTipoT (fst a') (RefRecord $ name (snd a')) b') (addLoop (map fst sim) m w) ref)
+                 (foldl (\b' a' -> insertTipoT (fst a') (RefRecord $ name (snd a')) b') 
+                        (addLoop (map fst sim) m w) 
+                        ref)
                  rs')
           ref 
     where (rs, tys')          = partition (\(x, y) -> isRecord y) (map (\(x, y, _) -> (x, y)) tys)
@@ -237,8 +239,8 @@ initConf = G {unique = 0
                       ]}
 
 -- Utilizando alguna especie de run de la monada definida, obtenemos algo así
---runLion :: Exp -> Either SEErrores Tipo
---runLion e = run (transExp e) initConf
+runLion :: Exp -> Either SEErrores Tipo
+runLion e = evalStateT (transExp e) initConf
 
 -- Un ejemplo de estado que alcanzaría para realizar todas la funciones es:
 -- data EstadoG = G {unique :: Int, vEnv :: [M.Map Symbol EnvEntry], tEnv :: [M.Map Symbol Tipo]}
@@ -378,20 +380,19 @@ que agrega los nombres de la funcion junto con los tipos de parametros y result 
 
 En el caso de variables: solamente cambios esteticos. Fijarse si prefiere asi.
 Lo anterior esta comentado-}
-{-trDec :: (Manticore w) => Dec -> w a -> w a
-trDec (FunctionDec ds) w                   = 
-  do wnew <- foldM (\(sym, args, res, e, pos) w' -> insDec (sym, args, res, e, pos) w) w ds --foldr que definio guido usando el insdec
-     rs   <- mapM (\(sym, params, result, body, pos) -> 
-                     do foldM (\(sy,b,ty) went -> insNombArgs (sy,b,ty) went) wnew params
-                        transExp body) ds                                                                 
+trDec :: (Manticore w) => Dec -> w a -> w a
+trDec (FunctionDec fs) w                   = 
+  foldr (\val w' -> insDec val w') w fs --foldr que definio guido usando el insdec
+    -- mapM (\(_, params, _, body, _) -> 
+    --                 do foldM (\val went -> insNombArgs val went) wnew params
+    --                    transExp body) fs                                                                 
                                                       -- agrego al entorno wnew los nombres de los argumentos junto con su tipo
                                                       -- lo hago con la funcion insnombargs
                                                       --ahora teniendo esto, puedo buscar el tipo del body de cada funcion.
                                                       -- duda: ver si debe asignarse el foldM, para poder usarse en transExp. 
                                                       -- Creo que no.-->revisar
                                                       --   transExp body) xs --analiza los tipos de cada cuerpo de funcion 
-     return wnew -- Devolvemos el entorno definimos cuando agregamos los nombres de la funciones y sus tipos de argumentos y de retorno
--}
+     --return wnew -- Devolvemos el entorno definimos cuando agregamos los nombres de la funciones y sus tipos de argumentos y de retorno
 trDec (VarDec symb escape typ einit pos) w =
   do tyinit' <- transExp einit --w Tipo
      case typ of
@@ -402,7 +403,7 @@ trDec (VarDec symb escape typ einit pos) w =
                      b  <- tiposIguales tyinit' t'
                      if b then P.error "Los tipos son distintos\n" 
                        else insertValV symb t' w
-trDec (TypeDec ds) w                       = addTypos ds w                    
+trDec (TypeDec ts) w                       = addTypos ts w                    
 
 -- insdec toma la tupla de una funcion y el entorno de ese momento. Devolvemos
 -- el entorno con la funcion y sus parametros agregados.
@@ -412,12 +413,15 @@ insDec (symb, params, result, body, pos) w =
      u       <- ugen
      case result of --dado que result es un Maybe, analizo que tipo debo ingresar en el entorno
           Nothing -> insertFunV symb (u, symb, params', TUnit, False) w
-          Just s  -> do t <- transTy (NameTy s)  
-                        insertFunV symb (u, symb, params', t, False) w
+          Just s  -> do t     <- transTy (NameTy s)  
+                        tbody <- transExp body
+                        b <- tiposIguales t tbody
+                        if b then insertFunV symb (u, symb, params', t, False) w
+                          else P.error $ "El tipo de retorno no coincide con el tipo de retorno del body"
      
 -- Agrega el nombre del argumento y su tipo al entorno     
 insNombArgs :: (Manticore w) => (Symbol, Bool, Ty) -> w a -> w a
-insNombArgs (sym, b, ty) w = do ty' <- transTy ty
+insNombArgs (sym, _, ty) w = do ty' <- transTy ty
                                 insertValV sym ty' w
 
 transExp :: (Manticore w) => Exp -> w Tipo

@@ -83,7 +83,7 @@ data Exp where
 
 -- | Declaraciones!
 data Dec where
-    FunctionDec :: [(Symbol,[Field], Maybe Symbol, Exp, Pos)] -> Dec
+    FunctionDec :: [(Symbol, [Field], Maybe Symbol, Exp, Pos)] -> Dec
     VarDec :: Symbol -> Bool -> Maybe Symbol -> Exp -> Pos -> Dec
     TypeDec :: [(Symbol, Ty, Pos)] -> Dec
     deriving Show
