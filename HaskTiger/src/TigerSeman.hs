@@ -121,15 +121,15 @@ instance Manticore OurState where
   getTipoFunV s      = do st <- get
                           case M.lookup s (vEnv st) of
                             Just (Func f) -> return f 
-                            Nothing       -> internal s   
+                            Nothing       -> internal (append s (pack "44"))  
   getTipoValV s      = do st <- get
                           case M.lookup s (vEnv st) of
                             Just (Var v) -> return v 
-                            Nothing      -> internal s   
+                            Nothing      -> internal (append s (pack "55"))   
   getTipoT s         = do st <- get
                           case M.lookup s (tEnv st) of
                             Just ty -> return ty 
-                            Nothing -> internal s   
+                            Nothing -> internal (append s (pack "66"))  
   showVEnv           = do st <- get
                           trace (show $ vEnv st) (return ())    
   showTEnv           = do st <- get
@@ -146,7 +146,7 @@ instance Manticore OurState where
                              u   <- ugen
                              insertTipoT (fst a) (TRecord (zip3 sf ty' [0..length $ snd a]) u) b) 
                  (foldl (\b' a' -> insertTipoT (fst a') (RefRecord $ name (snd a')) b') 
-                        (addLoop (map fst sim) m w) 
+                        (addLoop ts m w) 
                         ref)
                  rs')
           ref 
@@ -354,45 +354,23 @@ fromTy _ = P.error "no debería haber una definición de tipos en los args..."
 transDecs :: (Manticore w) => [Dec] -> (w a -> w a)
 transDecs [] w         = w 
 transDecs (ds : dds) w = transDecs dds (trDec ds w)                
-{-transDecs (FunctionDec fs : dds) w = transDecs dds (trDec (FunctionDec fs) w)
-transDecs (VarDec name  escape typ init pos : dds) w = 
-     transDecs dds (trDec (VarDec name  escape typ init pos) w)
-     --insertValV name t (transDecs xs w)
-transDecs (TypeDec ds : dds) w     = 
-  do trDec (TypeDec ds) w
-     transDecs dds w
--}
-    
--- TODO: terminar casos de funciones y revisar el caso de variables
--- TODO UPDATE: revisar y leer el super comentario a continuacion para el caso de las funciones
--- y caso e variables solo cambio estetico. En ambos casos revisar y preguntar!!
-{-en el caso de la funcion, ene cada body de la funcion tenemos que hacer:
-1)En params tenemos lista de tuplas (sym, b, ty) y debemos hacer:
-a) ver que tipo tiene(transTy)
-b) agregar al entorno que tenemos luego haber insertado la lista de tipos, result y nombres de funcion(insdec), los 
-nombres de los argumentos(lease i,j, k etcc), esto ultimo lo hacemos con insertValV. 
 
-Tanto a) y b) se hacen en la funcion insnombargs.
-
-Todo lo anterior lo realice con foldM. Esta parte en la carpeta falta; va antes de hacer el transExp con el entorno
-que agrega los nombres de la funcion junto con los tipos de parametros y result que menciona guido en la carpeta.
-
-
-En el caso de variables: solamente cambios esteticos. Fijarse si prefiere asi.
-Lo anterior esta comentado-}
 trDec :: (Manticore w) => Dec -> w a -> w a
 trDec (FunctionDec fs) w                   = 
-  foldr (\val w' -> insDec val w') w fs --foldr que definio guido usando el insdec
-    -- mapM (\(_, params, _, body, _) -> 
-    --                 do foldM (\val went -> insNombArgs val went) wnew params
-    --                    transExp body) fs                                                                 
-                                                      -- agrego al entorno wnew los nombres de los argumentos junto con su tipo
-                                                      -- lo hago con la funcion insnombargs
-                                                      --ahora teniendo esto, puedo buscar el tipo del body de cada funcion.
-                                                      -- duda: ver si debe asignarse el foldM, para poder usarse en transExp. 
-                                                      -- Creo que no.-->revisar
-                                                      --   transExp body) xs --analiza los tipos de cada cuerpo de funcion 
-     --return wnew -- Devolvemos el entorno definimos cuando agregamos los nombres de la funciones y sus tipos de argumentos y de retorno
+  do let env = foldr (\(_, params, _, _, _) wres -> 
+                    foldr (\(sym,_,ty) wmid -> do ty' <- transTy ty 
+                                                  insertValV sym ty' wmid) wres params)     
+                  (foldr (\val w' -> insDec val w') w fs) 
+                  fs
+     mapM_ (\(_, _, result,body, _) -> 
+       do body' <- transExp body
+          case result of
+            Nothing -> env 
+            Just s  -> do st <- getTipoT s
+                          b <- tiposIguales st body'
+                          if b then env else P.error "El tipo de retorno no es el declarado\n") fs
+     env
+    
 trDec (VarDec symb escape typ einit pos) w =
   do tyinit' <- transExp einit --w Tipo
      case typ of
@@ -413,16 +391,9 @@ insDec (symb, params, result, body, pos) w =
      u       <- ugen
      case result of --dado que result es un Maybe, analizo que tipo debo ingresar en el entorno
           Nothing -> insertFunV symb (u, symb, params', TUnit, False) w
-          Just s  -> do t     <- transTy (NameTy s)  
-                        tbody <- transExp body
-                        b <- tiposIguales t tbody
-                        if b then insertFunV symb (u, symb, params', t, False) w
-                          else P.error $ "El tipo de retorno no coincide con el tipo de retorno del body"
-     
--- Agrega el nombre del argumento y su tipo al entorno     
-insNombArgs :: (Manticore w) => (Symbol, Bool, Ty) -> w a -> w a
-insNombArgs (sym, _, ty) w = do ty' <- transTy ty
-                                insertValV sym ty' w
+          Just s  -> do t <- transTy (NameTy s)  
+                        insertFunV symb (u, symb, params', t, False) w
+                          
 
 transExp :: (Manticore w) => Exp -> w Tipo
 transExp (VarExp v p)             = addpos (transVar v) p
@@ -514,7 +485,7 @@ transExp(LetExp dcs body p)       = transDecs dcs (transExp body)
 transExp(BreakExp p)              = return TUnit -- Va gratis ;)
 transExp(ArrayExp sn cant init p) =
   do u <- ugen
-     sn'   <- getTipoValV sn
+     sn'   <- getTipoT sn
      cant' <- transExp cant
      C.unlessM (tiposIguales cant' $ TInt RW) $ P.error "El índice debe ser un entero"
      init' <- transExp init
