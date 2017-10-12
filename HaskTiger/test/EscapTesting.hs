@@ -5,21 +5,23 @@ import           TigerParser
 import           TigerSymbol
 import           Text.Parsec
 
+import Tools
+
 main :: IO ()
 main =
   putStrLn "\n======= Test ESCAPES in progress =======" >>
-  either (const $ print "Fail") (const $ print "Good") (calcularEEsc ejemplo1) >>
-  either (const $ print "Good Fail") (const $ print "Bad Good") (calcularEEsc ejemplo2) >>
-  ( test "./test/test_code" (const $ print "Good Fail") (const $ print "Bad Good") "escapa.tig") >>
-  (listDirectory good_loc >>= mapM_ testGood ) >>
+  either (const $ redfail)  (const $ bluenice ) (calcularEEsc ejemplo1) >>
+  either (const $ bluefail) (const $ rednice ) (calcularEEsc ejemplo2) >>
+  ( test "./test/test_code" (const $ bluefail) (const $ rednice ) tester "escapa.tig") >>
+  ( test "./test/test_code" (const $ bluefail) (const $ rednice ) tester "intro.tig") >>
+  testDir good_loc (testSTDGood tester) >>
+  putStrLn "Type:" >>
+  testDir type_loc (testGood type_loc tester) >>
   putStrLn "\n======= Test FIN ======="
 
-good_loc = "./test/test_code/good"
-
-testGood = test good_loc print (const $ putStrLn "BIEN")
-
-test loc bad good s = readFile (loc ++ '/' : s) >>=
-        either (fail "asd") (either bad good  . calcularEEsc) . runParser expression () s
+tester s = either (fail "Testing Escapes: Parser error")
+                calcularEEsc
+         $ runParser expression () s s
 
 ejemplo1 :: Exp -- La variable a escapa.
 ejemplo1 = LetExp

@@ -117,6 +117,7 @@ instance Manticore OurState where
   insertTipoT s ty w = do st <- get
                           res <- withStateT (\st' -> st' {tEnv = M.insert s ty (tEnv st)}) w  
                           put st
+                          showTEnv
                           return res 
   getTipoFunV s      = do st <- get
                           case M.lookup s (vEnv st) of
@@ -127,7 +128,6 @@ instance Manticore OurState where
                             Just (Var v) -> return v 
                             Nothing      -> internal (append s (pack "55"))   
   getTipoT s         = do st <- get
-                          showTEnv
                           case M.lookup s (tEnv st) of
                             Just ty -> return ty 
                             Nothing -> internal (append s (pack "66"))  
@@ -138,7 +138,7 @@ instance Manticore OurState where
   ugen               = do u <- get                             
                           put (u {unique = unique u + 1})
                           return $ unique u + 1 
-  addTypos tys w  =
+  addTypos tys w  = 
     foldl' (\st r -> do t <- getTipoT $ name (snd r)
                         insertTipoT (fst r) t st)  
            (foldl' (\b a -> do let (sf, bo, ty) = unzip3 (snd a)
@@ -159,7 +159,7 @@ instance Manticore OurState where
           fList (RecordTy fl) = fl
           name (ArrayTy sym)  = sym
           name (NameTy sym)   = sym
-          name _              = P.error "Error interno"
+          name _              = P.error "Error interno"                     
 
 isRecord :: Ty -> Bool
 isRecord (RecordTy _) = True
@@ -170,19 +170,20 @@ isName (NameTy _) = True
 isName _          = False
           
 addLoop :: Manticore w => [Symbol] -> M.Map Symbol Ty -> w a -> w a 
-addLoop [] _ w     = w
-addLoop (x:xs) m w = addLoop xs m (do let ty = m M.! x
-                                      ty' <- transTy ty
-                                      insertTipoT x ty' w)
+--addLoop [] _ w     = w        
+addLoop xs m w = foldl' (\b a -> do let ty = m M.! a
+                                    showTEnv
+                                    ty' <- transTy ty
+                                    insertTipoT a ty' b) w xs
                                                    
 topoSort :: [(Symbol, Ty)] -> [Symbol] 
 topoSort elems 
   | ciclo ps elems' = P.error "Hay ciclo\n"
   | otherwise       = 
-    fromEdges (G.topSort $ G.buildG (1, len) (toEdges ps m)) (M.toList m) \\ [pack "int", pack "string"]
+    fromEdges (G.topSort $ G.buildG (1, len) (toEdges ps m)) (M.toList m) 
   where ps     = concat $ map predSucc elems
-        len    = length elems + 2
-        elems' = concat $ map (\(x, y) -> [x, y]) ps
+        len    = length elems'
+        elems' = concat $ map (\(x, y) -> [x, y]) ps 
         m      = M.fromList $ zip elems' [1..len] 
 
 toEdges :: [(Symbol, Symbol)] -> M.Map Symbol Int -> [G.Edge]
