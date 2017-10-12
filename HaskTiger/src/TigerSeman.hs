@@ -127,6 +127,7 @@ instance Manticore OurState where
                             Just (Var v) -> return v 
                             Nothing      -> internal (append s (pack "55"))   
   getTipoT s         = do st <- get
+                          showTEnv
                           case M.lookup s (tEnv st) of
                             Just ty -> return ty 
                             Nothing -> internal (append s (pack "66"))  
@@ -138,16 +139,16 @@ instance Manticore OurState where
                           put (u {unique = unique u + 1})
                           return $ unique u + 1 
   addTypos tys w  =
-    foldl (\st r -> do t <- getTipoT $ name (snd r)
-                       insertTipoT (fst r) t st)  
-          (foldl (\b a -> do let (sf, bo, ty) = unzip3 (snd a)
-                             ty' <- mapM (\t -> if elem (name t) frs then return $ RefRecord (name t) 
-                                                  else getTipoT (name t)) ty
-                             u   <- ugen
-                             insertTipoT (fst a) (TRecord (zip3 sf ty' [0..length $ snd a]) u) b) 
-                 (foldl (\b' a' -> insertTipoT (fst a') (RefRecord $ name (snd a')) b') 
-                        (addLoop ts m w) 
-                        ref)
+    foldl' (\st r -> do t <- getTipoT $ name (snd r)
+                        insertTipoT (fst r) t st)  
+           (foldl' (\b a -> do let (sf, bo, ty) = unzip3 (snd a)
+                               ty' <- mapM (\t -> if elem (name t) frs then return $ RefRecord (name t) 
+                                                    else getTipoT (name t)) ty
+                               u   <- ugen
+                               insertTipoT (fst a) (TRecord (zip3 sf ty' [0..length $ snd a]) u) b) 
+                 (foldl' (\b' a' -> insertTipoT (fst a') (RefRecord $ name (snd a')) b') 
+                         (addLoop ts m w) 
+                         ref)
                  rs')
           ref 
     where (rs, tys')          = partition (\(x, y) -> isRecord y) (map (\(x, y, _) -> (x, y)) tys)
@@ -352,8 +353,9 @@ fromTy _ = P.error "no debería haber una definición de tipos en los args..."
 
 -- Acá agregamos los tipos, clase 04/09/17
 transDecs :: (Manticore w) => [Dec] -> (w a -> w a)
-transDecs [] w         = w 
-transDecs (ds : dds) w = transDecs dds (trDec ds w)                
+transDecs ds w = foldl' (\b a -> trDec a b) w ds
+--transDecs [] w         = w 
+--transDecs (ds : dds) w = transDecs dds (trDec ds w)                
 
 trDec :: (Manticore w) => Dec -> w a -> w a
 trDec (FunctionDec fs) w                   = 
@@ -370,7 +372,6 @@ trDec (FunctionDec fs) w                   =
                           b <- tiposIguales st body'
                           if b then env else P.error "El tipo de retorno no es el declarado\n") fs
      env
-    
 trDec (VarDec symb escape typ einit pos) w =
   do tyinit' <- transExp einit --w Tipo
      case typ of
