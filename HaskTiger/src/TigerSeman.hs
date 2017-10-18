@@ -118,7 +118,6 @@ instance Manticore OurState where
   insertTipoT s ty w = do st <- get
                           res <- withStateT (\st' -> st' {tEnv = M.insert s ty (tEnv st)}) w  
                           put st
-                          showTEnv
                           return res 
   getTipoFunV s      = do st <- get
                           case M.lookup s (vEnv st) of
@@ -154,7 +153,8 @@ instance Manticore OurState where
           ref 
     where (rs, tys')          = partition (\(x, y) -> isRecord y) (map (\(x, y, _) -> (x, y)) tys)
           (ref, sim)          = partition (\(x,y) -> elem (name y) frs) tys'
-          (ts, m)             = (topoSort sim, M.fromList sim)
+          (ts, m)             = (topoSort sim, M.fromList (sim ++ [(pack "int", NameTy $ pack "int"), 
+                                                                   (pack "string", NameTy $ pack "string")]))
           rs'                 = map (\(s, ty) -> (s, sortBy ourOrder $ fList ty)) rs
           frs                 = map fst rs
           fList (RecordTy fl) = fl
@@ -173,7 +173,6 @@ isName _          = False
 addLoop :: Manticore w => [Symbol] -> M.Map Symbol Ty -> w a -> w a 
 --addLoop [] _ w     = w        
 addLoop xs m w = foldl' (\b a -> do let ty = m M.! a
-                                    showTEnv
                                     ty' <- transTy ty
                                     insertTipoT a ty' b) w xs
                                                    
