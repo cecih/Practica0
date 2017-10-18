@@ -13,6 +13,8 @@ main =
   --(test "./test/test_code" (const $ bluefail) (const $ rednice) tester "intro.tig") >>
   --testDir good_loc (testSTDGood tester) >>
   --putStrLn "Type:" >>
+  testDir good_loc (testGood good_loc tester) >>
+  putStrLn "\n======= End of GOOD =======" >>
   testDir type_loc (testGood type_loc tester) >>
   putStrLn "\n======= Test FIN ======="
 

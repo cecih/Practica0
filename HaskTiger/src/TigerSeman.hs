@@ -183,8 +183,8 @@ topoSort elems
   | otherwise       = 
     fromEdges (G.topSort $ G.buildG (1, len) (toEdges ps m)) (M.toList m) 
   where ps     = concat $ map predSucc elems
-        len    = length elems'
         elems' = concat $ map (\(x, y) -> [x, y]) ps 
+        len    = length elems'
         m      = M.fromList $ zip elems' [1..len] 
 
 toEdges :: [(Symbol, Symbol)] -> M.Map Symbol Int -> [G.Edge]
@@ -244,42 +244,6 @@ initConf = G {unique = 0
 -- Utilizando alguna especie de run de la monada definida, obtenemos algo así
 runLion :: Exp -> Either SEErrores Tipo
 runLion e = evalStateT (transExp e) initConf
-
--- Un ejemplo de estado que alcanzaría para realizar todas la funciones es:
--- data EstadoG = G {unique :: Int, vEnv :: [M.Map Symbol EnvEntry], tEnv :: [M.Map Symbol Tipo]}
---     deriving Show
---
--- Acompañado de un tipo de errores
--- data SEErrores = NotFound T.Text | DiffVal T.Text | Internal T.Text
---     deriving Show
---
--- type OurState = State EstadoG (Either SEErrores Tipo)
---
--- instance Daemon OurState where
---   derror s = re
--- 
---
---
---  Podemos definir el estado inicial como:
--- initConf :: EstadoG
--- initConf = G {unique = 0
---             , tEnv = [M.insert (T.pack "int") (TInt RW) (M.singleton (T.pack "string") TString)]
---             , vEnv = [M.fromList
---                     [(T.pack "print", Func (1,T.pack "print",[TString], TUnit, True))
---                     ,(T.pack "flush", Func (1,T.pack "flush",[],TUnit, True))
---                     ,(T.pack "getchar",Func (1,T.pack "getchar",[],TString,True))
---                     ,(T.pack "ord",Func (1,T.pack "ord",[TString],TInt RW,True)) -- Ojota con este intro...
---                     ,(T.pack "chr",Func (1,T.pack "chr",[TInt RW],TString,True))
---                     ,(T.pack "size",Func (1,T.pack "size",[TString],TInt RW,True))
---                     ,(T.pack "substring",Func (1,T.pack "substring",[TString,TInt RW, TInt RW],TString,True))
---                     ,(T.pack "concat",Func (1,T.pack "concat",[TString,TString],TString,True))
---                     ,(T.pack "not",Func (1,T.pack "not",[TInt RW],TInt RW,True))
---                     ,(T.pack "exit",Func (1,T.pack "exit",[TInt RW],TUnit,True))
---                     ]]}
---
--- Utilizando alguna especie de run de la monada definida, obtenemos algo así
--- runLion :: Exp -> Either SEErrores Tipo
--- runLion e = run (transExp e) initConf
 
 depend :: Ty -> [Symbol]
 depend (NameTy s)    = [s]
@@ -356,8 +320,6 @@ fromTy _ = P.error "no debería haber una definición de tipos en los args..."
 -- Acá agregamos los tipos, clase 04/09/17
 transDecs :: (Manticore w) => [Dec] -> (w a -> w a)
 transDecs ds w = foldl' (\b a -> trDec a b) w ds
---transDecs [] w         = w 
---transDecs (ds : dds) w = transDecs dds (trDec ds w)                
 
 trDec :: (Manticore w) => Dec -> w a -> w a
 trDec (FunctionDec fs) w                   = 

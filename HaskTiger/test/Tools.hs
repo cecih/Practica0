@@ -29,8 +29,8 @@ testBad loc  = test loc (const $ bluefail )
                (const $ rednice )
 
 testDir :: String -> (String -> IO ()) -> IO ()
-testDir dir tester = (listDirectory dir >>= mapM_ (\a -> do colorPrint setGreen (a ++ " ")
-                                                            tester a))
+testDir dir tester = listDirectory dir >>= mapM_ (\a -> do colorPrint setGreen a
+                                                           tester a)
 
 setRed   = setSGR [SetColor Foreground Vivid Red]
 setBlue  = setSGR [SetColor Foreground Vivid Blue]
