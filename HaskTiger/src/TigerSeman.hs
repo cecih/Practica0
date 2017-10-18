@@ -106,28 +106,36 @@ instance Daemon OurState where
                                         Internal t -> internal t)  
 
 instance Manticore OurState where
-  insertValV s ve w  = do st <- get
+  insertValV s ve w  = trace ("Insertamos " ++ unpack s) $ do 
+                          st <- get
                           res <- withStateT (\st' -> st' {vEnv = M.insert s (Var ve) (vEnv st)}) w  
                           put st
                           return res
-  insertFunV s fe w  = do st <- get
+  insertFunV s fe w  = trace ("Insertamos " ++ unpack s) $ do 
+                          st <- get
                           res <- withStateT (\st' -> st' {vEnv = M.insert s (Func fe) (vEnv st)}) w 
                           put st
+                          showTEnv
                           return res 
   insertVRO s w      = insertValV s (TInt RO) w 
   insertTipoT s ty w = do st <- get
                           res <- withStateT (\st' -> st' {tEnv = M.insert s ty (tEnv st)}) w  
                           put st
+                          --showTEnv
                           return res 
-  getTipoFunV s      = do st <- get
+  getTipoFunV s      = trace ("Get tipo Fun de " ++ unpack s) $ do 
+                          st <- get
+                          --showTEnv  
                           case M.lookup s (vEnv st) of
                             Just (Func f) -> return f 
                             Nothing       -> internal (append s (pack "44"))  
-  getTipoValV s      = do st <- get
+  getTipoValV s      = trace ("Get tipo VAl de " ++ unpack s) $ do 
+                          st <- get
                           case M.lookup s (vEnv st) of
                             Just (Var v) -> return v 
                             Nothing      -> internal (append s (pack "55"))   
-  getTipoT s         = do st <- get
+  getTipoT s         = trace ("Get Tipo T de " ++ unpack s) $ do 
+                          st <- get
                           case M.lookup s (tEnv st) of
                             Just ty -> return ty 
                             Nothing -> internal (append s (pack "66"))  
@@ -321,20 +329,30 @@ transDecs :: (Manticore w) => [Dec] -> (w a -> w a)
 transDecs ds w = foldl' (\b a -> trDec a b) w ds
 
 trDec :: (Manticore w) => Dec -> w a -> w a
-trDec (FunctionDec fs) w                   = 
-  do let env = foldr (\(_, params, _, _, _) wres -> 
-                    foldr (\(sym,_,ty) wmid -> do ty' <- transTy ty 
-                                                  insertValV sym ty' wmid) wres params)     
-                  (foldr (\val w' -> insDec val w') w fs) 
-                  fs
-     mapM_ (\(_, _, result,body, _) -> 
+trDec (FunctionDec fs) w                   =
+{-  do let env = foldl' (\wres (_, params, _, _, _) -> 
+                        do showVEnv
+                           foldl' (\wmid (sym,_,ty)  -> do ty' <- transTy ty
+                                                           showVEnv
+                                                           insertValV sym ty' wmid) wres params)     
+                                                           -}
+    let env' m = (foldl' (flip insDec) m fs)
+        {- checkFs = mapM_ (\(_ , params, result, ...)
+                typ <- bulkVarInsert params (transExpr body)
+                mismotipo result typ...
+                -- insertar argumentos
+                -- analizar body en el entorno con argumentos adicionales.
+                ) -}
+    in    
+     env' w -- (checkFs fs >> w)
+ {-    mapM_ (\(_, _, result,body, _) -> 
        do body' <- transExp body
           case result of
-            Nothing -> env 
+            Nothing -> env        
             Just s  -> do st <- getTipoT s
                           b <- tiposIguales st body'
-                          if b then env else P.error "El tipo de retorno no es el declarado\n") fs
-     env
+                          if b then env else P.error "El tipo de retorno no es el declarado\n") fs     
+                          >> env' w -}
 trDec (VarDec symb escape typ einit pos) w =
   do tyinit' <- transExp einit --w Tipo
      case typ of
@@ -353,6 +371,7 @@ insDec :: (Manticore w) => (Symbol, [Field], Maybe Symbol, Exp, Pos) -> w a -> w
 insDec (symb, params, result, body, pos) w = 
   do params' <- mapM (\(sym,esc,ty) -> transTy ty) params
      u       <- ugen
+     showVEnv
      case result of --dado que result es un Maybe, analizo que tipo debo ingresar en el entorno
           Nothing -> insertFunV symb (u, symb, params', TUnit, False) w
           Just s  -> do t <- transTy (NameTy s)  

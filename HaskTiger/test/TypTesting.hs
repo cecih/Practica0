@@ -8,7 +8,7 @@ import Text.Parsec
 
 main :: IO ()
 main =
-  putStrLn "\n======= Test ESCAPES in progress =======" >>
+  putStrLn "\n======= Test TYPES in progress =======" >>
   --(test "./test/test_code" (const $ bluefail) (const $ rednice) tester "escapa.tig") >>
   --(test "./test/test_code" (const $ bluefail) (const $ rednice) tester "intro.tig") >>
   --testDir good_loc (testSTDGood tester) >>
