@@ -106,36 +106,34 @@ instance Daemon OurState where
                                         Internal t -> internal t)  
 
 instance Manticore OurState where
-  insertValV s ve w  = trace ("Insertamos " ++ unpack s) $ do 
-                          st <- get
+  insertValV s ve w  = trace ("Insertamos Val " ++ unpack s) $ 
+                       do st <- get
                           res <- withStateT (\st' -> st' {vEnv = M.insert s (Var ve) (vEnv st)}) w  
                           put st
                           return res
-  insertFunV s fe w  = trace ("Insertamos " ++ unpack s) $ do 
-                          st <- get
+  insertFunV s fe w  = trace ("Insertamos Fun " ++ unpack s) $ 
+                       do st <- get
                           res <- withStateT (\st' -> st' {vEnv = M.insert s (Func fe) (vEnv st)}) w 
                           put st
-                          showTEnv
                           return res 
   insertVRO s w      = insertValV s (TInt RO) w 
-  insertTipoT s ty w = do st <- get
+  insertTipoT s ty w = trace ("Insertamos Tipo " ++ unpack s) $
+                       do st <- get
                           res <- withStateT (\st' -> st' {tEnv = M.insert s ty (tEnv st)}) w  
                           put st
-                          --showTEnv
                           return res 
-  getTipoFunV s      = trace ("Get tipo Fun de " ++ unpack s) $ do 
-                          st <- get
-                          --showTEnv  
+  getTipoFunV s      = trace ("Buscamos Fun " ++ unpack s) $ 
+                       do st <- get
                           case M.lookup s (vEnv st) of
                             Just (Func f) -> return f 
                             Nothing       -> internal (append s (pack "44"))  
-  getTipoValV s      = trace ("Get tipo VAl de " ++ unpack s) $ do 
-                          st <- get
+  getTipoValV s      = trace ("Buscamos Val " ++ unpack s) $ 
+                       do st <- get
                           case M.lookup s (vEnv st) of
                             Just (Var v) -> return v 
                             Nothing      -> internal (append s (pack "55"))   
-  getTipoT s         = trace ("Get Tipo T de " ++ unpack s) $ do 
-                          st <- get
+  getTipoT s         = trace ("Buscamos Tipo " ++ unpack s) $
+                       do st <- get
                           case M.lookup s (tEnv st) of
                             Just ty -> return ty 
                             Nothing -> internal (append s (pack "66"))  
@@ -147,18 +145,15 @@ instance Manticore OurState where
                           put (u {unique = unique u + 1})
                           return $ unique u + 1 
   addTypos tys w  = 
-    foldl' (\st r -> do t <- getTipoT $ name (snd r)
-                        insertTipoT (fst r) t st)  
-           (foldl' (\b a -> do let (sf, bo, ty) = unzip3 (snd a)
-                               ty' <- mapM (\t -> if elem (name t) frs then return $ RefRecord (name t) 
-                                                    else getTipoT (name t)) ty
-                               u   <- ugen
-                               insertTipoT (fst a) (TRecord (zip3 sf ty' [0..length $ snd a]) u) b) 
-                 (foldl' (\b' a' -> insertTipoT (fst a') (RefRecord $ name (snd a')) b') 
-                         (addLoop ts m w) 
-                         ref)
-                 rs')
-          ref 
+    let res  = trace ("Agregamos!") $ foldr replace w ref 
+        recs = trace ("Recs!") $ foldr (insRecs frs) res rs' 
+        refs = trace ("Refs!") $ foldr insRefs recs ref
+    in trace ("AddLoop!") $ addLoop ts m refs 
+    {-let addL = trace ("AddLoop!") $ addLoop ts m w 
+        refs = trace ("Refs!") $ foldr insRefs addL ref
+        recs = trace ("Recs!") $ foldr (insRecs frs) refs rs' 
+    in trace ("Agregamos!") $ foldr replace recs ref 
+-}
     where (rs, tys')          = partition (\(x, y) -> isRecord y) (map (\(x, y, _) -> (x, y)) tys)
           (ref, sim)          = partition (\(x,y) -> elem (name y) frs) tys'
           (ts, m)             = (topoSort sim, M.fromList (sim ++ [(pack "int", NameTy $ pack "int"), 
@@ -166,23 +161,38 @@ instance Manticore OurState where
           rs'                 = map (\(s, ty) -> (s, sortBy ourOrder $ fList ty)) rs
           frs                 = map fst rs
           fList (RecordTy fl) = fl
-          name (ArrayTy sym)  = sym
-          name (NameTy sym)   = sym
-          name _              = P.error "Error interno"                     
+
+name :: Ty -> Symbol
+name (ArrayTy sym)  = sym
+name (NameTy sym)   = sym
+name _              = P.error "Error interno"                     
+
+insRefs :: Manticore w => (Symbol, Ty) -> w a -> w a
+insRefs (symb, ty) w = insertTipoT symb (RefRecord $ name ty) w 
+
+insRecs :: Manticore w => [Symbol] -> (Symbol, [Field]) -> w a -> w a
+insRecs recs (symb, flds) w = do let (symbs, bools, tys) = unzip3 flds  
+                                 ty' <- mapM (\t -> let nt = name t
+                                                    in if elem nt recs then return $ RefRecord nt 
+                                                         else getTipoT nt) tys
+                                 u   <- ugen
+                                 insertTipoT symb (TRecord (zip3 symbs ty' [0..length $ flds]) u) w 
+
+replace :: Manticore w => (Symbol, Ty) -> w a -> w a
+replace (symb, ty) w = do t <- getTipoT $ name ty
+                          insertTipoT symb t w 
 
 isRecord :: Ty -> Bool
 isRecord (RecordTy _) = True
 isRecord _            = False
 
-isName :: Ty -> Bool
-isName (NameTy _) = True
-isName _          = False
-          
 addLoop :: Manticore w => [Symbol] -> M.Map Symbol Ty -> w a -> w a 
---addLoop [] _ w     = w        
-addLoop xs m w = foldl' (\b a -> do let ty = m M.! a
-                                    ty' <- transTy ty
-                                    insertTipoT a ty' b) w xs
+addLoop sims m w = foldr (insTipo m) w sims
+
+insTipo :: Manticore w => M.Map Symbol Ty -> Symbol -> w a -> w a
+insTipo m symb w = do let ty = m M.! symb
+                      ty' <- transTy ty
+                      insertTipoT symb ty' w  
                                                    
 topoSort :: [(Symbol, Ty)] -> [Symbol] 
 topoSort elems 
@@ -330,29 +340,16 @@ transDecs ds w = foldl' (\b a -> trDec a b) w ds
 
 trDec :: (Manticore w) => Dec -> w a -> w a
 trDec (FunctionDec fs) w                   =
-{-  do let env = foldl' (\wres (_, params, _, _, _) -> 
-                        do showVEnv
-                           foldl' (\wmid (sym,_,ty)  -> do ty' <- transTy ty
-                                                           showVEnv
-                                                           insertValV sym ty' wmid) wres params)     
-                                                           -}
-    let env' m = (foldl' (flip insDec) m fs)
-        {- checkFs = mapM_ (\(_ , params, result, ...)
-                typ <- bulkVarInsert params (transExpr body)
-                mismotipo result typ...
-                -- insertar argumentos
-                -- analizar body en el entorno con argumentos adicionales.
-                ) -}
-    in    
-     env' w -- (checkFs fs >> w)
- {-    mapM_ (\(_, _, result,body, _) -> 
-       do body' <- transExp body
-          case result of
-            Nothing -> env        
-            Just s  -> do st <- getTipoT s
-                          b <- tiposIguales st body'
-                          if b then env else P.error "El tipo de retorno no es el declarado\n") fs     
-                          >> env' w -}
+  let env' f m = foldr f m
+      checkFs  = mapM_ (\(_ , params, result, body, _) ->
+                         case result of
+                           Nothing -> return ()
+                           Just r  -> do tyb <- env' insVar (transExp body) params
+                                         tyr <- getTipoT r 
+                                         b   <- tiposIguales tyb tyr
+                                         if b then return () 
+                                           else P.error "El valor de retorno no tiene el tipo indicado en la signatura de la función")
+  in checkFs fs >> env' insDec w fs 
 trDec (VarDec symb escape typ einit pos) w =
   do tyinit' <- transExp einit --w Tipo
      case typ of
@@ -365,13 +362,16 @@ trDec (VarDec symb escape typ einit pos) w =
                        else insertValV symb t' w
 trDec (TypeDec ts) w                       = addTypos ts w                    
 
+insVar :: Manticore w => (Symbol, Bool, Ty) -> w a -> w a
+insVar (symb, _, ty) w = do ty' <- transTy ty
+                            insertValV symb ty' w 
+
 -- insdec toma la tupla de una funcion y el entorno de ese momento. Devolvemos
 -- el entorno con la funcion y sus parametros agregados.
 insDec :: (Manticore w) => (Symbol, [Field], Maybe Symbol, Exp, Pos) -> w a -> w a
 insDec (symb, params, result, body, pos) w = 
   do params' <- mapM (\(sym,esc,ty) -> transTy ty) params
      u       <- ugen
-     showVEnv
      case result of --dado que result es un Maybe, analizo que tipo debo ingresar en el entorno
           Nothing -> insertFunV symb (u, symb, params', TUnit, False) w
           Just s  -> do t <- transTy (NameTy s)  
@@ -467,7 +467,7 @@ transExp(ForExp nv mb lo hi bo p) =
 transExp(LetExp dcs body p)       = transDecs dcs (transExp body)
 transExp(BreakExp p)              = return TUnit -- Va gratis ;)
 transExp(ArrayExp sn cant init p) =
-  do u <- ugen
+  do u     <- ugen
      sn'   <- getTipoT sn
      cant' <- transExp cant
      C.unlessM (tiposIguales cant' $ TInt RW) $ P.error "El índice debe ser un entero"
