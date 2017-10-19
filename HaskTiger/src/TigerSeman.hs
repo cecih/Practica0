@@ -145,19 +145,21 @@ instance Manticore OurState where
                           put (u {unique = unique u + 1})
                           return $ unique u + 1 
   addTypos tys w  = 
-    let res  = trace ("Agregamos!") $ foldr replace w ref 
+    {-let res  = trace ("Agregamos!") $ foldr replace w ref 
         recs = trace ("Recs!") $ foldr (insRecs frs) res rs' 
-        refs = trace ("Refs!") $ foldr insRefs recs ref
-    in trace ("AddLoop!") $ addLoop ts m refs 
-    {-let addL = trace ("AddLoop!") $ addLoop ts m w 
-        refs = trace ("Refs!") $ foldr insRefs addL ref
-        recs = trace ("Recs!") $ foldr (insRecs frs) refs rs' 
-    in trace ("Agregamos!") $ foldr replace recs ref 
--}
+        refs = trace ("Refs!") $ foldr 
+        insRefs recs ref
+        in trace ("AddLoop!") $ addLoop ts m refs -}
+    let addL ts ht = trace ("AddLoop!") $ addLoop ts ht  
+        refs e1    = trace ("Refs!") $ foldr insRefs e1 ref
+        recs e2    = trace ("Recs!") $ foldr (insRecs frs) e2 rs'
+        rep e3     = trace ("Agregamos!") $ foldr replace e3 ref
+    in do 
+         st <- get
+         let m = tEnv st
+         addL (map fst (M.toList m) ++ sim) m (refs (recs (rep w)))
     where (rs, tys')          = partition (\(x, y) -> isRecord y) (map (\(x, y, _) -> (x, y)) tys)
-          (ref, sim)          = partition (\(x,y) -> elem (name y) frs) tys'
-          (ts, m)             = (topoSort sim, M.fromList (sim ++ [(pack "int", NameTy $ pack "int"), 
-                                                                   (pack "string", NameTy $ pack "string")]))
+          (ref, sim)          = partition (\(x,y) -> elem (name y) frs) tys' 
           rs'                 = map (\(s, ty) -> (s, sortBy ourOrder $ fList ty)) rs
           frs                 = map fst rs
           fList (RecordTy fl) = fl
@@ -168,19 +170,19 @@ name (NameTy sym)   = sym
 name _              = P.error "Error interno"                     
 
 insRefs :: Manticore w => (Symbol, Ty) -> w a -> w a
-insRefs (symb, ty) w = insertTipoT symb (RefRecord $ name ty) w 
+insRefs (symb, ty) w = trace "insRefs" $ insertTipoT symb (RefRecord $ name ty) w 
 
 insRecs :: Manticore w => [Symbol] -> (Symbol, [Field]) -> w a -> w a
-insRecs recs (symb, flds) w = do let (symbs, bools, tys) = unzip3 flds  
-                                 ty' <- mapM (\t -> let nt = name t
-                                                    in if elem nt recs then return $ RefRecord nt 
-                                                         else getTipoT nt) tys
-                                 u   <- ugen
-                                 insertTipoT symb (TRecord (zip3 symbs ty' [0..length $ flds]) u) w 
+insRecs recs (symb, flds) w = trace "insRecs" $ do let (symbs, bools, tys) = unzip3 flds  
+                                                   ty' <- mapM (\t -> let nt = name t
+                                                                      in if elem nt recs then return $ RefRecord nt 
+                                                                                         else getTipoT nt) tys
+                                                   u   <- ugen
+                                                   insertTipoT symb (TRecord (zip3 symbs ty' [0..length $ flds]) u) w 
 
 replace :: Manticore w => (Symbol, Ty) -> w a -> w a
-replace (symb, ty) w = do t <- getTipoT $ name ty
-                          insertTipoT symb t w 
+replace (symb, ty) w = trace "replace" $  do t <- getTipoT $ name ty
+                                             insertTipoT symb t w 
 
 isRecord :: Ty -> Bool
 isRecord (RecordTy _) = True
@@ -190,7 +192,8 @@ addLoop :: Manticore w => [Symbol] -> M.Map Symbol Ty -> w a -> w a
 addLoop sims m w = foldr (insTipo m) w sims
 
 insTipo :: Manticore w => M.Map Symbol Ty -> Symbol -> w a -> w a
-insTipo m symb w = do let ty = m M.! symb
+insTipo m symb w = trace ("Elemento" ++ unpack symb) $ do 
+                      let ty = m M.! symb
                       ty' <- transTy ty
                       insertTipoT symb ty' w  
                                                    
@@ -198,11 +201,15 @@ topoSort :: [(Symbol, Ty)] -> [Symbol]
 topoSort elems 
   | ciclo ps elems' = P.error "Hay ciclo\n"
   | otherwise       = 
-    fromEdges (G.topSort $ G.buildG (1, len) (toEdges ps m)) (M.toList m) 
+    trace (show ts ++ show (M.toList m)) $ fromEdges ts (M.toList m) 
+    --fromEdges (G.topSort $ G.buildG (1, len) (toEdges ps m)) (M.toList m) 
   where ps     = concat $ map predSucc elems
         elems' = concat $ map (\(x, y) -> [x, y]) ps 
         len    = length elems'
-        m      = M.fromList $ zip elems' [1..len] 
+        m      = M.fromList $ zip elems' [1..len]
+        tE     = toEdges ps m
+        build  = G.buildG (1, len) tE
+        ts     = G.topSort build
 
 toEdges :: [(Symbol, Symbol)] -> M.Map Symbol Int -> [G.Edge]
 toEdges pares ht = map (\(x, y) -> (ht M.! x, ht M.! y)) pares
@@ -355,11 +362,12 @@ trDec (VarDec symb escape typ einit pos) w =
      case typ of
        Nothing -> do b <- tiposIguales tyinit' TNil
                      if b then P.error "El tipo de la expresion no debe ser nil\n" 
-                       else insertValV symb tyinit' w
+                            else insertValV symb tyinit' w  
        Just s  -> do t' <- transTy (NameTy s) --w Tipo
                      b  <- tiposIguales tyinit' t'
-                     if b then P.error "Los tipos son distintos\n" 
-                       else insertValV symb t' w
+                     --if b then insertValV symb t' w else P.error "Los tipos son distintos\n"
+                     if not b then P.error "Los tipos son distintos\n" 
+                              else insertValV symb t' w 
 trDec (TypeDec ts) w                       = addTypos ts w                    
 
 insVar :: Manticore w => (Symbol, Bool, Ty) -> w a -> w a
