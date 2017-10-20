@@ -150,16 +150,15 @@ instance Manticore OurState where
         refs = trace ("Refs!") $ foldr 
         insRefs recs ref
         in trace ("AddLoop!") $ addLoop ts m refs -}
-    let addL ts ht = trace ("AddLoop!") $ addLoop ts ht  
-        refs e1    = trace ("Refs!") $ foldr insRefs e1 ref
-        recs e2    = trace ("Recs!") $ foldr (insRecs frs) e2 rs'
-        rep e3     = trace ("Agregamos!") $ foldr replace e3 ref
-    in do 
-         st <- get
-         let m = tEnv st
-         addL (map fst (M.toList m) ++ sim) m (refs (recs (rep w)))
+    let addL ts ht = addLoop ts ht  
+        refs e1    = foldr insRefs e1 ref
+        recs e2    = foldr (insRecs frs) e2 rs'
+        rep e3     = foldr replace e3 ref
+    in do st <- get
+          let m = tenvToList $ tEnv st
+          addL (topoSort $ sim ++ m) (M.fromList $ sim ++ m) (refs (recs (rep w)))
     where (rs, tys')          = partition (\(x, y) -> isRecord y) (map (\(x, y, _) -> (x, y)) tys)
-          (ref, sim)          = partition (\(x,y) -> elem (name y) frs) tys' 
+          (ref, sim)          = partition (\(x,y) -> elem (name y) frs) tys'
           rs'                 = map (\(s, ty) -> (s, sortBy ourOrder $ fList ty)) rs
           frs                 = map fst rs
           fList (RecordTy fl) = fl
@@ -168,6 +167,9 @@ name :: Ty -> Symbol
 name (ArrayTy sym)  = sym
 name (NameTy sym)   = sym
 name _              = P.error "Error interno"                     
+
+tenvToList :: M.Map Symbol Tipo -> [(Symbol, Ty)]
+tenvToList m = map (\(symb, _) -> (symb, NameTy symb)) (M.toList m)   
 
 insRefs :: Manticore w => (Symbol, Ty) -> w a -> w a
 insRefs (symb, ty) w = trace "insRefs" $ insertTipoT symb (RefRecord $ name ty) w 
@@ -192,24 +194,19 @@ addLoop :: Manticore w => [Symbol] -> M.Map Symbol Ty -> w a -> w a
 addLoop sims m w = foldr (insTipo m) w sims
 
 insTipo :: Manticore w => M.Map Symbol Ty -> Symbol -> w a -> w a
-insTipo m symb w = trace ("Elemento" ++ unpack symb) $ do 
-                      let ty = m M.! symb
+insTipo m symb w = do let ty = m M.! symb
                       ty' <- transTy ty
                       insertTipoT symb ty' w  
                                                    
 topoSort :: [(Symbol, Ty)] -> [Symbol] 
 topoSort elems 
-  | ciclo ps elems' = P.error "Hay ciclo\n"
+  | ciclo ps elemsmap = P.error "Hay ciclo\n"
   | otherwise       = 
-    trace (show ts ++ show (M.toList m)) $ fromEdges ts (M.toList m) 
-    --fromEdges (G.topSort $ G.buildG (1, len) (toEdges ps m)) (M.toList m) 
-  where ps     = concat $ map predSucc elems
-        elems' = concat $ map (\(x, y) -> [x, y]) ps 
-        len    = length elems'
-        m      = M.fromList $ zip elems' [1..len]
-        tE     = toEdges ps m
-        build  = G.buildG (1, len) tE
-        ts     = G.topSort build
+    fromEdges (G.topSort $ G.buildG (1, len) (toEdges ps m)) (M.toList m) 
+  where ps       = filter (\(x, y) -> x /= y) (concat $ map predSucc elems)
+        elemsmap = map head (group $ sort (map fst elems))
+        len      = length elemsmap
+        m        = M.fromList $ zip elemsmap [1..len]
 
 toEdges :: [(Symbol, Symbol)] -> M.Map Symbol Int -> [G.Edge]
 toEdges pares ht = map (\(x, y) -> (ht M.! x, ht M.! y)) pares
@@ -343,7 +340,7 @@ fromTy _ = P.error "no debería haber una definición de tipos en los args..."
 
 -- Acá agregamos los tipos, clase 04/09/17
 transDecs :: (Manticore w) => [Dec] -> (w a -> w a)
-transDecs ds w = foldl' (\b a -> trDec a b) w ds
+transDecs ds w = foldr trDec w ds
 
 trDec :: (Manticore w) => Dec -> w a -> w a
 trDec (FunctionDec fs) w                   =
@@ -365,8 +362,7 @@ trDec (VarDec symb escape typ einit pos) w =
                             else insertValV symb tyinit' w  
        Just s  -> do t' <- transTy (NameTy s) --w Tipo
                      b  <- tiposIguales tyinit' t'
-                     --if b then insertValV symb t' w else P.error "Los tipos son distintos\n"
-                     if not b then P.error "Los tipos son distintos\n" 
+                     if not b then P.error (show tyinit' ++ show t' ++ " Los tipos son distintos\n") 
                               else insertValV symb t' w 
 trDec (TypeDec ts) w                       = addTypos ts w                    
 
@@ -480,5 +476,6 @@ transExp(ArrayExp sn cant init p) =
      cant' <- transExp cant
      C.unlessM (tiposIguales cant' $ TInt RW) $ P.error "El índice debe ser un entero"
      init' <- transExp init
-     C.unlessM (tiposIguales sn' init') $ P.error "El tipo del init debe coincidir con el de la variable"
-     return $ TArray sn' u
+     C.unlessM (tiposIguales (unwrap sn') init') $ P.error "El tipo del init debe coincidir con el de la variable"
+     return sn'
+  where unwrap (TArray t _) = t
