@@ -172,6 +172,7 @@ insRefs (symb, ty) w = trace "insRefs" $ insertTipoT symb (fromTyTipo ty (RefRec
 fromTyTipo :: Ty -> Tipo -> Tipo
 fromTyTipo (NameTy _) t2    = t2
 fromTyTipo (ArrayTy sym) t2 = trace (show sym) $ TArray t2 0 
+--TODO: caso de RecordTY
 
 insRecs :: Manticore w => [Symbol] -> (Symbol, [Field]) -> w a -> w a
 insRecs recs (symb, flds) w = trace "insRecs" $ do let (symbs, bools, tys) = unzip3 flds  
