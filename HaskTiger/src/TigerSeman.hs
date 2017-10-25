@@ -145,11 +145,6 @@ instance Manticore OurState where
                           put (u {unique = unique u + 1})
                           return $ unique u + 1 
   addTypos tys w  = 
-    {-let res  = trace ("Agregamos!") $ foldr replace w ref 
-        recs = trace ("Recs!") $ foldr (insRecs frs) res rs' 
-        refs = trace ("Refs!") $ foldr 
-        insRefs recs ref
-        in trace ("AddLoop!") $ addLoop ts m refs -}
     let addL ts ht = addLoop ts ht  
         refs e1    = foldr insRefs e1 ref
         recs e2    = foldr (insRecs frs) e2 rs'
@@ -172,7 +167,11 @@ tenvToList :: M.Map Symbol Tipo -> [(Symbol, Ty)]
 tenvToList m = map (\(symb, _) -> (symb, NameTy symb)) (M.toList m)   
 
 insRefs :: Manticore w => (Symbol, Ty) -> w a -> w a
-insRefs (symb, ty) w = trace "insRefs" $ insertTipoT symb (RefRecord $ name ty) w 
+insRefs (symb, ty) w = trace "insRefs" $ insertTipoT symb (fromTyTipo ty (RefRecord $ name ty)) w 
+
+fromTyTipo :: Ty -> Tipo -> Tipo
+fromTyTipo (NameTy _) t2    = t2
+fromTyTipo (ArrayTy sym) t2 = trace (show sym) $ TArray t2 0 
 
 insRecs :: Manticore w => [Symbol] -> (Symbol, [Field]) -> w a -> w a
 insRecs recs (symb, flds) w = trace "insRecs" $ do let (symbs, bools, tys) = unzip3 flds  
@@ -184,7 +183,7 @@ insRecs recs (symb, flds) w = trace "insRecs" $ do let (symbs, bools, tys) = unz
 
 replace :: Manticore w => (Symbol, Ty) -> w a -> w a
 replace (symb, ty) w = trace "replace" $  do t <- getTipoT $ name ty
-                                             insertTipoT symb t w 
+                                             insertTipoT symb (fromTyTipo ty t) w 
 
 isRecord :: Ty -> Bool
 isRecord (RecordTy _) = True
@@ -305,8 +304,9 @@ transVar (FieldVar v s)     =
   do v' <- transVar v
      case v' of
        TRecord fields _ ->
-         if not (null (filter (\(x, y, z) -> x == s) fields)) then return v'
-           else P.error "El record no posee el campo deseado"       
+         let res = filter (\(x, y) -> x == s) (map (\(x, y, z) -> (x, y)) fields)
+         in if not $ null res then return $ snd (head res)
+              else P.error "El record no posee el campo deseado"       
        RefRecord text   ->
          P.error "Error interno" -- Nunca debería darse 
        _                ->
@@ -344,26 +344,28 @@ transDecs ds w = foldr trDec w ds
 
 trDec :: (Manticore w) => Dec -> w a -> w a
 trDec (FunctionDec fs) w                   =
-  let env' f m = foldr f m
-      checkFs  = mapM_ (\(_ , params, result, body, _) ->
-                         case result of
-                           Nothing -> return ()
-                           Just r  -> do tyb <- env' insVar (transExp body) params
-                                         tyr <- getTipoT r 
-                                         b   <- tiposIguales tyb tyr
-                                         if b then return () 
-                                           else P.error "El valor de retorno no tiene el tipo indicado en la signatura de la función")
-  in checkFs fs >> env' insDec w fs 
+  let env' f m   = foldr f m
+      checkFs    = env' (\(_ , params, result, body, _) w' ->
+                           case result of
+                             Nothing -> w'
+                             Just r  -> do tyb <- env' insVar (transExp body) params
+                                           tyr <- getTipoT r 
+                                           b   <- tiposIguales tyb tyr
+                                           if b then w' 
+                                             else P.error "El valor de retorno no tiene el tipo indicado en la signatura de la función")
+  in env' insDec (checkFs w fs) fs --checkFs fs >> env' insDec w fs 
 trDec (VarDec symb escape typ einit pos) w =
   do tyinit' <- transExp einit --w Tipo
      case typ of
-       Nothing -> do b <- tiposIguales tyinit' TNil
-                     if b then P.error "El tipo de la expresion no debe ser nil\n" 
+       Nothing -> --do b <- tiposIguales tyinit' TNil
+                     if isNil tyinit' then P.error "El tipo de la expresion no debe ser nil\n" 
                             else insertValV symb tyinit' w  
        Just s  -> do t' <- transTy (NameTy s) --w Tipo
                      b  <- tiposIguales tyinit' t'
                      if not b then P.error (show tyinit' ++ show t' ++ " Los tipos son distintos\n") 
                               else insertValV symb t' w 
+  where isNil TNil = True
+        isNil _    = False --TODO: CHEQUEAR ESTA FUNCION GRONCHA
 trDec (TypeDec ts) w                       = addTypos ts w                    
 
 insVar :: Manticore w => (Symbol, Bool, Ty) -> w a -> w a
@@ -429,9 +431,12 @@ transExp (OpExp el' oper er' p)   =
 transExp(RecordExp flds rt p)     = 
   do let (sym, e) = unzip $ sortBy  order' flds
      e' <- mapM transExp e
-     u <- ugen
-     return  $ TRecord (zip3 sym e' [0..length e]) u 
-        where order' (sym1, _) (sym2, _)= if sym1 < sym2 then LT     else if sym1 > sym2 then GT else EQ 
+     id <- getTipoT rt 
+     return $ TRecord (zip3 sym e' [0..length e]) (getId id) 
+        where order' (sym1, _) (sym2, _) = if sym1 < sym2 then LT 
+                                             else if sym1 > sym2 then GT
+                                                    else EQ 
+              getId (TRecord _ u)        = u
 transExp(SeqExp es p)             = 
   do -- Va gratis
     es' <- mapM transExp es
@@ -476,6 +481,7 @@ transExp(ArrayExp sn cant init p) =
      cant' <- transExp cant
      C.unlessM (tiposIguales cant' $ TInt RW) $ P.error "El índice debe ser un entero"
      init' <- transExp init
+     showTEnv
      C.unlessM (tiposIguales (unwrap sn') init') $ P.error "El tipo del init debe coincidir con el de la variable"
      return sn'
   where unwrap (TArray t _) = t
