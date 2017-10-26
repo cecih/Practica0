@@ -132,6 +132,7 @@ instance Manticore OurState where
                           case M.lookup s (vEnv st) of
                             Just (Var v) -> return v 
                             Nothing      -> internal (append s (pack "55"))   
+                            _            -> internal (pack "No es una variable") 
   getTipoT s         = trace ("Buscamos Tipo " ++ unpack s) $
                        do st <- get
                           case M.lookup s (tEnv st) of
@@ -171,7 +172,7 @@ insRefs (symb, ty) w = trace "insRefs" $ insertTipoT symb (fromTyTipo ty (RefRec
 
 fromTyTipo :: Ty -> Tipo -> Tipo
 fromTyTipo (NameTy _) t2    = t2
-fromTyTipo (ArrayTy sym) t2 = trace (show sym) $ TArray t2 0 
+fromTyTipo (ArrayTy sym) t2 = TArray t2 0 
 --TODO: caso de RecordTY
 
 insRecs :: Manticore w => [Symbol] -> (Symbol, [Field]) -> w a -> w a
@@ -482,7 +483,6 @@ transExp(ArrayExp sn cant init p) =
      cant' <- transExp cant
      C.unlessM (tiposIguales cant' $ TInt RW) $ P.error "El índice debe ser un entero"
      init' <- transExp init
-     showTEnv
      C.unlessM (tiposIguales (unwrap sn') init') $ P.error "El tipo del init debe coincidir con el de la variable"
      return sn'
   where unwrap (TArray t _) = t

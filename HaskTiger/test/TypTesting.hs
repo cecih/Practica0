@@ -7,6 +7,7 @@ import System.Directory
 import Text.Parsec
 
 our_loc = "./test/test_code/ourtests"
+typ_loc = "./test/test_code/type"
 
 main :: IO ()
 main =
@@ -19,7 +20,7 @@ main =
   --testDir good_loc (testSTDGood tester) >>
   --putStrLn "Type:" >>
   --(test "./test/test_code/good" (const $ bluefail) (const $ rednice) tester "test02.tig") >>
-  testDir good_loc (testGood good_loc tester) >>
+  testDir typ_loc (testGood typ_loc tester) >>
   --putStrLn "\n======= End of GOOD =======" >>
   --testDir type_loc (testGood type_loc tester) >>
   putStrLn "\n======= Test FIN ======="
