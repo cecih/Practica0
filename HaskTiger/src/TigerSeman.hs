@@ -1,4 +1,6 @@
 {-# LANGUAGE FlexibleInstances    #-}
+{-# LANGUAGE LambdaCase           #-}
+{-# LANGUAGE TupleSections        #-}
 {-# LANGUAGE TypeFamilies         #-}
 {-# LANGUAGE TypeSynonymInstances #-}
 
@@ -300,26 +302,30 @@ ourOrder :: (Eq a, Ord a) => (a, b, c) -> (a, b, c) -> Ordering
 ourOrder (x1, _, _) (x2, _, _) = if x1 > x2 then GT else
                                      if x1 == x2 then EQ else LT  
 
-transVar :: (Manticore w) => Var -> w Tipo
-transVar (SimpleVar s)      = getTipoValV s
+-- El objetivo de esta función es obtener el tipo
+-- de la variable a la que se está accediendo
+transVar :: (MemM w, Manticore w) => Var -> w (BExp, Tipo)
+transVar (SimpleVar s)      = do (t, acc, lv) <- getTipoValV s
+                                 bexp         <- simpleVar acc lv 
+                                 return (bexp, t)
 transVar (FieldVar v s)     =
-  do v' <- transVar v
+  do (bexp, v') <- transVar v
      case v' of
        TRecord fields _ ->
          let res = filter (\(x, y) -> x == s) (map (\(x, y, z) -> (x, y)) fields)
-         in if not $ null res then return $ snd (head res)
+         in if not $ null res then return $ (bexp, snd (head res))
               else P.error "El record no posee el campo deseado"       
        RefRecord text   ->
          P.error "Error interno" -- Nunca debería darse 
        _                ->
          P.error "No es un record"
 transVar (SubscriptVar v e) =
-  do v' <- transVar v
+  do (bexp, v') <- transVar v
      case v' of
        TArray typ _ ->
          do e' <- transExp e 
             C.unlessM (tiposIguales e' (TInt RW)) $ P.error "La variable no es del tipo que se le quiere asignar"
-            return typ
+            return (bexp, typ)
        _            ->
          P.error "No es un array"
           
@@ -386,12 +392,16 @@ insDec (symb, params, result, body, pos) w =
                         insertFunV symb (u, symb, params', t, False) w
                           
 
-transExp :: (Manticore w) => Exp -> w Tipo
+transExp :: (MemM W, Manticore w) => Exp -> w (BExp, Tipo)
 transExp (VarExp v p)             = addpos (transVar v) p
-transExp (UnitExp {})             = return TUnit
-transExp (NilExp {})              = return TNil
-transExp (IntExp {})              = return $ TInt RW
-transExp (StringExp {})           = return TString
+transExp (UnitExp {})             = do bexp <- unitExp
+                                       return (bexp, TUnit)
+transExp (NilExp {})              = do bexp <- nilExp
+                                       return (bexp, TNil)
+transExp (IntExp i _)             = do bexp <- intExp i
+                                       return (bexp, TInt RW)
+transExp (StringExp s _)          = do bexp <- stringExp (pack s)
+                                       return (bexp, TString)
 transExp (CallExp nm args p)      = 
   do tfunc <- getTipoFunV nm
      args' <- mapM transExp args
