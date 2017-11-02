@@ -404,7 +404,7 @@ transExp (StringExp s _)          = do bexp <- stringExp (pack s)
                                        return (bexp, TString)
 transExp (CallExp nm args p)      = 
   do tfunc <- getTipoFunV nm
-     args' <- mapM transExp args
+     args' <- mapM transExp args --args' es de tipo [(BExp, Tipo)]
      C.unless (length args == length (thd tfunc)) $ P.error "Difiere en la cantidad de argumentos"
      mapM_ (\(x, y) -> C.unlessM (tiposIguales x y) $ P.error "Error en los tipos de los argumentos") (zip args' (thd tfunc))
      return $ foth tfunc 
@@ -459,24 +459,29 @@ transExp(AssignExp var val p)     =
      C.unlessM (tiposIguales tvar tval) $ P.error "La variable no es del tipo que se le quiere asignar"
      return TUnit 
 transExp(IfExp co th Nothing p)   = 
-  do co' <- transExp co
+  do (bco', co') <- transExp co
      C.unlessM (tiposIguales co' $ TInt RW) $ P.error "Error en la condición"
-     th' <- transExp th
+     (bth', th') <- transExp th
      C.unlessM (tiposIguales th' TUnit) $ P.error "La expresión del then no es de tipo unit"
-     return TUnit
+     bexp       <- ifThenExp bco' bth'
+     return (bexp, TUnit)
 transExp(IfExp co th (Just el) p) = 
-  do co' <- transExp co
+  do (bco', co') <- transExp co
      C.unlessM (tiposIguales co' $ TInt RW) $ P.error "Error en la condición"
-     th' <- transExp th
-     el' <- transExp el
+     (bth', th') <- transExp th
+     (bel', el') <- transExp el
      C.unlessM (tiposIguales th' el') $ P.error "Las ramas del if difieren en el tipo" 
-     return (if th' == TNil then el' else th')   
-transExp(WhileExp co body p)      = 
-  do co' <- transExp co
-     C.unlessM (tiposIguales co' $ TInt RW) $ P.error "Error en la condición" 
-     body' <- transExp body
-     C.unlessM (tiposIguales body' TUnit) $ P.error "El cuerpo del while está retornando algún valor" 
-     return TUnit
+     if th' == TUnit then return (ifThenElseExpUnit bco' bth' bel', TUnit) 
+       else return (ifThenElseExp bco' bth' bel', if th' == TNil then el' else th')
+transExp(WhileExp co body p)      =
+  do (bco', co') <- transExp co
+     C.unlessM (tiposIguales co' $ TInt RW) $ P.error "Error en la condición"
+     preWhileforExp
+     (bbo', body') <- transExp body
+     C.unlessM (tiposIguales body' TUnit) $ P.error "El cuerpo del while está retornando algún valor"
+     posWhileforExp
+     bexp <- whileExp bco' bbo'
+     return (bexp, TUnit)
 transExp(ForExp nv mb lo hi bo p) =
   do lo' <- transExp lo
      hi' <- transExp hi
