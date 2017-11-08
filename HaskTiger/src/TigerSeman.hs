@@ -412,39 +412,50 @@ transExp (CallExp nm args p)      =
         foth (_, _, _, d, _) = d
 transExp (OpExp el' oper er' p)   = 
   do -- Esta va gratis
-    el <- transExp el'
-    er <- transExp er'
+    (bel, el) <- transExp el'
+    (ber, er) <- transExp er'
     C.unlessM (tiposIguales el er) (P.error "Tipos diferentes")
     case oper of
       EqOp     -> do C.unless (okOp el er oper) (P.error ("Tipos no comparables " ++ show el ++ show er ++ show oper))
-                     return $ TInt RW
+                     bexp <- binOpIntRelExp bel oper ber
+                     return (bexp, TInt RW)
       NeqOp    -> do C.unless (okOp el er oper) (P.error ("Tipos no comparables " ++ show el ++ show er ++ show oper))
-                     return $ TInt RW
+                     bexp <- binOpIntRelExp bel oper ber
+                     return (bexp, TInt RW)
       PlusOp   -> do C.unlessM (tiposIguales el $ TInt RW) (P.error ("Tipo " ++ show el' ++ " no es un entero"))
-                     return $ TInt RW
+                     bexp <- binOpIntExp bel oper ber
+                     return (bexp, TInt RW)
       MinusOp  -> do C.unlessM (tiposIguales el $ TInt RW) (P.error ("Tipo " ++ show el' ++ " no es un entero"))
-                     return $ TInt RW
+                     bexp <- binOpIntExp bel oper ber
+                     return (bexp, TInt RW)
       TimesOp  -> do C.unlessM (tiposIguales el $ TInt RW) (P.error ("Tipo " ++ show el' ++ " no es un entero"))
-                     return $ TInt RW
+                     bexp <- binOpIntExp bel oper ber
+                     return (bexp, TInt RW)
       DivideOp -> do C.unlessM (tiposIguales el $ TInt RW) (P.error ("Tipo " ++ show el' ++ " no es un entero"))
-                     return $ TInt RW
+                     bexp <- binOpIntExp bel oper ber
+                     return (bexp, TInt RW)
       LtOp     -> ifM ((tiposIguales el $ TInt RW) <||> (tiposIguales el TString))
-                      (return $ TInt RW )
+                      (do bexp <- binOpIntRelExp bel oper ber
+                          return (bexp, TInt RW))
                       (P.error ("Elementos de tipo" ++ show el ++ "no son comparables"))
       LeOp     -> ifM ((tiposIguales el $ TInt RW) <||> (tiposIguales el TString))
-                      (return $ TInt RW)
+                      (do bexp <- binOpIntRelExp bel oper ber
+                          return (bexp, TInt RW))
                       (P.error ("Elementos de tipo" ++ show el ++ "no son comparables"))
       GtOp     -> ifM ((tiposIguales el $ TInt RW) <||> (tiposIguales el TString))
-                      (return $ TInt RW )
+                      (do bexp <- binOpIntRelExp bel oper ber
+                          return (bexp, TInt RW))
                       (P.error ("Elementos de tipo" ++ show el ++ "no son comparables"))
       GeOp     -> ifM ((tiposIguales el $ TInt RW) <||> (tiposIguales el TString))
-                      (return $ TInt RW)
+                      (do bexp <- binOpIntRelExp bel oper ber
+                          return (bexp, TInt RW))
                       (P.error ("Elementos de tipo" ++ show el ++ "no son comparables"))
 transExp(RecordExp flds rt p)     = 
   do let (sym, e) = unzip $ sortBy  order' flds
      e' <- mapM transExp e
-     id <- getTipoT rt 
-     return $ TRecord (zip3 sym e' [0..length e]) (getId id) 
+     id <- getTipoT rt
+     bexp <- recordExp $ zip (map fst e') [0..length e]
+     return (bexp, TRecord (zip3 sym e' [0..length e]) (getId id)) 
         where order' (sym1, _) (sym2, _) = if sym1 < sym2 then LT 
                                              else if sym1 > sym2 then GT
                                                     else EQ 
@@ -454,10 +465,11 @@ transExp(SeqExp es p)             =
     es' <- mapM transExp es
     return $ last es'
 transExp(AssignExp var val p)     = 
-  do tvar <- transVar var
-     tval <- transExp val
+  do (bvar, tvar) <- transVar var
+     (bval, tval) <- transExp val
      C.unlessM (tiposIguales tvar tval) $ P.error "La variable no es del tipo que se le quiere asignar"
-     return TUnit 
+     bexp <- assignExp bvar bval
+     return (bexp, TUnit) 
 transExp(IfExp co th Nothing p)   = 
   do (bco', co') <- transExp co
      C.unlessM (tiposIguales co' $ TInt RW) $ P.error "Error en la condición"
@@ -477,27 +489,32 @@ transExp(WhileExp co body p)      =
   do (bco', co') <- transExp co
      C.unlessM (tiposIguales co' $ TInt RW) $ P.error "Error en la condición"
      preWhileforExp
-     (bbo', body') <- transExp body
+     (bbo, body') <- transExp body
      C.unlessM (tiposIguales body' TUnit) $ P.error "El cuerpo del while está retornando algún valor"
      posWhileforExp
-     bexp <- whileExp bco' bbo'
+     bexp <- whileExp bco' bbo
      return (bexp, TUnit)
-transExp(ForExp nv mb lo hi bo p) =
-  do lo' <- transExp lo
-     hi' <- transExp hi
+transExp(ForExp nv mb lo hi body p) =
+  do (blo, lo') <- transExp lo
+     (bhi, hi') <- transExp hi
      C.unlessM (tiposIguales lo' $ TInt RW) $ P.error "La cota inferior debe ser entera"
      C.unlessM (tiposIguales hi' $ TInt RW) $ P.error "La cota superior debe ser entera"
-     bo' <- insertVRO nv (transExp bo)
-     C.unlessM (tiposIguales bo' TUnit) $ P.error "El cuerpo del for está retornando algun valor"
-     return TUnit 
+     preWhileforExp
+     (bbo, body1) <- insertVRO nv (transExp body)
+     C.unlessM (tiposIguales body2 TUnit) $ P.error "El cuerpo del for está retornando algun valor"
+     posWhileforExp
+     --bnv <- alguna funcion de codigo intermedio relacionado con nv revisar TODO
+     --bexp <- forExp blo' bhi' bnv  
+     return (bexp, TUnit) 
 transExp(LetExp dcs body p)       = transDecs dcs (transExp body)
-transExp(BreakExp p)              = return TUnit -- Va gratis ;)
+transExp(BreakExp p)              = return (breakExp, TUnit) -- Va gratis ;)
 transExp(ArrayExp sn cant init p) =
   do u     <- ugen
      sn'   <- getTipoT sn
-     cant' <- transExp cant
+     (bcant, cant') <- transExp cant
      C.unlessM (tiposIguales cant' $ TInt RW) $ P.error "El índice debe ser un entero"
-     init' <- transExp init
+     (bininit, init') <- transExp init
      C.unlessM (tiposIguales (unwrap sn') init') $ P.error "El tipo del init debe coincidir con el de la variable"
-     return sn'
+     bexp <- arrayExp bcant binit
+     return (bexp, sn')
   where unwrap (TArray t _) = t
