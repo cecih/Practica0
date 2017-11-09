@@ -363,29 +363,32 @@ trDec (FunctionDec fs) w                   =
                                              else P.error "El valor de retorno no tiene el tipo indicado en la signatura de la función")
   in env' insDec (checkFs w fs) fs --checkFs fs >> env' insDec w fs 
 trDec (VarDec symb escape typ einit pos) w =
-  do tyinit' <- transExp einit --w Tipo
+  do (binit, tyinit') <- transExp einit --w (BExp,Tipo)
      case typ of
        Nothing -> --do b <- tiposIguales tyinit' TNil
                      if isNil tyinit' then P.error "El tipo de la expresion no debe ser nil\n" 
-                            else insertValV symb tyinit' w  
+                                      else insertValV symb (tyinit', acc, ninit) w  --TODO: idem a insVar
        Just s  -> do t' <- transTy (NameTy s) --w Tipo
                      b  <- tiposIguales tyinit' t'
                      if not b then P.error (show tyinit' ++ show t' ++ " Los tipos son distintos\n") 
-                              else insertValV symb t' w 
+                              else insertValV symb (t', acc, ns) w --TODO: idem a insVar
   where isNil TNil = True
         isNil _    = False --TODO: CHEQUEAR ESTA FUNCION GRONCHA
 trDec (TypeDec ts) w                       = addTypos ts w                    
 
 insVar :: Manticore w => (Symbol, Bool, Ty) -> w a -> w a
 insVar (symb, _, ty) w = do ty' <- transTy ty
-                            insertValV symb ty' w 
+                            insertValV symb (ty', acc, n) w  --ahora ValEntry es un sinonimo de (Tipo, Acces, Int)
+                            -- TODO: ver como generar el acc y n asociado a al ty'.
 
 -- insdec toma la tupla de una funcion y el entorno de ese momento. Devolvemos
 -- el entorno con la funcion y sus parametros agregados.
+--type FunEntry = (Level, Label, [Tipo], Tipo, Bool)
 insDec :: (Manticore w) => (Symbol, [Field], Maybe Symbol, Exp, Pos) -> w a -> w a
 insDec (symb, params, result, body, pos) w = 
   do params' <- mapM (\(sym,esc,ty) -> transTy ty) params
-     u       <- ugen
+     u       <- ugen -- TODO: debemos cambiarlo por tipo level que es una lista de [(Frame, Int)]. 
+                       -- Level seria como el stack en todo momento
      case result of --dado que result es un Maybe, analizo que tipo debo ingresar en el entorno
           Nothing -> insertFunV symb (u, symb, params', TUnit, False) w
           Just s  -> do t <- transTy (NameTy s)  
@@ -404,7 +407,7 @@ transExp (StringExp s _)          = do bexp <- stringExp (pack s)
                                        return (bexp, TString)
 transExp (CallExp nm args p)      = 
   do tfunc <- getTipoFunV nm
-     args' <- mapM transExp args --args' es de tipo [(BExp, Tipo)]
+     args' <- mapM transExp args  --TODO: revisar, si hay que hacer alguna modificacion
      C.unless (length args == length (thd tfunc)) $ P.error "Difiere en la cantidad de argumentos"
      mapM_ (\(x, y) -> C.unlessM (tiposIguales x y) $ P.error "Error en los tipos de los argumentos") (zip args' (thd tfunc))
      return $ foth tfunc 
