@@ -63,11 +63,11 @@ instance Show Frag where
     show (AString l ts) = show l ++ ":\n" ++ (foldr (\t ts -> ("\n\t" ++ unpack t) ++ ts) "" ts)
 data Frame = Frame {
         name        :: Symbol,
-        formals     :: [Bool],
+        formals     :: [Bool], -- Argumentos
         locals      :: [Bool],
-        actualArg   :: Int,
-        actualLocal :: Int,
-        actualReg   :: Int
+        actualArg   :: Int, -- Cantidad de argumentos
+        actualLocal :: Int, -- Cantidad de locales
+        actualReg   :: Int -- Cantidad de registros
     }
     deriving Show
 

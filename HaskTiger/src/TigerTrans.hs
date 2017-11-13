@@ -189,7 +189,7 @@ instance (MemM w) => IrGen w where
         procEntryExit lvl (Nx body)
         return $ Ex $ Const 0
     simpleVar acc level = P.error "COMPLETAR"
-    varDec acc = do { i <- getActualLevel; simpleVar acc i}
+    varDec acc = getActualLevel >>= simpleVar acc
     unitExp = return $ Ex (Const 0)
     nilExp = return $ Ex (Const 0)
     intExp i = return $ Ex (Const i)
