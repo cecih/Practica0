@@ -207,7 +207,12 @@ instance (MemM w) => IrGen w where
                         ,ExpS $ externalCall "_checkIndex" [Temp tvar, Temp tind]])
                 (Mem $ Binop Plus (Temp tvar) (Binop Mul (Temp tind) (Const wSz)))
     -- recordExp :: [(BExp,Int)]  -> w BExp
-    recordExp flds = P.error "COMPLETAR"
+    recordExp flds = --P.error "COMPLETAR"
+      do flds' <- mapM unEx flds
+         tmp   <- newTemp
+         return $ Ex $ Eseq (seq [externalCall "_initRecord" [Const (length flds), flds']
+                                  , Move (Temp tmp) (Temp rv)
+                                  , Temp tmp])
     -- callExp :: Label -> Bool -> Bool -> Level -> [BExp] -> w BExp
     callExp name external isproc lvl args = P.error "COMPLETAR"
     -- letExp :: [BExp] -> BExp -> w BExp
@@ -222,7 +227,8 @@ instance (MemM w) => IrGen w where
     breakExp = 
       do salida <- topSalida                       --P.error "COMPLETAR"
            case salida of
-             Just s -> return Nx $ Jump {-exp asociado-} s --TODO: deducir el exp asociado
+             Just s -> return Nx $ Jump (Name salida) salida 
+             _      -> internal $ pack "Dangling break"
     -- seqExp :: [BExp] -> w BExp
     seqExp [] = return $ Nx $ ExpS $ Const 0
     seqExp bes = 
@@ -256,7 +262,6 @@ instance (MemM w) => IrGen w where
                     , test (bd,last)
                     , Label bd
                     , cody
-                    , Label last --TODO: misma pregunta para last.
                     , Jump (Name init) init
                     , Label last]
            _ -> internal $ pack "no label in salida"
@@ -265,7 +270,7 @@ instance (MemM w) => IrGen w where
       do sigue  <- newLabel                       --P.error "COMPLETAR"
          sigue1 <- newLabel
          salida <- topSalida
-         var'   <- unEx var --por que?? copie mal del pizarron??
+         var'   <- unEx var 
          lo'    <- unEx lo
          hi'    <- unEx hi
          body'  <- unNx body
@@ -279,7 +284,7 @@ instance (MemM w) => IrGen w where
                               , CJump EQ var' tmp salida sigue1
                               , Label sigue1 
                               , Move var' (BOp Plus var' (Const 1))
-                              , Jump {-exp asociado-} sigue
+                              , Jump (Name sigue) sigue 
                               , Label salida]    
            _     -> internal $ pack "No se puede hacer el for"     --TODO: revisar esta ultima parte, sobre todo
     -- ifThenExp :: BExp -> BExp -> w BExp
@@ -289,7 +294,8 @@ instance (MemM w) => IrGen w where
          cond' <- unCx cond
          bod'  <- unNx bod
          return Nx $ seq [cond'(t,f)
-                          , Label t, bod'
+                          , Label t
+                          , bod'
                           , Label f]
     -- ifThenElseExp :: BExp -> BExp -> BExp -> w BExp                        --P.error "COMPLETAR"
     ifThenElseExp cond bod els = 
@@ -300,31 +306,29 @@ instance (MemM w) => IrGen w where
          bod'  <- unEx bod
          els'  <- unEx els
          tmp   <- newTemp 
-         return Ex $ Eseq $ seq [cond' (lt lf)
-                                 , Label lt
+         return Ex $ Eseq $ seq [cond' (lt, lf)
+                                 , Label lt             
                                  , Move (Temp tmp) bod'
-                                 , Jump (Name ls)
+                                 , Jump (Name ls) ls
                                  , Label lf 
-                                 , Move (Tmp tmp) els'
+                                 , Move (Temp tmp) els'
                                  , Label ls
-                                 , Temp tmp] --TODO: revisar si estan bien puestos los $
+                                 , Temp tmp] 
     -- ifThenElseExpUnit :: BExp -> BExp -> BExp -> w BExp
     ifThenElseExpUnit _ _ _ = 
-      do lt <- newLabel                            --P.error "COmpletaR?"
+      do lt <- newLabel                            
          lf <- newLabel
          ls <- newLabel
          cond' <- unCx cond
          bod'  <- unNx bod
          els'  <- unNx els
-         --tmp   <- newTemp 
          return Nx $ seq [cond' (lt lf)
                           , Label lt
                           , bod'
                           , Jump (Name ls)
                           , Label lf 
                           , els'
-                          , Label ls] --TODO: revisar. no estoy muy segura. Este seria el caso en que 
-                                          -- ambas ramas del if "no devuelven valores".
+                          , Label ls] 
     -- assignExp :: BExp -> BExp -> w BExp
     assignExp cvar cinit = do
         cvara <- unEx cvar
@@ -336,10 +340,13 @@ instance (MemM w) => IrGen w where
                                   , Move cvara (Temp t)]
           _ -> return $ Nx $ Move cvara cin
     -- binOpIntExp :: BExp -> Abs.Oper -> BExp -> w BExp
-    binOpIntExp le op re = P.error "COMPLETAR"
+    binOpIntExp le op re =
+      do le' <- unEx le
+         re' <- unEx re
+         return
     -- binOpStrExp :: BExp -> Abs.Oper -> BExp -> w BExp
     binOpStrExp strl op strr = P.error "COMPLETAR"
-    binOpIntRelExp op strr = P.error "COMPLETAR"
+    binOpIntRelExp strl op strr = P.error "COMPLETAR"
     -- arrayExp :: BExp -> BExp -> w BExp
     arrayExp size init = do
         sz <- unEx size
@@ -349,3 +356,4 @@ instance (MemM w) => IrGen w where
                 [ExpS $ externalCall "_allocArray" [sz,ini]
                 , Move (Temp t) (Temp rv)
                 ]) (Temp t)
+7
