@@ -211,46 +211,47 @@ instance (MemM w) => IrGen w where
     -- callExp :: Label -> Bool -> Bool -> Level -> [BExp] -> w BExp
     callExp name external isproc lvl args = P.error "COMPLETAR"
     -- letExp :: [BExp] -> BExp -> w BExp
-    letExp [] e = do -- Puede parecer al dope, pero no...
-            e' <- unEx e
-            return $ Ex e'
-    letExp bs body = do
-        bes <- mapM unNx bs
-        be <- unEx body
-        return $ Ex $ Eseq (seq bes) be
+    letExp [] e = -- Puede parecer al dope, pero no...
+      do e' <- unEx e
+         return $ Ex e'
+    letExp bs body = 
+      do bes <- mapM unNx bs
+         be <- unEx body
+         return $ Ex $ Eseq (seq bes) be
     -- breakExp :: w BExp
-    breakExp = do salida <- topSalida                       --P.error "COMPLETAR"
-                  case salida of
-                       Just s -> return Nx $ Jump {-exp asociado-} s --TODO: deducir el exp asociado
+    breakExp = 
+      do salida <- topSalida                       --P.error "COMPLETAR"
+           case salida of
+             Just s -> return Nx $ Jump {-exp asociado-} s --TODO: deducir el exp asociado
     -- seqExp :: [BExp] -> w BExp
     seqExp [] = return $ Nx $ ExpS $ Const 0
-    seqExp bes = do
-        let ret = last bes
-        case ret of
-            Nx e' -> do
-                bes' <- mapM unNx bes
-                return $ Nx $ seq bes'
-            Ex e' -> do
-                    let bfront = init bes
-                    ess <- mapM unNx bfront
-                    return $ Ex $ Eseq (seq ess) e'
+    seqExp bes = 
+      do let ret = last bes
+         case ret of
+             Nx e' -> 
+               do bes' <- mapM unNx bes
+                  return $ Nx $ seq bes'
+            Ex e' -> 
+              do let bfront = init bes
+                 ess <- mapM unNx bfront
+                 return $ Ex $ Eseq (seq ess) e'
             _ -> internal $ pack "WAT!123"   --TODO: agregar caso Cx
     -- preWhileforExp :: w ()
-    preWhileforExp = do
-        l <- newLabel
-        pushSalida (Just l)
+    preWhileforExp = 
+      do l <- newLabel
+         pushSalida (Just l)
     -- posWhileforExp :: w ()
     posWhileforExp = popSalida
     -- whileExp :: BExp -> BExp -> Level -> w BExp
-    whileExp cond body = do
-        test <- unCx cond
-        cody <- unNx body
-        init <- newLabel
-        bd <- newLabel
-        lastM <- topSalida
-        case lastM of
-            Just last ->
-                return $ Nx $ seq
+    whileExp cond body = 
+      do test <- unCx cond
+         cody <- unNx body
+         init <- newLabel
+         bd <- newLabel
+         lastM <- topSalida
+         case lastM of
+           Just last ->
+             return $ Nx $ seq
                     [Label init      -- TODO: el init que define, no tendra confusion con la funcion init de listas definida??
                     , test (bd,last)
                     , Label bd
@@ -258,58 +259,82 @@ instance (MemM w) => IrGen w where
                     , Label last --TODO: misma pregunta para last.
                     , Jump (Name init) init
                     , Label last]
-            _ -> internal $ pack "no label in salida"
+           _ -> internal $ pack "no label in salida"
     -- forExp :: BExp -> BExp -> BExp -> BExp -> w BExp
-    forExp lo hi var body = do sigue  <- newLabel                       --P.error "COMPLETAR"
-                               sigue1 <- newLabel
-                               salida <- topSalida
-                               var'   <- unEx var --por que?? copie mal del pizarron??
-                               lo'    <- unEx lo
-                               hi'    <- unEx hi
-                               body'  <- unNx body
-                               tmp    <- newTemp
-                               case salida of
-                                    Just s -> return Nx $ seq [Move var' lo', Move tmp hi', CJump LE var' tmp sigue salida, Label sigue, body', CJump EQ var' tmp salida sigue1, Label sigue1, Move var' (BOp Plus var' (Const 1)), 
-                                                Jump {-exp asociado-} sigue, Label salida]    
-                                    _     -> internal $ pack "No se puede hacer el for"     --TODO: revisar esta ultima parte, sobre todo
+    forExp lo hi var body = 
+      do sigue  <- newLabel                       --P.error "COMPLETAR"
+         sigue1 <- newLabel
+         salida <- topSalida
+         var'   <- unEx var --por que?? copie mal del pizarron??
+         lo'    <- unEx lo
+         hi'    <- unEx hi
+         body'  <- unNx body
+         tmp    <- newTemp
+         case salida of
+           Just s -> 
+             return Nx $ seq [Move var' lo' 
+                              , Move tmp hi' 
+                              , CJump LE var' tmp sigue salida 
+                              , Label sigue, body'
+                              , CJump EQ var' tmp salida sigue1
+                              , Label sigue1 
+                              , Move var' (BOp Plus var' (Const 1))
+                              , Jump {-exp asociado-} sigue
+                              , Label salida]    
+           _     -> internal $ pack "No se puede hacer el for"     --TODO: revisar esta ultima parte, sobre todo
     -- ifThenExp :: BExp -> BExp -> w BExp
-    ifThenExp cond bod = do t <- newLabel                                --P.error "COMPLETAR"
-                            f <- newLabel
-                            cond' <- unCx cond
-                            bod'  <- unNx bod
-                            return Nx $ seq [cond'(t,f), Label t, bod', Label f]
-                            
+    ifThenExp cond bod = 
+      do t <- newLabel                                --P.error "COMPLETAR"
+         f <- newLabel
+         cond' <- unCx cond
+         bod'  <- unNx bod
+         return Nx $ seq [cond'(t,f)
+                          , Label t, bod'
+                          , Label f]
     -- ifThenElseExp :: BExp -> BExp -> BExp -> w BExp                        --P.error "COMPLETAR"
-    ifThenElseExp cond bod els = do lt <- newLabel
-                                    lf <- newLabel
-                                    ls <- newLabel
-                                    cond' <- unCx cond
-                                    bod'  <- unEx bod
-                                    els'  <- unEx els
-                                    tmp   <- newTemp 
-                                    return Ex $ Eseq $ seq [cond' (lt lf), Label lt, Move (Temp tmp) bod', Jump (Name ls), Label lf, 
-                                                            Move (Tmp tmp) els', Label ls, Temp tmp] --TODO: revisar si estan bien puestos los $
-                                    
+    ifThenElseExp cond bod els = 
+      do lt <- newLabel
+         lf <- newLabel
+         ls <- newLabel
+         cond' <- unCx cond
+         bod'  <- unEx bod
+         els'  <- unEx els
+         tmp   <- newTemp 
+         return Ex $ Eseq $ seq [cond' (lt lf)
+                                 , Label lt
+                                 , Move (Temp tmp) bod'
+                                 , Jump (Name ls)
+                                 , Label lf 
+                                 , Move (Tmp tmp) els'
+                                 , Label ls
+                                 , Temp tmp] --TODO: revisar si estan bien puestos los $
     -- ifThenElseExpUnit :: BExp -> BExp -> BExp -> w BExp
-    ifThenElseExpUnit _ _ _ = do lt <- newLabel                            --P.error "COmpletaR?"
-                                 lf <- newLabel
-                                 ls <- newLabel
-                                 cond' <- unCx cond
-                                 bod'  <- unNx bod
-                                 els'  <- unNx els
-                                 --tmp   <- newTemp 
-                                 return Nx $ seq [cond' (lt lf), Label lt, bod', Jump (Name ls), Label lf, 
-                                                  els', Label ls] --TODO: revisar. no estoy muy segura. Este seria el caso en que 
-                                                  -- ambas ramas del if "no devuelven valores".
+    ifThenElseExpUnit _ _ _ = 
+      do lt <- newLabel                            --P.error "COmpletaR?"
+         lf <- newLabel
+         ls <- newLabel
+         cond' <- unCx cond
+         bod'  <- unNx bod
+         els'  <- unNx els
+         --tmp   <- newTemp 
+         return Nx $ seq [cond' (lt lf)
+                          , Label lt
+                          , bod'
+                          , Jump (Name ls)
+                          , Label lf 
+                          , els'
+                          , Label ls] --TODO: revisar. no estoy muy segura. Este seria el caso en que 
+                                          -- ambas ramas del if "no devuelven valores".
     -- assignExp :: BExp -> BExp -> w BExp
     assignExp cvar cinit = do
         cvara <- unEx cvar
         cin <- unEx cinit
         case cvara of
-            Mem v' ->  do
-                t <- newTemp
-                return $ Nx $ seq [Move (Temp t) cin, Move cvara (Temp t)]
-            _ -> return $ Nx $ Move cvara cin
+          Mem v' -> 
+            do t <- newTemp
+               return $ Nx $ seq [Move (Temp t) cin
+                                  , Move cvara (Temp t)]
+          _ -> return $ Nx $ Move cvara cin
     -- binOpIntExp :: BExp -> Abs.Oper -> BExp -> w BExp
     binOpIntExp le op re = P.error "COMPLETAR"
     -- binOpStrExp :: BExp -> Abs.Oper -> BExp -> w BExp
