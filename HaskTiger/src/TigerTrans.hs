@@ -193,7 +193,11 @@ instance (MemM w) => IrGen w where
     unitExp = return $ Ex (Const 0)
     nilExp = return $ Ex (Const 0)
     intExp i = return $ Ex (Const i)
-    fieldVar be i = P.error "COMPLETAR"
+    --fieldVar :: BExp -> Int -> w BExp
+    fieldVar be i =
+      do be' <- unEx be
+         tmp <- newTemp       --TODO: chequear el return. Ver lo del wSz. 
+         return $ Ex $ Eseq $ Move (Temp tmp) be' $ Mem (Binop Plus (Temp tmp) (Binop Mul (Const i) (Const wSz)))
     -- subscriptVar :: BExp -> BExp -> w BExp
     subscriptVar var ind = do
         evar <- unEx var
@@ -207,7 +211,7 @@ instance (MemM w) => IrGen w where
                         ,ExpS $ externalCall "_checkIndex" [Temp tvar, Temp tind]])
                 (Mem $ Binop Plus (Temp tvar) (Binop Mul (Temp tind) (Const wSz)))
     -- recordExp :: [(BExp,Int)]  -> w BExp
-    recordExp flds = --P.error "COMPLETAR"
+    recordExp flds = 
       do flds' <- mapM unEx flds
          tmp   <- newTemp
          return $ Ex $ Eseq (seq [externalCall "_initRecord" [Const (length flds), flds']
@@ -280,7 +284,8 @@ instance (MemM w) => IrGen w where
              return Nx $ seq [Move var' lo' 
                               , Move tmp hi' 
                               , CJump LE var' tmp sigue salida 
-                              , Label sigue, body'
+                              , Label sigue 
+                              , body'
                               , CJump EQ var' tmp salida sigue1
                               , Label sigue1 
                               , Move var' (BOp Plus var' (Const 1))
@@ -343,10 +348,33 @@ instance (MemM w) => IrGen w where
     binOpIntExp le op re =
       do le' <- unEx le
          re' <- unEx re
-         return
+         return $ Ex $ Binop (getOp op) le' re'
+        where getOp =  case op of
+                         PlusOp   -> Plus  
+                         MinusOp  -> Minus 
+                         TimesOp  -> Mul 
+                         DivideOp -> Div
+                         _        -> P.error "No es un operador binario aritmetico"
     -- binOpStrExp :: BExp -> Abs.Oper -> BExp -> w BExp
-    binOpStrExp strl op strr = P.error "COMPLETAR"
-    binOpIntRelExp strl op strr = P.error "COMPLETAR"
+    binOpStrExp strl op strr =
+      do strl' <- unEx strl
+         strr' <- unEx strr
+         case op of
+           EqOp -> return $ Cx (\lt lf -> CJump EQ strl' strr' lt lf)
+           _    -> P.error "No es posible comparar las strings"
+    -- binOpIntRelExp :: BExp -> Abs.Oper -> BExp -> w BExp
+    binOpIntRelExp strl op strr = 
+      do strl' <- unEx strl
+         strr' <- unEx strr
+         return $ Cx (\lt lf -> CJump (getOp op) strl' strr' lt lf)
+        where getOp op = case op of
+                           EqOp  -> EQ 
+                           NeqOp -> NE
+                           LtOp  -> LT
+                           LeOp  -> LE
+                           GtOp  -> GT
+                           GeOp  -> GE
+                           _     -> P.error "No es un operador de relacion"
     -- arrayExp :: BExp -> BExp -> w BExp
     arrayExp size init = do
         sz <- unEx size
