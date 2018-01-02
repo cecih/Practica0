@@ -85,7 +85,10 @@ addpos :: (Daemon w, Show b) => w a -> b -> w a
 addpos t p = E.adder t (pack $ show p)
 
 -- Un ejemplo de estado que alcanzaría para realizar todas la funciones es:
-data EstadoG = G {unique :: Int, vEnv :: M.Map Symbol EnvEntry, tEnv :: M.Map Symbol Tipo}
+data EstadoG = G {unique :: Int, 
+                  vEnv :: M.Map Symbol EnvEntry, 
+                  tEnv :: M.Map Symbol Tipo,
+                  auxEnv :: M.Map Symbol Tipo}
     deriving Show
 
 -- Acompañado de un tipo de errores
@@ -147,7 +150,36 @@ instance Manticore OurState where
   ugen               = do u <- get                             
                           put (u {unique = unique u + 1})
                           return $ unique u + 1 
-  addTypos tys w  = 
+  addTypos tys w     =
+    do env <- get
+  
+-- Nos quedamos con los records por un lado
+getRecords :: M.Map Symbol Ty -> M.Map Symbol Ty
+getRecords tys = M.filter isRecord tys 
+
+isRecord :: Ty -> Bool
+isRecord (RecordTy _) = True
+isRecord _            = False
+
+-- Ordenamos los campos de los records de manera alfabética de acuerdo a lo establecido
+-- por decisión propia 
+sortRecords :: M.Map Symbol Ty -> M.Map Symbol Ty
+sortRecords tys = M.map (\t -> sortBy ourOrder $ fList t) (getRecords tys)
+  where fList (RecordTy fl) = fl
+
+-- Y por otro lado tenemos a los tipos que no son records
+getNotRecords :: M.Map Symbol Ty -> M.Map Symbol Ty
+getNotRecords tys = M.filter (not isRecord) tys
+
+-- Obtenemos los tipos que no son records, y que referencian a otros tipos
+getRefNotRec :: M.Map Sybol Ty -> M.Map Symbol Ty
+getRefNotRec tys = filter (\x -> M.member (name x) tys) (getNotRecords tys)
+
+-- Obtenemos los tipos que no son records, y que no referencian a otros tipos
+getNotRefNotRec :: M.Map Sybol Ty -> M.Map Symbol Ty
+getNotRefNotRec tys = M.difference tys (getRefNotRec tys) 
+
+{-  addTypos tys w     = 
     let addL ts ht = addLoop ts ht  
         refs e1    = foldr insRefs e1 ref
         recs e2    = foldr (insRecs frs) e2 rs'
@@ -247,7 +279,7 @@ aux l1 [] = l1
 aux l1 l2 = if null rest then res1 else aux res1 rest   
   where rest = tail l2
         res1 = l1 -?- (head l2)
-
+-}
 -- Podemos definir el estado inicial como:
 initConf :: EstadoG
 initConf = G {unique = 0
@@ -271,7 +303,7 @@ runLion e = evalStateT (transExp e) initConf
 
 depend :: Ty -> [Symbol]
 depend (NameTy s)    = [s]
-depend (ArrayTy s)   = [s]
+    depend (ArrayTy s)   = [s]
 depend (RecordTy ts) = concatMap (\(_,_,t) -> depend t) ts
 
 
