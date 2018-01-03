@@ -151,9 +151,36 @@ instance Manticore OurState where
   ugen               = do u <- get                             
                           put (u {unique = unique u + 1})
                           return $ unique u + 1 
-  --addTypos tys w     =
-    --do env <- get
+  addTypos tys w     =
+    let tys'      = M.fromList (map (\(x, y, z) -> (x, y)) tys)
+        refNotRec = getRefNotRec tys'
+        records   = getRecords tys'
+    in do -- Insertamos los tipos que tienen referencias como RefRecords
+          modify (\s -> s {tEnv = M.union (tEnv s) (M.map (fromTyToTipo . fst) refNotRec)})
+          -- Insertamos Records
+          -- FIXME: ¿Y ahora qué hago? Duuuh
+          modify (\s -> s {tEnv = M.union (tEnv s) (insRecords records s)})
+          P.error "Terminar"
+
+-- Funcion auxiliar, para transformar Tys en Tipo
+-- Usar solo con los tipos que no son records y tienen referencia a otros tipos
+fromTyToTipo :: Ty -> Tipo
+fromTyToTipo (NameTy sym)  = RefRecord sym
+fromTyToTipo (ArrayTy sym) = TArray (RefRecord sym) 0
+fromTyToTipo _             = P.error "Error interno" 
   
+nameTy :: Ty -> Symbol
+nameTy (ArrayTy sym) = sym
+nameTy (NameTy sym)  = sym
+nameTy _             = P.error "Error interno"
+
+-- Pasamos de RecordTy a Tipo, teniendo en cuenta los fields del record
+insRecords :: M.Map Symbol Ty -> M.Map Symbol Tipo -> M.Map Symbol [Tipo]
+insRecords records env = 
+  M.mapWithKey (\k (RecordTy x) -> map (\y -> if M.member (fstThree y) records then RefRecord k
+                                                else fromTyToTipo $ fromJust $ M.lookup (fstThree y) records) x) records                     
+  where fstThree (x, y, z) = x
+
 -- Nos quedamos con los records por un lado
 getRecords :: M.Map Symbol Ty -> M.Map Symbol Ty
 getRecords tys = M.filter isRecord tys 
@@ -180,11 +207,6 @@ getRefNotRec :: M.Map Symbol Ty -> M.Map Symbol (Ty, [Symbol])
 getRefNotRec tys = M.map (\x -> (x, [nameTy x]))  
                          (M.filter (\x -> M.member (nameTy x) tys) 
                                    (getNotRecords tys))
-
-nameTy :: Ty -> Symbol
-nameTy (ArrayTy sym) = sym
-nameTy (NameTy sym)  = sym
-nameTy _             = P.error "Error interno"                     
 
 -- Obtenemos los tipos que no son records, y que no referencian a otros tipos
 getNotRefNotRec :: M.Map Symbol Ty -> M.Map Symbol Ty
@@ -336,10 +358,10 @@ initConf = G {unique = 0
             , auxEnv = M.empty}
 
 -- Utilizando alguna especie de run de la monada definida, obtenemos algo así
-{-runLion :: Exp -> Either SEErrores Tipo
-runLion e = evalStateT (transExp e) initConf
+runLion :: Exp -> Either SEErrores Tipo
+runLion e = P.error "Estoy testeando, no hinchei" --evalStateT (transExp e) initConf
 
-depend :: Ty -> [Symbol]
+{-depend :: Ty -> [Symbol]
 depend (NameTy s)    = [s]
 depend (ArrayTy s)   = [s]
 depend (RecordTy ts) = concatMap (\(_,_,t) -> depend t) ts
