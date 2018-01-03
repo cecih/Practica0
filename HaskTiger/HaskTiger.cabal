@@ -29,9 +29,9 @@ library
         , TigerTips
         -- Edited
         -- Ir Gen new files
-        --, TigerTree
+        , TigerTree
         --, TigerTrans
-        --, TigerFrame
+        , TigerFrame
         --, TigerPrettyIr
         --, TigerCanon
         -- Cualquiera

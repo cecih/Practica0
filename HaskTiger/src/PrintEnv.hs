@@ -5,6 +5,10 @@ import Text.PrettyPrint.HughesPJ as PJ
 import TigerSres
 import TigerTips
 
+-- =========================================================================== --
+-- Modulo propio implementado como motivacion de un ejercicio de la practica 0 --
+-- =========================================================================== --
+
 -- >> ¿Los tipos son para tiger, digamos en minúsculas?
 -- >> ¿Qué es RW y RO? Los RW son ints "normales", los RO son para los índices del for
 -- >> ¿Unique lo ponemos como otro tipo distinto a Int?
@@ -12,7 +16,7 @@ import TigerTips
 -- >> ¿Para qué es el Unique del Record? Para diferenciar tipos por nombre
 -- >> ¿Qué es un RefRecord? 
 -- >> ¿Qué es un TTipo?
-renderEnv :: EnvEntry -> String
+{-renderEnv :: EnvEntry -> String
 renderEnv = render . printEnv
 
 printEnv :: EnvEntry -> Doc
@@ -44,6 +48,6 @@ fR (te, ti, i) = text (unpack te) <>
                  text ":" <>
                  printTipo ti <>
                  text "int" 
-
+-}
 
 

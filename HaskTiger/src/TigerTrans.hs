@@ -19,8 +19,7 @@ import           Control.Monad
 import qualified Data.Foldable       as Fold
 import           Data.List           as List
 import           Data.Ord            hiding (EQ, GT, LT)
-
-
+import           Data.Text as TXT
 import           Debug.Trace
 
 type TransFrag = Frag -- Reexport Fragtype
@@ -171,7 +170,7 @@ instance (MemM w) => IrGen w where
          pushFrag res
     stringExp t = 
       do l <- newLabel
-         let ln = T.append (pack ".long ")  (pack $ show $ T.length t)
+         let ln = T.append (pack ".long ")  (pack $ show $ TXT.length t)
          let str = T.append (T.append (pack ".string \"") t) (pack "\"")
          pushFrag $ AString l [ln,str]
          return $ Ex $ Name l
@@ -197,7 +196,8 @@ instance (MemM w) => IrGen w where
     fieldVar be i =
       do be' <- unEx be
          tmp <- newTemp       --TODO: chequear el return. Ver lo del wSz. 
-         return $ Ex $ Eseq $ Move (Temp tmp) be' $ Mem (Binop Plus (Temp tmp) (Binop Mul (Const i) (Const wSz)))
+         -- FIXME: lo puse para que tipara, hay que chequear si esta bien
+         return $ Ex (Eseq (Move (Temp tmp) be') (Mem (Binop Plus (Temp tmp) (Binop Mul (Const i) (Const wSz)))))
     -- subscriptVar :: BExp -> BExp -> w BExp
     subscriptVar var ind = do
         evar <- unEx var
@@ -206,17 +206,18 @@ instance (MemM w) => IrGen w where
         tind <- newTemp
         return $ Ex $
             Eseq
-                (seq    [Move (Temp tvar) evar
-                        ,Move (Temp tind) eind
-                        ,ExpS $ externalCall "_checkIndex" [Temp tvar, Temp tind]])
+                (seq [Move (Temp tvar) evar
+                      , Move (Temp tind) eind
+                      , ExpS $ externalCall "_checkIndex" [Temp tvar, Temp tind]])
                 (Mem $ Binop Plus (Temp tvar) (Binop Mul (Temp tind) (Const wSz)))
     -- recordExp :: [(BExp,Int)]  -> w BExp
-    recordExp flds = 
-      do flds' <- mapM unEx flds
+    -- FIXME: el primer argumento de Eseq debe ser Stm y aca es una Exp
+    recordExp flds = P.error "Nada"
+      {-do flds' <- mapM (\(x, y) -> unEx x) flds -- FIXME: hecho para tipar, ver si esta bien
          tmp   <- newTemp
-         return $ Ex $ Eseq (seq [externalCall "_initRecord" [Const (length flds), flds']
-                                  , Move (Temp tmp) (Temp rv)
-                                  , Temp tmp])
+         return $ Ex $ Eseq (seq [externalCall "_initRecord" [Const (Prelude.length flds), flds']
+                                  , Move (Temp tmp) (Temp rv)]) (Temp tmp)
+    -}
     -- callExp :: Label -> Bool -> Bool -> Level -> [BExp] -> w BExp
     callExp name external isproc lvl args = P.error "COMPLETAR"
     -- letExp :: [BExp] -> BExp -> w BExp
@@ -229,23 +230,23 @@ instance (MemM w) => IrGen w where
          return $ Ex $ Eseq (seq bes) be
     -- breakExp :: w BExp
     breakExp = 
-      do salida <- topSalida                       --P.error "COMPLETAR"
-           case salida of
-             Just s -> return Nx $ Jump (Name salida) salida 
-             _      -> internal $ pack "Dangling break"
+      do salida <- topSalida                      
+         case salida of
+           Just s -> return $ Nx (Jump (Name s) s) 
+           _      -> internal $ pack "Dangling break"
     -- seqExp :: [BExp] -> w BExp
     seqExp [] = return $ Nx $ ExpS $ Const 0
     seqExp bes = 
-      do let ret = last bes
+      do let ret = Prelude.last bes
          case ret of
-             Nx e' -> 
-               do bes' <- mapM unNx bes
-                  return $ Nx $ seq bes'
-            Ex e' -> 
-              do let bfront = init bes
-                 ess <- mapM unNx bfront
-                 return $ Ex $ Eseq (seq ess) e'
-            _ -> internal $ pack "WAT!123"   --TODO: agregar caso Cx
+           Nx e' -> 
+             do bes' <- mapM unNx bes
+                return $ Nx $ seq bes'
+           Ex e' -> 
+             do let bfront = Prelude.init bes
+                ess <- mapM unNx bfront
+                return $ Ex $ Eseq (seq ess) e'
+           _ -> internal $ pack "WAT!123"   --TODO: agregar caso Cx
     -- preWhileforExp :: w ()
     preWhileforExp = 
       do l <- newLabel
@@ -271,7 +272,7 @@ instance (MemM w) => IrGen w where
            _ -> internal $ pack "no label in salida"
     -- forExp :: BExp -> BExp -> BExp -> BExp -> w BExp
     forExp lo hi var body = 
-      do sigue  <- newLabel                       --P.error "COMPLETAR"
+      do sigue  <- newLabel                   
          sigue1 <- newLabel
          salida <- topSalida
          var'   <- unEx var 
@@ -281,16 +282,16 @@ instance (MemM w) => IrGen w where
          tmp    <- newTemp
          case salida of
            Just s -> 
-             return Nx $ seq [Move var' lo' 
-                              , Move tmp hi' 
-                              , CJump LE var' tmp sigue salida 
-                              , Label sigue 
-                              , body'
-                              , CJump EQ var' tmp salida sigue1
-                              , Label sigue1 
-                              , Move var' (BOp Plus var' (Const 1))
-                              , Jump (Name sigue) sigue 
-                              , Label salida]    
+             return $ Nx (seq [Move var' lo' 
+                               , Move (Temp tmp) hi' 
+                               , CJump LE var' (Temp tmp) sigue s 
+                               , Label sigue 
+                               , body'
+                               , CJump EQ var' (Temp tmp) s sigue1
+                               , Label sigue1 
+                               , Move var' (Binop Plus var' (Const 1))
+                               , Jump (Name sigue) sigue 
+                               , Label s])    
            _     -> internal $ pack "No se puede hacer el for"     --TODO: revisar esta ultima parte, sobre todo
     -- ifThenExp :: BExp -> BExp -> w BExp
     ifThenExp cond bod = 
@@ -298,10 +299,10 @@ instance (MemM w) => IrGen w where
          f <- newLabel
          cond' <- unCx cond
          bod'  <- unNx bod
-         return Nx $ seq [cond'(t,f)
-                          , Label t
-                          , bod'
-                          , Label f]
+         return $ Nx (seq [cond'(t,f)
+                           , Label t
+                           , bod'
+                           , Label f])
     -- ifThenElseExp :: BExp -> BExp -> BExp -> w BExp                        --P.error "COMPLETAR"
     ifThenElseExp cond bod els = 
       do lt <- newLabel
@@ -311,29 +312,28 @@ instance (MemM w) => IrGen w where
          bod'  <- unEx bod
          els'  <- unEx els
          tmp   <- newTemp 
-         return Ex $ Eseq $ seq [cond' (lt, lf)
-                                 , Label lt             
-                                 , Move (Temp tmp) bod'
-                                 , Jump (Name ls) ls
-                                 , Label lf 
-                                 , Move (Temp tmp) els'
-                                 , Label ls
-                                 , Temp tmp] 
+         return $ Ex $ Eseq (seq [cond' (lt, lf)
+                                  , Label lt             
+                                  , Move (Temp tmp) bod'
+                                  , Jump (Name ls) ls
+                                  , Label lf 
+                                  , Move (Temp tmp) els'
+                                  , Label ls]) (Temp tmp) 
     -- ifThenElseExpUnit :: BExp -> BExp -> BExp -> w BExp
-    ifThenElseExpUnit _ _ _ = 
+    ifThenElseExpUnit cond bod els = 
       do lt <- newLabel                            
          lf <- newLabel
          ls <- newLabel
          cond' <- unCx cond
          bod'  <- unNx bod
          els'  <- unNx els
-         return Nx $ seq [cond' (lt lf)
-                          , Label lt
-                          , bod'
-                          , Jump (Name ls)
-                          , Label lf 
-                          , els'
-                          , Label ls] 
+         return $ Nx (seq [cond' (lt, lf)
+                           , Label lt
+                           , bod'
+                           , Jump (Name ls) ls
+                           , Label lf 
+                           , els'
+                           , Label ls]) 
     -- assignExp :: BExp -> BExp -> w BExp
     assignExp cvar cinit = do
         cvara <- unEx cvar
@@ -348,32 +348,32 @@ instance (MemM w) => IrGen w where
     binOpIntExp le op re =
       do le' <- unEx le
          re' <- unEx re
-         return $ Ex $ Binop (getOp op) le' re'
+         return $ Ex $ Binop getOp le' re'
         where getOp =  case op of
-                         PlusOp   -> Plus  
-                         MinusOp  -> Minus 
-                         TimesOp  -> Mul 
-                         DivideOp -> Div
+                         Abs.PlusOp   -> Plus  
+                         Abs.MinusOp  -> Minus 
+                         Abs.TimesOp  -> Mul 
+                         Abs.DivideOp -> Div
                          _        -> P.error "No es un operador binario aritmetico"
     -- binOpStrExp :: BExp -> Abs.Oper -> BExp -> w BExp
     binOpStrExp strl op strr =
       do strl' <- unEx strl
          strr' <- unEx strr
          case op of
-           EqOp -> return $ Cx (\lt lf -> CJump EQ strl' strr' lt lf)
-           _    -> P.error "No es posible comparar las strings"
+           Abs.EqOp -> return $ Cx (\(lt, lf) -> CJump EQ strl' strr' lt lf)
+           _        -> P.error "No es posible comparar las strings"
     -- binOpIntRelExp :: BExp -> Abs.Oper -> BExp -> w BExp
     binOpIntRelExp strl op strr = 
       do strl' <- unEx strl
          strr' <- unEx strr
-         return $ Cx (\lt lf -> CJump (getOp op) strl' strr' lt lf)
+         return $ Cx (\(lt, lf) -> CJump (getOp op) strl' strr' lt lf)
         where getOp op = case op of
-                           EqOp  -> EQ 
-                           NeqOp -> NE
-                           LtOp  -> LT
-                           LeOp  -> LE
-                           GtOp  -> GT
-                           GeOp  -> GE
+                           Abs.EqOp  -> EQ 
+                           Abs.NeqOp -> NE
+                           Abs.LtOp  -> LT
+                           Abs.LeOp  -> LE
+                           Abs.GtOp  -> GT
+                           Abs.GeOp  -> GE
                            _     -> P.error "No es un operador de relacion"
     -- arrayExp :: BExp -> BExp -> w BExp
     arrayExp size init = do
@@ -384,4 +384,3 @@ instance (MemM w) => IrGen w where
                 [ExpS $ externalCall "_allocArray" [sz,ini]
                 , Move (Temp t) (Temp rv)
                 ]) (Temp t)
-7

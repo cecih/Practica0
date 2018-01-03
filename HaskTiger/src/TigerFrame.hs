@@ -1,11 +1,11 @@
 module TigerFrame where
 
-import           TigerTemp
-import           TigerTree
+import TigerSymbol
+import TigerTemp
+import TigerTree
 
-import           TigerSymbol
-
-import           Prelude     hiding (exp)
+import Data.Text as T
+import Prelude as P hiding (exp)
 
 --
 
@@ -50,9 +50,9 @@ data Access = InFrame Int | InReg Temp
 data Frag = Proc Stm Frame | AString Label [Symbol]
 
 sepFrag :: [Frag] -> ([Frag],[(Stm,Frame)])
-sepFrag xs = (reverse ass, reverse stmss)
+sepFrag xs = (P.reverse ass, P.reverse stmss)
     where
-        (ass, stmss) = foldl (\ (lbls,stms) x ->
+        (ass, stmss) = P.foldl (\ (lbls,stms) x ->
             case x of
                 Proc st fr -> (lbls, (st,fr) : stms)
                 AString {} -> (x:lbls, stms)
@@ -60,7 +60,8 @@ sepFrag xs = (reverse ass, reverse stmss)
 
 instance Show Frag where
     show (Proc s f) = "Frame:" ++ show f ++ '\n': show s
-    show (AString l ts) = show l ++ ":\n" ++ (foldr (\t ts -> ("\n\t" ++ unpack t) ++ ts) "" ts)
+    show (AString l ts) = show l ++ ":\n" ++ (P.foldr (\t ts -> ("\n\t" ++ unpack t) ++ ts) "" ts)
+
 data Frame = Frame {
         name        :: Symbol,
         formals     :: [Bool], -- Argumentos
@@ -72,7 +73,7 @@ data Frame = Frame {
     deriving Show
 
 defaultFrame :: Frame
-defaultFrame =  Frame {name = empty
+defaultFrame =  Frame {name = T.empty
                 , formals = []
                 , locals = []
                 , actualArg = argsInicial
@@ -81,7 +82,7 @@ defaultFrame =  Frame {name = empty
 
 -- TODOS A stack por i386
 prepFormals :: Frame -> [Access]
-prepFormals fs = reverse $  snd (foldl (\ (n,rs) _ -> (n+argsGap, InFrame n : rs) ) (argsInicial,[]) (formals fs))
+prepFormals fs = P.reverse $  snd (P.foldl (\ (n,rs) _ -> (n+argsGap, InFrame n : rs) ) (argsInicial,[]) (formals fs))
 
 newFrame :: Symbol -> [Bool] -> Frame
 newFrame nm fs = defaultFrame {name = nm, formals = fs}

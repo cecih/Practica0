@@ -6,30 +6,31 @@
 
 module TigerSeman where
 
+import           PrintEnv
 import           TigerAbs
 import           TigerErrores         as E
+import           TigerFrame
 import           TigerSres
-import           TigerTips
-
 import           TigerSymbol
-import           PrintEnv
+import           TigerTrans
+import           TigerTemp
+import           TigerTips
 
 import           Control.Conditional as C ((<||>), ifM, unless, unlessM)
 import           Control.Monad
-import           Control.Monad.Loops
 import           Control.Monad.Error.Class
 import           Control.Monad.Except (throwError, catchError)
+import           Control.Monad.Loops
 import           Control.Monad.State
-import           Data.List            as List
-import qualified Data.Map.Strict      as M
-import           Prelude              as P
-
 import qualified Data.Graph           as G
-import qualified Data.Text            as T
+import           Data.Maybe (fromJust)
+import           Data.List as List
+import qualified Data.Map.Strict as M
 import qualified Data.Set             as S(fromAscList)
-import Text.PrettyPrint.HughesPJ
-
+import qualified Data.Text            as T
 import           Debug.Trace
+import           Prelude as P
+import           Text.PrettyPrint.HughesPJ
 
 class (Daemon w, Monad w) => Manticore w where
   -- | Inserta una Variable al entorno
@@ -121,7 +122,7 @@ instance Manticore OurState where
                           res <- withStateT (\st' -> st' {vEnv = M.insert s (Func fe) (vEnv st)}) w 
                           put st
                           return res 
-  insertVRO s w      = insertValV s (TInt RO) w 
+  insertVRO s w      = insertValV s (TInt RO, InFrame 0, 0) w 
   insertTipoT s ty w = trace ("Insertamos Tipo " ++ unpack s) $
                        do st <- get
                           res <- withStateT (\st' -> st' {tEnv = M.insert s ty (tEnv st)}) w  
@@ -150,8 +151,8 @@ instance Manticore OurState where
   ugen               = do u <- get                             
                           put (u {unique = unique u + 1})
                           return $ unique u + 1 
-  addTypos tys w     =
-    do env <- get
+  --addTypos tys w     =
+    --do env <- get
   
 -- Nos quedamos con los records por un lado
 getRecords :: M.Map Symbol Ty -> M.Map Symbol Ty
@@ -164,20 +165,54 @@ isRecord _            = False
 -- Ordenamos los campos de los records de manera alfabética de acuerdo a lo establecido
 -- por decisión propia 
 sortRecords :: M.Map Symbol Ty -> M.Map Symbol Ty
-sortRecords tys = M.map (\t -> sortBy ourOrder $ fList t) (getRecords tys)
+sortRecords tys = M.map (\t -> RecordTy $ sortBy ourOrder $ fList t) (getRecords tys)
   where fList (RecordTy fl) = fl
 
 -- Y por otro lado tenemos a los tipos que no son records
 getNotRecords :: M.Map Symbol Ty -> M.Map Symbol Ty
-getNotRecords tys = M.filter (not isRecord) tys
+getNotRecords tys = M.filter (not . isRecord) tys
 
 -- Obtenemos los tipos que no son records, y que referencian a otros tipos
-getRefNotRec :: M.Map Sybol Ty -> M.Map Symbol Ty
-getRefNotRec tys = filter (\x -> M.member (name x) tys) (getNotRecords tys)
+-- Devolvemos un map con el nombre del tipo, su correspondiente Ty, y el
+-- nombre del tipo al cual hace referencia
+-- FIXME: hay que ver si esto esta bien
+getRefNotRec :: M.Map Symbol Ty -> M.Map Symbol (Ty, [Symbol])
+getRefNotRec tys = M.map (\x -> (x, [nameTy x]))  
+                         (M.filter (\x -> M.member (nameTy x) tys) 
+                                   (getNotRecords tys))
+
+nameTy :: Ty -> Symbol
+nameTy (ArrayTy sym) = sym
+nameTy (NameTy sym)  = sym
+nameTy _             = P.error "Error interno"                     
 
 -- Obtenemos los tipos que no son records, y que no referencian a otros tipos
-getNotRefNotRec :: M.Map Sybol Ty -> M.Map Symbol Ty
+getNotRefNotRec :: M.Map Symbol Ty -> M.Map Symbol Ty
 getNotRefNotRec tys = M.difference tys (getRefNotRec tys) 
+
+-- Sort topológico
+topoSort :: M.Map Symbol (Ty, [Symbol]) -> M.Map Symbol Ty
+topoSort tys
+  | hasCycle tys = P.error "Definiciones ciclicas, revisar el programa"
+  | otherwise    = 
+    M.fromList $ G.flattenSCCs (G.stronglyConnComp (map (\(x, y, z) -> ((y, x), y, z)) 
+                                                        (toTriplet $ M.toList tys)))
+
+toTriplet :: [(a, (b, c))] -> [(b, a, c)]
+toTriplet xs = map (\(x, (y, z)) -> (y, x, z)) xs
+
+-- Detectamos si hay ciclo
+hasCycle :: M.Map Symbol (Ty, [Symbol]) -> Bool
+hasCycle tys = any isCyclic (G.stronglyConnComp (toTriplet $ M.toList tys))
+
+isCyclic :: G.SCC node -> Bool
+isCyclic (G.CyclicSCC _) = True
+isCyclic _               = False
+
+-- FIXME: borrar esta copia despues
+ourOrder :: (Eq a, Ord a) => (a, b, c) -> (a, b, c) -> Ordering
+ourOrder (x1, _, _) (x2, _, _) = if x1 > x2 then GT else
+                                     if x1 == x2 then EQ else LT  
 
 {-  addTypos tys w     = 
     let addL ts ht = addLoop ts ht  
@@ -276,10 +311,12 @@ l1 -??- l2 = aux l1 l2
 
 aux :: Eq a => [a] -> [a] -> [a]
 aux l1 [] = l1
-aux l1 l2 = if null rest then res1 else aux res1 rest   
+aux l1 l2 = if null rest then res1 
+              else aux res1 rest   
   where rest = tail l2
         res1 = l1 -?- (head l2)
 -}
+
 -- Podemos definir el estado inicial como:
 initConf :: EstadoG
 initConf = G {unique = 0
@@ -295,15 +332,16 @@ initConf = G {unique = 0
                       ,(T.pack "concat",Func (1,T.pack "concat",[TString,TString],TString,True))
                       ,(T.pack "not",Func (1,T.pack "not",[TInt RW],TInt RW,True))
                       ,(T.pack "exit",Func (1,T.pack "exit",[TInt RW],TUnit,True))
-                      ]}
+                      ]
+            , auxEnv = M.empty}
 
 -- Utilizando alguna especie de run de la monada definida, obtenemos algo así
-runLion :: Exp -> Either SEErrores Tipo
+{-runLion :: Exp -> Either SEErrores Tipo
 runLion e = evalStateT (transExp e) initConf
 
 depend :: Ty -> [Symbol]
 depend (NameTy s)    = [s]
-    depend (ArrayTy s)   = [s]
+depend (ArrayTy s)   = [s]
 depend (RecordTy ts) = concatMap (\(_,_,t) -> depend t) ts
 
 
@@ -553,3 +591,4 @@ transExp(ArrayExp sn cant init p) =
      bexp <- arrayExp bcant binit
      return (bexp, sn')
   where unwrap (TArray t _) = t
+-}
