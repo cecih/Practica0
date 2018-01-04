@@ -157,15 +157,20 @@ instance Manticore OurState where
 -- FIXME: ¿Aca es donde tendriamos que hacer el topological sort?
 --        Porque por ahi insertamos en desorden y me desaparece una
 --        definicion antes de usarla
-insBodys :: Manticore w => M.Map Symbol Ty -> w a -> w a
+{-insBodys :: Manticore w => M.Map Symbol Ty -> w a -> w a
 insBodys tys w =
   foldrWithKey (\k ty man -> 
                  do t <- getTipoT k
                     case isRefRecord t of
-                      True  -> do ty' <- transTy k 
+                      True  -> do ty' <- either (\n -> transTy n) (\f -> ) (stripTy t) 
                                   insertTipoT k ty' 
                       False -> w) w tys
   where ref (RefRecord r) = r
+ 
+stripTy :: Ty -> Either Symbol [Field]
+stripTy (Name name)       = Left name
+stripTy (ArrayTy name)    = Left name
+stripTy (RecordTy fields) = Right fields
 
 -- Funcion auxiliar
 isRefRecord :: Tipo -> Bool
@@ -204,7 +209,7 @@ insRefRecord name w = insertTipoT name (RefRecord T.empty) w
 
 ourOrder :: (Eq a, Ord a) => (a, b, c) -> (a, b, c) -> Ordering
 ourOrder (x1, _, _) (x2, _, _) = if x1 > x2 then GT else
-                                     if x1 == x2 then EQ else LT  
+-}                                     if x1 == x2 then EQ else LT  
 
 -- Podemos definir el estado inicial como:
 initConf :: EstadoG
