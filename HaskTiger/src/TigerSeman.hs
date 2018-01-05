@@ -152,57 +152,6 @@ instance Manticore OurState where
   ugen               = do u <- get                             
                           put (u {unique = unique u + 1})
                           return $ unique u + 1 
-
--- Insertamos todos los bodys de los tipos
--- FIXME: ¿Aca es donde tendriamos que hacer el topological sort?
---        Porque por ahi insertamos en desorden y me desaparece una
---        definicion antes de usarla
-insBodys :: Manticore w => M.Map Symbol Ty -> w a -> w a
-insBodys tys w =
-  foldrWithKey (\k ty man -> 
-                 do t <- getTipoT k
-                    case isRefRecord t of
-                      True  -> do ty' <- either (\n -> transTy n) (\f -> ) (stripTy t) 
-                                  insertTipoT k ty' 
-                      False -> w) w tys
-  where ref (RefRecord r) = r
- 
-stripTy :: Ty -> Either Symbol [Field]
-stripTy (Name name)       = Left name
-stripTy (ArrayTy name)    = Left name
-stripTy (RecordTy fields) = Right fields
-
--- Funcion auxiliar
-isRefRecord :: Tipo -> Bool
-isRefRecord (RefRecord _) = True
-isRefRecord _             = False
-
--- Insertamos todos los headers
-insHeaders :: Manticore w => M.Map Symbol Ty -> w a -> w a
-insHeaders tys w = M.foldrWithKey (\k ty man -> do t <- insHeader k t tys 
-                                                   insertTipoT k t man) w tys
-
--- Insertamos un unico header
-insHeader :: Manticore w => Symbol -> Ty -> M.Map Symbol Ty -> w Tipo 
-insHeader name (NameTy sym) tys         
-  | M.member sym tys = return $ RefRecord T.empty 
-  | otherwise        = transTy name 
-insHeader name (RecordTy fields) tys w
-  | or $ map (\(x, y, z) -> x == name || M.member x tys) fields = return $ RefRecord T.empty   
-  | otherwise                                                   = transTy (RecordTy fields)  
-insHeader name (ArrayTy sym) tys w   
-  | M.member sym tys = return $ RefRecord T.empty 
-  | otherwise        = transTy name
-
--- Funcion auxiliar para escribir menos
-insRefRecord :: Manticore w => Symbol -> w a -> w a
-insRefRecord name w = insertTipoT name (RefRecord T.empty) w
-
-ourOrder :: (Eq a, Ord a) => (a, b, c) -> (a, b, c) -> Ordering
-ourOrder (x1, _, _) (x2, _, _) = if x1 > x2 then GT else
-                                     if x1 == x2 then EQ else LT  
-
-{-
   addTypos tys w  = 
     let addL ts ht = addLoop ts ht  
         refs e1    = foldr insRefs e1 ref
@@ -303,7 +252,59 @@ aux l1 [] = l1
 aux l1 l2 = if null rest then res1 else aux res1 rest   
   where rest = tail l2
         res1 = l1 -?- (head l2)
+
+-- Insertamos todos los bodys de los tipos
+-- FIXME: ¿Aca es donde tendriamos que hacer el topological sort?
+--        Porque por ahi insertamos en desorden y me desaparece una
+--        definicion antes de usarla
+{-insBodys :: Manticore w => M.Map Symbol Ty -> w a -> w a
+insBodys tys w =
+  foldrWithKey (\k ty man -> 
+                 do t <- getTipoT k
+                    case isRefRecord t of
+                      True  -> either (\n -> do n' <- transTy n
+                                                insertTipoT ??? n' man) 
+                                      (\f -> map () f) 
+                                      (stripTy t)  
+                      False -> w) w tys
+  where ref (RefRecord r) = r
+ 
+stripTy :: Ty -> Either Symbol [Field]
+stripTy (Name name)       = Left name
+stripTy (ArrayTy name)    = Left name
+stripTy (RecordTy fields) = Right fields
+
+-- Funcion auxiliar
+isRefRecord :: Tipo -> Bool
+isRefRecord (RefRecord _) = True
+isRefRecord _             = False
+
+-- Insertamos todos los headers
+insHeaders :: Manticore w => M.Map Symbol Ty -> w a -> w a
+insHeaders tys w = M.foldrWithKey (\k ty man -> do t <- insHeader k t tys 
+                                                   insertTipoT k t man) w tys
+
+-- Insertamos un unico header
+insHeader :: Manticore w => Symbol -> Ty -> M.Map Symbol Ty -> w Tipo 
+insHeader name (NameTy sym) tys         
+  | M.member sym tys = return $ RefRecord T.empty 
+  | otherwise        = transTy name 
+insHeader name (RecordTy fields) tys w
+  | or $ map (\(x, y, z) -> x == name || M.member x tys) fields = return $ RefRecord T.empty   
+  | otherwise                                                   = transTy (RecordTy fields)  
+insHeader name (ArrayTy sym) tys w   
+  | M.member sym tys = return $ RefRecord T.empty 
+  | otherwise        = transTy name
+
+-- Funcion auxiliar para escribir menos
+insRefRecord :: Manticore w => Symbol -> w a -> w a
+insRefRecord name w = insertTipoT name (RefRecord T.empty) w
+
+ourOrder :: (Eq a, Ord a) => (a, b, c) -> (a, b, c) -> Ordering
+ourOrder (x1, _, _) (x2, _, _) = if x1 > x2 then GT else
+                                     if x1 == x2 then EQ else LT  
 -}
+
 
 -- Podemos definir el estado inicial como:
 initConf :: EstadoG
