@@ -24,7 +24,7 @@ import           Control.Monad.Except (throwError, catchError)
 import           Control.Monad.Loops
 import           Control.Monad.State
 import qualified Data.Graph           as G
-import           Data.Maybe (fromJust)
+import           Data.Maybe (isJust, fromJust)
 import           Data.List as List
 import qualified Data.Map.Strict as M
 import qualified Data.Set             as S(fromAscList)
@@ -33,56 +33,11 @@ import           Debug.Trace
 import           Prelude as P
 import           Text.PrettyPrint.HughesPJ
 
-class (Daemon w, Monad w) => Manticore w where
-  -- | Inserta una Variable al entorno
-    insertValV :: Symbol -> ValEntry -> w a -> w a
-  -- | Inserta una Función al entorno
-    insertFunV :: Symbol -> FunEntry -> w a -> w a
-  -- | Inserta una Variable de sólo lectura al entorno
-    insertVRO :: Symbol -> w a -> w a
-  -- | Inserta una variable de tipo al entorno
-    insertTipoT :: Symbol -> Tipo -> w a -> w a
-  -- | Busca una función en el entorno
-    getTipoFunV :: Symbol -> w FunEntry
-  -- | Busca una variable en el entorno
-    getTipoValV :: Symbol -> w ValEntry
-  -- NOTA: La busquedas de valores en los entorno
-  -- no deberían fallar. Ya que se analizó en la etapa anterior.
-  -- | Busca un tipo en el entorno
-    getTipoT :: Symbol -> w Tipo
-  -- | Funciones de Debugging!
-    showVEnv :: w () --debugtrace funcion para printear
-    showTEnv :: w ()
-    --
-    -- | Función monadica que determina si dos tipos son iguales.
-    -- 
-    tiposIguales :: Tipo -> Tipo -> w Bool
-    tiposIguales (RefRecord s) l@(TRecord _ u) = do
-        st <- getTipoT s
-        case st of
-            TRecord _ u1 -> return (u1 == u)
-            ls@(RefRecord s') -> tiposIguales ls l
-            _ -> E.internal $ pack $ "No son tipos iguales... 123+1"
-    tiposIguales l@(TRecord _ u) (RefRecord s) = do
-        st <- getTipoT s
-        case st of
-            TRecord _ u1 -> return (u1 == u)
-            ls@(RefRecord s') -> tiposIguales l ls
-            _ -> E.internal $ pack $ "No son tipos iguales... 123+2"
-    tiposIguales (RefRecord s) (RefRecord s') = do
-        s1 <- getTipoT s
-        s2 <- getTipoT s'
-        tiposIguales s1 s2
-    tiposIguales TNil  (RefRecord _) = return True
-    tiposIguales (RefRecord _) TNil = return True
-    tiposIguales (RefRecord _) _ = E.internal $ pack $ "No son tipos iguales... 123+3"
-    tiposIguales  e (RefRecord s) = E.internal $ pack $ "No son tipos iguales... 123+4" ++ (show e ++ show s)
-    tiposIguales a b = return (intiposIguales a b)
-    --
-    ugen :: w Unique -- unique generator
-    --
-    addTypos :: [(Symbol, Ty, Pos)] -> w a -> w a
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ --
+-- Definimos tipos de datos, monadas e instancias --
+-- ////////////////////////////////////////////// --
 
+-- Daemon ya esta definida en TigerErrores
 addpos :: (Daemon w, Show b) => w a -> b -> w a
 addpos t p = E.adder t (pack $ show p)
 
@@ -93,16 +48,82 @@ data EstadoG = G {unique :: Int,
                   auxEnv :: M.Map Symbol Tipo}
     deriving Show
 
+-- Podemos definir el estado inicial como:
+initConf :: EstadoG
+initConf = G {unique = 0
+            , tEnv = M.insert (T.pack "int") (TInt RW) (M.singleton (T.pack "string") TString)
+            , vEnv = M.fromList
+                      [(T.pack "print", Func (1,T.pack "print",[TString], TUnit, True))
+                      ,(T.pack "flush", Func (1,T.pack "flush",[],TUnit, True))
+                      ,(T.pack "getchar",Func (1,T.pack "getchar",[],TString,True))
+                      ,(T.pack "ord",Func (1,T.pack "ord",[TString],TInt RW,True)) -- Ojota con este intro...
+                      ,(T.pack "chr",Func (1,T.pack "chr",[TInt RW],TString,True))
+                      ,(T.pack "size",Func (1,T.pack "size",[TString],TInt RW,True))
+                      ,(T.pack "substring",Func (1,T.pack "substring",[TString,TInt RW, TInt RW],TString,True))
+                      ,(T.pack "concat",Func (1,T.pack "concat",[TString,TString],TString,True))
+                      ,(T.pack "not",Func (1,T.pack "not",[TInt RW],TInt RW,True))
+                      ,(T.pack "exit",Func (1,T.pack "exit",[TInt RW],TUnit,True))
+                      ]
+            , auxEnv = M.empty}
+
 -- Acompañado de un tipo de errores
 data SEErrores = NotFound T.Text | DiffVal T.Text | Internal T.Text
     deriving Show
 
+errAppend :: SEErrores -> Symbol -> SEErrores
+errAppend (NotFound t) s = NotFound $ addStr (unpack t) s 
+errAppend (DiffVal t) s  = DiffVal $ addStr (unpack t) s 
+errAppend (Internal t) s = Internal $ addStr (unpack t) s 
+
 type OurState = StateT EstadoG (Either SEErrores) 
 
-errAppend :: SEErrores -> Symbol -> SEErrores
-errAppend (NotFound t) s = NotFound (addStr (unpack t) s) 
-errAppend (DiffVal t) s  = DiffVal (addStr (unpack t) s) 
-errAppend (Internal t) s = Internal (addStr (unpack t) s) 
+class (Daemon w, Monad w) => Manticore w where
+  -- | Inserta una Variable al entorno
+  insertValV :: Symbol -> ValEntry -> w a -> w a
+  -- | Inserta una Función al entorno
+  insertFunV :: Symbol -> FunEntry -> w a -> w a
+  -- | Inserta una Variable de sólo lectura al entorno
+  insertVRO :: Symbol -> w a -> w a
+  -- | Inserta una variable de tipo al entorno
+  insertTipoT :: Symbol -> Tipo -> w a -> w a
+  -- | Busca una función en el entorno
+  getTipoFunV :: Symbol -> w FunEntry
+  -- | Busca una variable en el entorno
+  getTipoValV :: Symbol -> w ValEntry
+  -- NOTA: La busquedas de valores en los entorno
+  -- no deberían fallar. Ya que se analizó en la etapa anterior.
+  -- | Busca un tipo en el entorno
+  getTipoT :: Symbol -> w Tipo
+  -- | Funciones de Debugging!
+  showVEnv :: w () 
+  showTEnv :: w ()
+  -- | Función monadica que determina si dos tipos son iguales.
+  tiposIguales :: Tipo -> Tipo -> w Bool
+  tiposIguales (RefRecord s) l@(TRecord _ u) = 
+    do st <- getTipoT s
+       case st of
+         TRecord _ u1 -> return (u1 == u)
+         ls@(RefRecord s') -> tiposIguales ls l
+         _ -> E.internal $ pack $ "No son tipos iguales... 123+1"
+  tiposIguales l@(TRecord _ u) (RefRecord s) = 
+    do st <- getTipoT s
+       case st of
+         TRecord _ u1 -> return (u1 == u)
+         ls@(RefRecord s') -> tiposIguales l ls
+         _ -> E.internal $ pack $ "No son tipos iguales... 123+2"
+  tiposIguales (RefRecord s) (RefRecord s') = 
+    do s1 <- getTipoT s
+       s2 <- getTipoT s'
+       tiposIguales s1 s2
+  tiposIguales TNil  (RefRecord _) = return True
+  tiposIguales (RefRecord _) TNil = return True
+  tiposIguales (RefRecord _) _ = E.internal $ pack $ "No son tipos iguales... 123+3"
+  tiposIguales  e (RefRecord s) = E.internal $ pack $ "No son tipos iguales... 123+4" ++ (show e ++ show s)
+  tiposIguales a b = return (intiposIguales a b)
+  -- | Unique generator
+  ugen :: w Unique 
+  -- | Funcion auxiliar para agregar tipos
+  addTypos :: [(Symbol, Ty, Pos)] -> w a -> w a
 
 instance Daemon OurState where
   derror s   = throwError $ Internal s  
@@ -133,18 +154,18 @@ instance Manticore OurState where
                        do st <- get
                           case M.lookup s (vEnv st) of
                             Just (Func f) -> return f 
-                            Nothing       -> internal (append s (pack "44"))  
+                            Nothing       -> derror $ pack $ "La funcion " ++ (unpack s) ++ " no esta definida"  
   getTipoValV s      = trace ("Buscamos Val " ++ unpack s) $ 
                        do st <- get
                           case M.lookup s (vEnv st) of
                             Just (Var v) -> return v 
-                            Nothing      -> internal (append s (pack "55"))   
-                            _            -> internal (pack "No es una variable") 
+                            Nothing      -> derror $ pack $ "La variable " ++ (unpack s) ++ " no esta en el entorno"   
+                            other        -> derror $ pack $ (show $ fromJust other) ++ " no es una variable" 
   getTipoT s         = trace ("Buscamos Tipo " ++ unpack s) $
                        do st <- get
                           case M.lookup s (tEnv st) of
                             Just ty -> return ty 
-                            Nothing -> internal (append s (pack "66"))  
+                            Nothing -> derror $ pack $ "El tipo " ++ (unpack s) ++ " no esta en el entorno" 
   showVEnv           = do st <- get
                           trace (show $ vEnv st) (return ())    
   showTEnv           = do st <- get
@@ -152,23 +173,28 @@ instance Manticore OurState where
   ugen               = do u <- get                             
                           put (u {unique = unique u + 1})
                           return $ unique u + 1 
-
+  addTypos tys w     = insHeaders tys' (insBodys  tys' w)
+    where tys' = M.fromList $ map (\(x, y, z) -> (x, y)) tys
+  
 -- Insertamos todos los bodys de los tipos
--- FIXME: ¿Aca es donde tendriamos que hacer el topological sort?
---        Porque por ahi insertamos en desorden y me desaparece una
---        definicion antes de usarla
 insBodys :: Manticore w => M.Map Symbol Ty -> w a -> w a
-insBodys tys w =
-  foldrWithKey (\k ty man -> 
-                 do t <- getTipoT k
-                    case isRefRecord t of
-                      True  -> do ty' <- either (\n -> transTy n) (\f -> ) (stripTy t) 
-                                  insertTipoT k ty' 
-                      False -> w) w tys
-  where ref (RefRecord r) = r
+insBodys tys w = 
+  M.foldrWithKey (\k ty man -> 
+                   do t <- getTipoT k
+                      case isRefRecord t of
+                        True  -> 
+                          either (\n -> do tn <- getTipoT n --transTy n
+                                           insertTipoT n tn man) 
+                                 (\fs -> foldr
+                                         (\(sym, b, tyf) manf -> do tf <- transTy tyf
+                                                                    insertTipoT sym tf manf) 
+                                         man
+                                         fs) 
+                                 (stripTy ty)  
+                        False -> w) w tys
  
 stripTy :: Ty -> Either Symbol [Field]
-stripTy (Name name)       = Left name
+stripTy (NameTy name)     = Left name
 stripTy (ArrayTy name)    = Left name
 stripTy (RecordTy fields) = Right fields
 
@@ -179,20 +205,20 @@ isRefRecord _             = False
 
 -- Insertamos todos los headers
 insHeaders :: Manticore w => M.Map Symbol Ty -> w a -> w a
-insHeaders tys w = M.foldrWithKey (\k ty man -> do t <- insHeader k t tys 
+insHeaders tys w = M.foldrWithKey (\k ty man -> do t <- insHeader k ty tys 
                                                    insertTipoT k t man) w tys
 
 -- Insertamos un unico header
 insHeader :: Manticore w => Symbol -> Ty -> M.Map Symbol Ty -> w Tipo 
-insHeader name (NameTy sym) tys         
+insHeader name nam@(NameTy sym) tys          
   | M.member sym tys = return $ RefRecord T.empty 
-  | otherwise        = transTy name 
-insHeader name (RecordTy fields) tys w
+  | otherwise        = transTy nam 
+insHeader name rec@(RecordTy fields) tys 
   | or $ map (\(x, y, z) -> x == name || M.member x tys) fields = return $ RefRecord T.empty   
-  | otherwise                                                   = transTy (RecordTy fields)  
-insHeader name (ArrayTy sym) tys w   
+  | otherwise                                                   = transTy rec  
+insHeader name arr@(ArrayTy sym) tys    
   | M.member sym tys = return $ RefRecord T.empty 
-  | otherwise        = transTy name
+  | otherwise        = transTy arr
 
 -- Funcion auxiliar para escribir menos
 insRefRecord :: Manticore w => Symbol -> w a -> w a
@@ -202,163 +228,13 @@ ourOrder :: (Eq a, Ord a) => (a, b, c) -> (a, b, c) -> Ordering
 ourOrder (x1, _, _) (x2, _, _) = if x1 > x2 then GT else
                                      if x1 == x2 then EQ else LT  
 
-{-
-  addTypos tys w  = 
-    let addL ts ht = addLoop ts ht  
-        refs e1    = foldr insRefs e1 ref
-        recs e2    = foldr (insRecs frs) e2 rs'
-        rep e3     = foldr replace e3 ref
-    in do st <- get
-          let m = tenvToList $ tEnv st
-          addL (topoSort $ sim ++ m) (M.fromList $ sim ++ m) (refs (recs (rep w)))
-    where (rs, tys')          = partition (\(x, y) -> isRecord y) (map (\(x, y, _) -> (x, y)) tys)
-          (ref, sim)          = partition (\(x,y) -> elem (name y) frs) tys'
-          rs'                 = map (\(s, ty) -> (s, sortBy ourOrder $ fList ty)) rs
-          frs                 = map fst rs
-          fList (RecordTy fl) = fl
-
-name :: Ty -> Symbol
-name (ArrayTy sym)  = sym
-name (NameTy sym)   = sym
-name _              = P.error "Error interno"                     
-
-tenvToList :: M.Map Symbol Tipo -> [(Symbol, Ty)]
-tenvToList m = map (\(symb, _) -> (symb, NameTy symb)) (M.toList m)   
-
-insRefs :: Manticore w => (Symbol, Ty) -> w a -> w a
-insRefs (symb, ty) w = trace "insRefs" $ insertTipoT symb (fromTyTipo ty (RefRecord $ name ty)) w 
-
-fromTyTipo :: Ty -> Tipo -> Tipo
-fromTyTipo (NameTy _) t2    = t2
-fromTyTipo (ArrayTy sym) t2 = TArray t2 0 
---TODO: caso de RecordTY
-
-insRecs :: Manticore w => [Symbol] -> (Symbol, [Field]) -> w a -> w a
-insRecs recs (symb, flds) w = trace "insRecs" $ do let (symbs, bools, tys) = unzip3 flds  
-                                                   ty' <- mapM (\t -> let nt = name t
-                                                                      in if elem nt recs then return $ RefRecord nt 
-                                                                                         else getTipoT nt) tys
-                                                   u   <- ugen
-                                                   insertTipoT symb (TRecord (zip3 symbs ty' [0..length $ flds]) u) w 
-
-replace :: Manticore w => (Symbol, Ty) -> w a -> w a
-replace (symb, ty) w = trace "replace" $  do t <- getTipoT $ name ty
-                                             insertTipoT symb (fromTyTipo ty t) w 
-
-isRecord :: Ty -> Bool
-isRecord (RecordTy _) = True
-isRecord _            = False
-
-addLoop :: Manticore w => [Symbol] -> M.Map Symbol Ty -> w a -> w a 
-addLoop sims m w = foldr (insTipo m) w sims
-
-insTipo :: Manticore w => M.Map Symbol Ty -> Symbol -> w a -> w a
-insTipo m symb w = do let ty = m M.! symb
-                      ty' <- transTy ty
-                      insertTipoT symb ty' w  
-                                                   
-topoSort :: [(Symbol, Ty)] -> [Symbol] 
-topoSort elems 
-  | ciclo ps elemsmap = P.error "Hay ciclo\n"
-  | otherwise       = 
-    fromEdges (G.topSort $ G.buildG (1, len) (toEdges ps m)) (M.toList m) 
-  where ps       = filter (\(x, y) -> x /= y) (concat $ map predSucc elems)
-        elemsmap = map head (group $ sort (map fst elems))
-        len      = length elemsmap
-        m        = M.fromList $ zip elemsmap [1..len]
-
-toEdges :: [(Symbol, Symbol)] -> M.Map Symbol Int -> [G.Edge]
-toEdges pares ht = map (\(x, y) -> (ht M.! x, ht M.! y)) pares
-
-fromEdges :: [G.Vertex] -> [(Symbol, Int)] -> [Symbol]
-fromEdges [] _     = []
-fromEdges (x:xs) m = case find (\y -> x == snd y) m of
-                       Nothing -> []
-                       Just v  -> fst v : (fromEdges xs m)   
-
--- Arma pares pred/succ     
-predSucc :: (Symbol, Ty) -> [(Symbol, Symbol)]
-predSucc (sym, NameTy ns)   = [(ns, sym)]
-predSucc (sym, ArrayTy as)  = [(as, sym)]
-predSucc (sym, RecordTy fl) = concat $ map (\(s, _, t) -> case t of
-                                                            RecordTy _ -> []
-                                                            _          -> [(s, sym)]) fl
-
-ciclo :: [(Symbol, Symbol)] -> [Symbol] -> Bool
-ciclo pares elems = null $ preds pares elems
-    where preds x y = y -??- map (\(f, s) -> s) x
-
-infixl -?-
-infixl -??-
-
-(-?-) :: Eq a => [a] -> a -> [a]
-[] -?- _    = []
-(h:t) -?- e = if h == e then t -?- e else h : (t -?- e)
-
-(-??-) :: Eq a => [a] -> [a] -> [a]
-l1 -??- l2 = aux l1 l2
-
-aux :: Eq a => [a] -> [a] -> [a]
-aux l1 [] = l1
-aux l1 l2 = if null rest then res1 else aux res1 rest   
-  where rest = tail l2
-        res1 = l1 -?- (head l2)
--}
-
--- Podemos definir el estado inicial como:
-initConf :: EstadoG
-initConf = G {unique = 0
-            , tEnv = M.insert (T.pack "int") (TInt RW) (M.singleton (T.pack "string") TString)
-            , vEnv = M.fromList
-                      [(T.pack "print", Func (1,T.pack "print",[TString], TUnit, True))
-                      ,(T.pack "flush", Func (1,T.pack "flush",[],TUnit, True))
-                      ,(T.pack "getchar",Func (1,T.pack "getchar",[],TString,True))
-                      ,(T.pack "ord",Func (1,T.pack "ord",[TString],TInt RW,True)) -- Ojota con este intro...
-                      ,(T.pack "chr",Func (1,T.pack "chr",[TInt RW],TString,True))
-                      ,(T.pack "size",Func (1,T.pack "size",[TString],TInt RW,True))
-                      ,(T.pack "substring",Func (1,T.pack "substring",[TString,TInt RW, TInt RW],TString,True))
-                      ,(T.pack "concat",Func (1,T.pack "concat",[TString,TString],TString,True))
-                      ,(T.pack "not",Func (1,T.pack "not",[TInt RW],TInt RW,True))
-                      ,(T.pack "exit",Func (1,T.pack "exit",[TInt RW],TUnit,True))
-                      ]
-            , auxEnv = M.empty}
-
 -- Utilizando alguna especie de run de la monada definida, obtenemos algo así
 runLion :: Exp -> Either SEErrores Tipo
 runLion e = P.error "Estoy testeando, no hinchei" --evalStateT (transExp e) initConf
 
-{-depend :: Ty -> [Symbol]
-depend (NameTy s)    = [s]
-depend (ArrayTy s)   = [s]
-depend (RecordTy ts) = concatMap (\(_,_,t) -> depend t) ts
-
-
-okOp :: Tipo -> Tipo -> Oper -> Bool
-okOp TNil TNil EqOp  = False
-okOp TUnit _ EqOp    = False
-okOp _ _ EqOp        = True
-okOp TNil TNil NeqOp = False
-okOp TUnit _ NeqOp   = False
-okOp _ _ NeqOp       = True
-
-cmpZip :: (Manticore m) =>  [(Symbol, Tipo)] -> [(Symbol, Tipo, Int)] -> m Bool
-cmpZip [] [] = return True
-cmpZip [] _  = return False
-cmpZip _ []  = return False
-cmpZip ((sl,tl):xs) ((sr,tr,p):ys) = 
-  do b <- tiposIguales tl tr
-     if b  && (sl == sr) then cmpZip xs ys
-       else return False
-
-buscarM :: Symbol -> [(Symbol, Tipo, Int)] -> Maybe Tipo
-buscarM s [] = Nothing
-buscarM s ((s',t,_):xs) 
-  | s == s' = Just t
-  | otherwise = buscarM s xs
-  
-ourOrder :: (Eq a, Ord a) => (a, b, c) -> (a, b, c) -> Ordering
-ourOrder (x1, _, _) (x2, _, _) = if x1 > x2 then GT else
-                                     if x1 == x2 then EQ else LT  
+-- \\\\\\\\\\\\\\\\\\\\\\\ --
+-- Traduccion de variables --
+-- /////////////////////// --
 
 -- El objetivo de esta función es obtener el tipo
 -- de la variable a la que se está accediendo
@@ -381,14 +257,16 @@ transVar (SubscriptVar v e) =
   do (bexp, v') <- transVar v
      case v' of
        TArray typ _ ->
-         do e' <- transExp e 
-            C.unlessM (tiposIguales e' (TInt RW)) $ P.error "La variable no es del tipo que se le quiere asignar"
+         do (be, te) <- transExp e 
+            C.unlessM (tiposIguales te (TInt RW)) $ P.error "La variable no es del tipo que se le quiere asignar"
             return (bexp, typ)
        _            ->
          P.error "No es un array"
--}
-
           
+-- \\\\\\\\\\\\\\\\\\\ --
+-- Traduccion de tipos --
+-- /////////////////// --
+
 transTy :: (Manticore w) => Ty -> w Tipo
 transTy (NameTy s)      = getTipoT s
 transTy (RecordTy flds) =
@@ -403,12 +281,85 @@ transTy (ArrayTy s)     =
 
 fromTy :: (Manticore w) => Ty -> w Tipo
 fromTy (NameTy s) = getTipoT s
-fromTy _ = P.error "no debería haber una definición de tipos en los args..."
+fromTy _ = P.error "No debería haber una definición de tipos en los args..."
 
-{-
--- Acá agregamos los tipos, clase 04/09/17
-transDecs :: (Manticore w) => [Dec] -> (w a -> w a)
-transDecs ds w = foldr trDec w ds
+-- \\\\\\\\\\\\\\\\\\\\\\\\\\\ --
+-- Traduccion de declaraciones --
+-- /////////////////////////// --
+
+transDecs dcs w 
+  | isInterrupted dcs             = derror $ pack "Se corta el batch de definiciones consecutivas" 
+  | or $ map hasRepeatedNames dcs = derror $ pack "Hay nombres repetidos en algun batch de definiciones consecutivas"
+  | otherwise                     = foldr trDec w dcs
+
+hasRepeatedNames :: Dec -> Bool
+hasRepeatedNames dec = or $ map (\x -> elem x (names \\ [x])) names
+  where names = getNamesDec dec
+ 
+-- Chequeamos si hay una interrupcion en la definicion de funciones o tipos
+-- mutuamente recursivos
+isInterrupted :: [Dec] -> Bool
+isInterrupted [] = False
+isInterrupted (d:dcs)
+  | isFunc d = or $ map (referencesAnother dcs) (concat $ map getCalls (stripFunc d)) -- Funciones llamadas en d 
+  | isVar d  = False
+  | isType d = or $ map (referencesAnother dcs) (concat $ map getTys (stripType d)) -- Tipos referenciados en d
+ 
+referencesAnother :: [Dec] -> Symbol -> Bool
+referencesAnother dcs name = elem name $ concat $ map getNamesDec dcs
+ 
+getNamesDec :: Dec -> [Symbol]
+getNamesDec (FunctionDec f)       = map (\(a, _, _, _, _) -> a) f
+getNamesDec (VarDec name _ _ _ _) = [name]
+getNamesDec (TypeDec t)           = map (\(a, _, _) -> a) t
+ 
+-- Obtenemos las llamadas de funcion realizadas en una expresion
+-- Lo uso para analizar las llamadas a otras funciones dentro del body
+-- de una funcion
+getCalls :: Exp -> [Symbol]
+getCalls (VarExp _ _)            = []
+getCalls (UnitExp _)             = []
+getCalls (BreakExp _)            = []
+getCalls (NilExp _)              = []
+getCalls (IntExp _ _)            = []
+getCalls (StringExp _ _)         = []
+getCalls (CallExp name exps _)   = name : (concat $ map getCalls exps)  
+getCalls (OpExp e1 _ e2 _)       = getCalls e1 ++ getCalls e2
+getCalls (RecordExp flds _ _)    = concat $ map (\(s, e) -> getCalls e) flds
+getCalls (SeqExp exps _)         = concat $ map getCalls exps
+getCalls (AssignExp _ e _)       = getCalls e
+getCalls (IfExp e1 e2 e3 _)
+  | isJust e3 = mixCalls ++ getCalls (fromJust e3) 
+  | otherwise = mixCalls
+  where mixCalls = getCalls e1 ++ getCalls e2
+getCalls (WhileExp e1 e2 _)      = getCalls e1 ++ getCalls e2
+getCalls (ForExp _ _ e1 e2 e3 _) = getCalls e1 ++ getCalls e2 ++ getCalls e3
+getCalls (LetExp _ e _)          = getCalls e
+getCalls (ArrayExp _ e1 e2 _)    = getCalls e1 ++ getCalls e2
+ 
+getTys :: Ty -> [Symbol]
+getTys (NameTy name)  = [name]
+getTys (RecordTy f)   = concat $ map (\(sym, _, ty) -> sym : (getTys ty)) f  
+getTys (ArrayTy name) = [name]
+ 
+-- Funciones auxiliares
+stripFunc :: Dec -> [Exp]
+stripFunc (FunctionDec f) = map (\(_, _, _, d, _) -> d) f
+ 
+stripType :: Dec -> [Ty]
+stripType (TypeDec t) = map (\(_, b, _) -> b) t
+ 
+isFunc :: Dec -> Bool
+isFunc (FunctionDec _) = True
+isFunc _               = False
+ 
+isVar :: Dec -> Bool
+isVar (VarDec _ _ _ _ _) = True
+isVar _                  = False
+ 
+isType :: Dec -> Bool
+isType (TypeDec _) = True
+isType _           = False
 
 trDec :: (Manticore w) => Dec -> w a -> w a
 trDec (FunctionDec fs) w                   =
@@ -454,8 +405,11 @@ insDec (symb, params, result, body, pos) w =
           Just s  -> do t <- transTy (NameTy s)  
                         insertFunV symb (u, symb, params', t, False) w
                           
+-- \\\\\\\\\\\\\\\\\\\\\\\\\ --
+-- Traduccion de expresiones --
+-- ///////////////////////// --
 
-transExp :: (MemM W, Manticore w) => Exp -> w (BExp, Tipo)
+transExp :: (MemM w, Manticore w) => Exp -> w (BExp, Tipo)
 transExp (VarExp v p)             = addpos (transVar v) p
 transExp (UnitExp {})             = do bexp <- unitExp
                                        return (bexp, TUnit)
@@ -581,4 +535,21 @@ transExp(ArrayExp sn cant init p) =
      bexp <- arrayExp bcant binit
      return (bexp, sn')
   where unwrap (TArray t _) = t
--}
+
+okOp :: Tipo -> Tipo -> Oper -> Bool
+okOp TNil TNil EqOp  = False
+okOp TUnit _ EqOp    = False
+okOp _ _ EqOp        = True
+okOp TNil TNil NeqOp = False
+okOp TUnit _ NeqOp   = False
+okOp _ _ NeqOp       = True
+
+
+
+
+
+
+
+
+
+
