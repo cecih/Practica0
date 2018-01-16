@@ -257,7 +257,7 @@ aux l1 l2 = if null rest then res1 else aux res1 rest
 -- FIXME: ¿Aca es donde tendriamos que hacer el topological sort?
 --        Porque por ahi insertamos en desorden y me desaparece una
 --        definicion antes de usarla
-{-insBodys :: Manticore w => M.Map Symbol Ty -> w a -> w a
+insBodys :: Manticore w => M.Map Symbol Ty -> w a -> w a
 insBodys tys w =
   foldrWithKey (\k ty man -> 
                  do t <- getTipoT k
@@ -300,7 +300,7 @@ insHeader name (ArrayTy sym) tys w
 insRefRecord :: Manticore w => Symbol -> w a -> w a
 insRefRecord name w = insertTipoT name (RefRecord T.empty) w
 
-ourOrder :: (Eq a, Ord a) => (a, b, c) -> (a, b, c) -> Ordering
+{-ourOrder :: (Eq a, Ord a) => (a, b, c) -> (a, b, c) -> Ordering
 ourOrder (x1, _, _) (x2, _, _) = if x1 > x2 then GT else
                                      if x1 == x2 then EQ else LT  
 -}
