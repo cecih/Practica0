@@ -30,7 +30,7 @@ library
         -- Edited
         -- Ir Gen new files
         , TigerTree
-        --, TigerTrans
+        , TigerTrans
         , TigerFrame
         --, TigerPrettyIr
         --, TigerCanon

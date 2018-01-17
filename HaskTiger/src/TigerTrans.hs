@@ -185,7 +185,7 @@ instance (MemM w) => IrGen w where
        procEntryExit lvl (Nx body)
        return $ Ex $ Const 0
   --simpleVar :: Access -> Int -> w BExp
-  simpleVar acc level 
+  {-simpleVar acc level 
     | deltaProf > 0 = do sl   <- genSl deltaProf
                          tmp1 <- newTemp
                          tmp2 <- newTemp
@@ -193,11 +193,12 @@ instance (MemM w) => IrGen w where
                                                   , Move (Temp tmp2) (Mem (BinOp Plus (Temp tmp1) (Const $ fromFrame acc)))])
                                             (Temp tmp1)  
     | otherwise     = internal $ pack "La variable no se encuentra definida"
-  where deltaProf             = acc - level
-        genSl 0               = []
-        genSl n               = do temp <- newTemp
-        fromFrame (InFrame f) = f
-        fromFrame _           = P.error "No se" --FIXME 
+    where deltaProf             = acc - level
+          genSl 0               = []
+          genSl n               = do temp <- newTemp
+          fromFrame (InFrame f) = f
+          fromFrame _           = P.error "No se" --FIXME 
+-}
   varDec acc = getActualLevel >>= simpleVar acc
   unitExp = return $ Ex (Const 0)
   nilExp = return $ Ex (Const 0)

@@ -66,16 +66,28 @@ initConf = G {unique = 0
                       ]
             , auxEnv = M.empty}
 
--- Acompañado de un tipo de errores
-data SEErrores = NotFound T.Text | DiffVal T.Text | Internal T.Text
-    deriving Show
 
-errAppend :: SEErrores -> Symbol -> SEErrores
-errAppend (NotFound t) s = NotFound $ addStr (unpack t) s 
-errAppend (DiffVal t) s  = DiffVal $ addStr (unpack t) s 
-errAppend (Internal t) s = Internal $ addStr (unpack t) s 
 
 type OurState = StateT EstadoG (Either SEErrores) 
+
+instance Daemon OurState where
+  derror e   = throwError e  
+  notfound s = derror $ ENotFound $ addStr "Not found: " s
+  diffval s  = derror $ EDiffVal $ addStr "Different values: " s
+  internal s = derror $ EInternal $ addStr "Internal: " s
+  user s     = derror $ EUser $ addStr "User: " s
+  adder  w s = catchError w (\e -> let ea = errAppend e s 
+                                   in case ea of
+                                        ENotFound t -> notfound t
+                                        EDiffVal t  -> diffval t
+                                        EInternal t -> internal t
+                                        EUser t     -> user t)  
+
+errAppend :: SEErrores -> Symbol -> SEErrores
+errAppend (ENotFound t) s = ENotFound $ addStr (unpack t) s 
+errAppend (EDiffVal t) s  = EDiffVal $ addStr (unpack t) s 
+errAppend (EInternal t) s = EInternal $ addStr (unpack t) s 
+errAppend (EUser t) s     = EUser $ addStr (unpack t) s 
 
 class (Daemon w, Monad w) => Manticore w where
   -- | Inserta una Variable al entorno
@@ -125,14 +137,6 @@ class (Daemon w, Monad w) => Manticore w where
   -- | Funcion auxiliar para agregar tipos
   addTypos :: [(Symbol, Ty, Pos)] -> w a -> w a
 
-instance Daemon OurState where
-  derror s   = throwError $ Internal s  
-  adder  w s = catchError w (\e -> let ea = errAppend e s 
-                                   in case ea of
-                                        NotFound t -> notfound t
-                                        DiffVal t  -> diffval t
-                                        Internal t -> internal t)  
-
 instance Manticore OurState where
   insertValV s ve w  = trace ("Insertamos Val " ++ unpack s) $ 
                        do st  <- get
@@ -154,18 +158,18 @@ instance Manticore OurState where
                        do st <- get
                           case M.lookup s (vEnv st) of
                             Just (Func f) -> return f 
-                            Nothing       -> derror $ pack $ "La funcion " ++ (unpack s) ++ " no esta definida"  
+                            Nothing       -> notfound $ pack $ "La funcion " ++ (unpack s) ++ " no esta definida"  
   getTipoValV s      = trace ("Buscamos Val " ++ unpack s) $ 
                        do st <- get
                           case M.lookup s (vEnv st) of
                             Just (Var v) -> return v 
-                            Nothing      -> derror $ pack $ "La variable " ++ (unpack s) ++ " no esta en el entorno"   
-                            other        -> derror $ pack $ (show $ fromJust other) ++ " no es una variable" 
+                            Nothing      -> internal $ pack $ "La variable " ++ (unpack s) ++ " no esta en el entorno"   
+                            other        -> user $ pack $ (show $ fromJust other) ++ " no es una variable" 
   getTipoT s         = trace ("Buscamos Tipo " ++ unpack s) $
                        do st <- get
                           case M.lookup s (tEnv st) of
                             Just ty -> return ty 
-                            Nothing -> derror $ pack $ "El tipo " ++ (unpack s) ++ " no esta en el entorno" 
+                            Nothing -> internal $ pack $ "El tipo " ++ (unpack s) ++ " no esta en el entorno" 
   showVEnv           = do st <- get
                           trace (show $ vEnv st) (return ())    
   showTEnv           = do st <- get
@@ -242,26 +246,27 @@ transVar :: (MemM w, Manticore w) => Var -> w (BExp, Tipo)
 transVar (SimpleVar s)      = do (t, acc, lv) <- getTipoValV s
                                  bexp         <- simpleVar acc lv 
                                  return (bexp, t)
+-- TODO: sacar el nombre de la fieldvar?
 transVar (FieldVar v s)     =
   do (bexp, v') <- transVar v
      case v' of
        TRecord fields _ ->
          let res = filter (\(x, y) -> x == s) (map (\(x, y, z) -> (x, y)) fields)
          in if not $ null res then return $ (bexp, snd (head res))
-              else P.error "El record no posee el campo deseado"       
+              else user $ pack "El record no posee el campo deseado"       
        RefRecord text   ->
-         P.error "Error interno" -- Nunca debería darse 
+         internal $ pack "Error interno" -- Nunca debería darse 
        _                ->
-         P.error "No es un record"
+         internal $ pack "No es un record"
 transVar (SubscriptVar v e) =
   do (bexp, v') <- transVar v
      case v' of
        TArray typ _ ->
          do (be, te) <- transExp e 
-            C.unlessM (tiposIguales te (TInt RW)) $ P.error "La variable no es del tipo que se le quiere asignar"
+            C.unlessM (tiposIguales te (TInt RW)) $ user $ pack "El indice no es un entero"
             return (bexp, typ)
        _            ->
-         P.error "No es un array"
+         user $ pack "La variable a la cual se intenta acceder no es un array"
           
 -- \\\\\\\\\\\\\\\\\\\ --
 -- Traduccion de tipos --
@@ -281,15 +286,15 @@ transTy (ArrayTy s)     =
 
 fromTy :: (Manticore w) => Ty -> w Tipo
 fromTy (NameTy s) = getTipoT s
-fromTy _ = P.error "No debería haber una definición de tipos en los args..."
+fromTy _          = user $ pack "No debería haber una definición de tipos en los args..."
 
 -- \\\\\\\\\\\\\\\\\\\\\\\\\\\ --
 -- Traduccion de declaraciones --
 -- /////////////////////////// --
 
 transDecs dcs w 
-  | isInterrupted dcs             = derror $ pack "Se corta el batch de definiciones consecutivas" 
-  | or $ map hasRepeatedNames dcs = derror $ pack "Hay nombres repetidos en algun batch de definiciones consecutivas"
+  | isInterrupted dcs             = user $ pack "Se corta el batch de definiciones consecutivas" 
+  | or $ map hasRepeatedNames dcs = user $ pack "Hay nombres repetidos en algun batch de definiciones consecutivas"
   | otherwise                     = foldr trDec w dcs
 
 hasRepeatedNames :: Dec -> Bool
@@ -363,7 +368,7 @@ isType _           = False
 
 trDec :: (MemM w, Manticore w) => Dec -> w a -> w a
 trDec (FunctionDec fs) w                   =
-  let checkFs    = foldr (\(_ , params, result, body, _) w' ->
+  let checkFs    = foldr (\(name , params, result, body, _) w' ->
                            case result of
                              Nothing -> w'
                              Just r  -> 
@@ -371,18 +376,20 @@ trDec (FunctionDec fs) w                   =
                                   tyr        <- getTipoT r 
                                   b          <- tiposIguales tyt tyr
                                   if b then w' 
-                                    else P.error "El valor de retorno no tiene el tipo indicado en la signatura de la función")
+                                    else user $ pack $ "El valor de retorno de la funcion"
+                                                        ++ (unpack name) 
+                                                        ++ "no tiene el tipo indicado en la signatura de la función")
   in foldr insDec (checkFs w fs) fs  
 trDec (VarDec symb escape typ einit pos) w =
   do (binit, tyinit') <- transExp einit 
      case typ of
-       Nothing -> if isNil tyinit' then P.error $ "La variable " ++ (unpack symb) ++ " no puede inicializarse en nil" 
+       Nothing -> if isNil tyinit' then user $ pack $ "La variable " ++ (unpack symb) ++ " no puede inicializarse en nil" 
                     else do lvl <- getActualLevel
                             acc <- Trans.allocLocal False --FIXME: ¿A donde metemos la variable?
                             insertValV symb (tyinit', acc, lvl) w  
        Just s  -> do t' <- transTy (NameTy s) --w Tipo
                      b  <- tiposIguales tyinit' t'
-                     if not b then P.error (show tyinit' ++ show t' ++ " Los tipos son distintos\n") 
+                     if not b then user $ pack $ show tyinit' ++ show t' ++ " Los tipos son distintos\n" 
                               else do lvl <- getActualLevel
                                       acc <- Trans.allocLocal False --FIXME: ¿A donde metemos la variable?
                                       insertValV symb (t', acc, lvl) w 
@@ -440,42 +447,42 @@ transExp (OpExp el' oper er' p)   =
   do -- Esta va gratis
     (bel, el) <- transExp el'
     (ber, er) <- transExp er'
-    C.unlessM (tiposIguales el er) (P.error "Tipos diferentes")
+    C.unlessM (tiposIguales el er) (user $ pack $ "Los tipos de los operandos difieren")
     case oper of
-      EqOp     -> do C.unless (okOp el er oper) (P.error ("Tipos no comparables " ++ show el ++ show er ++ show oper))
+      EqOp     -> do C.unless (okOp el er oper) (user $ pack $ "Tipos no comparables " ++ show el ++ show er ++ show oper)
                      bexp <- binOpIntRelExp bel oper ber
                      return (bexp, TInt RW)
-      NeqOp    -> do C.unless (okOp el er oper) (P.error ("Tipos no comparables " ++ show el ++ show er ++ show oper))
+      NeqOp    -> do C.unless (okOp el er oper) (user $ pack $ "Tipos no comparables " ++ show el ++ show er ++ show oper)
                      bexp <- binOpIntRelExp bel oper ber
                      return (bexp, TInt RW)
-      PlusOp   -> do C.unlessM (tiposIguales el $ TInt RW) (P.error ("Tipo " ++ show el' ++ " no es un entero"))
+      PlusOp   -> do C.unlessM (tiposIguales el $ TInt RW) (user $ pack $ "Tipo " ++ show el' ++ " no es un entero")
                      bexp <- binOpIntExp bel oper ber
                      return (bexp, TInt RW)
-      MinusOp  -> do C.unlessM (tiposIguales el $ TInt RW) (P.error ("Tipo " ++ show el' ++ " no es un entero"))
+      MinusOp  -> do C.unlessM (tiposIguales el $ TInt RW) (user $ pack $ "Tipo " ++ show el' ++ " no es un entero")
                      bexp <- binOpIntExp bel oper ber
                      return (bexp, TInt RW)
-      TimesOp  -> do C.unlessM (tiposIguales el $ TInt RW) (P.error ("Tipo " ++ show el' ++ " no es un entero"))
+      TimesOp  -> do C.unlessM (tiposIguales el $ TInt RW) (user $ pack $ "Tipo " ++ show el' ++ " no es un entero")
                      bexp <- binOpIntExp bel oper ber
                      return (bexp, TInt RW)
-      DivideOp -> do C.unlessM (tiposIguales el $ TInt RW) (P.error ("Tipo " ++ show el' ++ " no es un entero"))
+      DivideOp -> do C.unlessM (tiposIguales el $ TInt RW) (user $ pack $ "Tipo " ++ show el' ++ " no es un entero")
                      bexp <- binOpIntExp bel oper ber
                      return (bexp, TInt RW)
       LtOp     -> ifM ((tiposIguales el $ TInt RW) <||> (tiposIguales el TString))
                       (do bexp <- binOpIntRelExp bel oper ber
                           return (bexp, TInt RW))
-                      (P.error ("Elementos de tipo" ++ show el ++ "no son comparables"))
+                      (user $ pack $ "Elementos de tipo" ++ show el ++ "no son comparables")
       LeOp     -> ifM ((tiposIguales el $ TInt RW) <||> (tiposIguales el TString))
                       (do bexp <- binOpIntRelExp bel oper ber
                           return (bexp, TInt RW))
-                      (P.error ("Elementos de tipo" ++ show el ++ "no son comparables"))
+                      (user $ pack $ "Elementos de tipo" ++ show el ++ "no son comparables")
       GtOp     -> ifM ((tiposIguales el $ TInt RW) <||> (tiposIguales el TString))
                       (do bexp <- binOpIntRelExp bel oper ber
                           return (bexp, TInt RW))
-                      (P.error ("Elementos de tipo" ++ show el ++ "no son comparables"))
+                      (user $ pack $ "Elementos de tipo" ++ show el ++ "no son comparables")
       GeOp     -> ifM ((tiposIguales el $ TInt RW) <||> (tiposIguales el TString))
                       (do bexp <- binOpIntRelExp bel oper ber
                           return (bexp, TInt RW))
-                      (P.error ("Elementos de tipo" ++ show el ++ "no son comparables"))
+                      (user $ pack $ "Elementos de tipo" ++ show el ++ "no son comparables")
 transExp(RecordExp flds rt p)     = 
   do let (sym, e) = unzip $ sortBy  order' flds
      e' <- mapM transExp e
@@ -493,32 +500,32 @@ transExp(SeqExp es p)             =
 transExp(AssignExp var val p)     = 
   do (bvar, tvar) <- transVar var
      (bval, tval) <- transExp val
-     C.unlessM (tiposIguales tvar tval) $ P.error "La variable no es del tipo que se le quiere asignar"
+     C.unlessM (tiposIguales tvar tval) $ user $ pack "La variable no es del tipo que se le quiere asignar"
      bexp <- assignExp bvar bval
      return (bexp, TUnit) 
 transExp(IfExp co th Nothing p)   = 
   do (bco', co') <- transExp co
-     C.unlessM (tiposIguales co' $ TInt RW) $ P.error "Error en la condición"
+     C.unlessM (tiposIguales co' $ TInt RW) $ user $ pack "La variable de la condicion del if no es de tipo entero"
      (bth', th') <- transExp th
-     C.unlessM (tiposIguales th' TUnit) $ P.error "La expresión del then no es de tipo unit"
+     C.unlessM (tiposIguales th' TUnit) $ user $ pack "La expresión del then no es de tipo unit"
      bexp       <- ifThenExp bco' bth'
      return (bexp, TUnit)
 transExp(IfExp co th (Just el) p) = 
   do (bco', co') <- transExp co
-     C.unlessM (tiposIguales co' $ TInt RW) $ P.error "Error en la condición"
+     C.unlessM (tiposIguales co' $ TInt RW) $ user $ pack "La variable de la condicion del if no es de tipo entero"
      (bth', th') <- transExp th
      (bel', el') <- transExp el
-     C.unlessM (tiposIguales th' el') $ P.error "Las ramas del if difieren en el tipo" 
+     C.unlessM (tiposIguales th' el') $ user $ pack "Las ramas del if difieren en el tipo" 
      if th' == TUnit then do iexp <- ifThenElseExpUnit bco' bth' bel' 
                              return (iexp, TUnit)
        else do iexp <- ifThenElseExp bco' bth' bel'
                return (iexp, if th' == TNil then el' else th')
 transExp(WhileExp co body p)      =
   do (bco', co') <- transExp co
-     C.unlessM (tiposIguales co' $ TInt RW) $ P.error "Error en la condición"
+     C.unlessM (tiposIguales co' $ TInt RW) $ user $ pack "La expresion de la condicion del while no es de tipo entero"
      preWhileforExp
      (bbo, body') <- transExp body
-     C.unlessM (tiposIguales body' TUnit) $ P.error "El cuerpo del while está retornando algún valor"
+     C.unlessM (tiposIguales body' TUnit) $ user $ pack "El cuerpo del while está retornando algún valor"
      posWhileforExp
      bexp <- whileExp bco' bbo
      return (bexp, TUnit)
@@ -542,9 +549,9 @@ transExp(ArrayExp name cant init p) =
   do u     <- ugen
      name' <- getTipoT name
      (bcant, tcant) <- transExp cant
-     C.unlessM (tiposIguales tcant $ TInt RW) $ P.error "El índice debe ser un entero"
+     C.unlessM (tiposIguales tcant $ TInt RW) $ user $ pack "El índice de acceso al array debe ser un entero"
      (binit, tinit) <- transExp init
-     C.unlessM (tiposIguales (unwrap name') tinit) $ P.error "El tipo del init debe coincidir con el de la variable"
+     C.unlessM (tiposIguales (unwrap name') tinit) $ user $ pack "El tipo del init debe coincidir con el de la variable para el array"
      bexp <- arrayExp bcant binit
      return (bexp, name')
   where unwrap (TArray t _) = t

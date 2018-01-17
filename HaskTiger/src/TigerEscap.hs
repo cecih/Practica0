@@ -56,7 +56,7 @@ class (Daemon m, Monad m) => Escapator m where
     -- putNum :: Pos -> Symbol -> m a
     -- putNum ln er = derror $ append er $ pack $ printPos ln
     raise :: Symbol -> m a
-    raise = derror
+    raise = internal
     ---
     -- | Actualiza hardcore el entorno
     update :: Symbol -> Bool -> m ()
@@ -194,7 +194,7 @@ travDecs (l : xs) m = travDecs xs m
 type Mini = ST.StateT Estado (Either Errores)
 
 instance Daemon Mini where
-  derror = throwError . Interno
+  derror e  = throwError $ Interno $ pack ""
   adder w s = catchError w (\e -> throwError $ eappend e s)
 
 instance Escapator Mini where
