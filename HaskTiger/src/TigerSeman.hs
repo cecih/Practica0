@@ -13,7 +13,7 @@ import           TigerErrores         as E
 import           TigerFrame
 import           TigerSres
 import           TigerSymbol
-import           TigerTrans
+import           TigerTrans           as Trans
 import           TigerTemp
 import           TigerTips
 
@@ -135,18 +135,18 @@ instance Daemon OurState where
 
 instance Manticore OurState where
   insertValV s ve w  = trace ("Insertamos Val " ++ unpack s) $ 
-                       do st <- get
+                       do st  <- get
                           res <- withStateT (\st' -> st' {vEnv = M.insert s (Var ve) (vEnv st)}) w  
                           put st
                           return res
   insertFunV s fe w  = trace ("Insertamos Fun " ++ unpack s) $ 
-                       do st <- get
+                       do st  <- get
                           res <- withStateT (\st' -> st' {vEnv = M.insert s (Func fe) (vEnv st)}) w 
                           put st
                           return res 
   insertVRO s w      = insertValV s (TInt RO, InFrame 0, 0) w 
   insertTipoT s ty w = trace ("Insertamos Tipo " ++ unpack s) $
-                       do st <- get
+                       do st  <- get
                           res <- withStateT (\st' -> st' {tEnv = M.insert s ty (tEnv st)}) w  
                           put st
                           return res 
@@ -361,36 +361,40 @@ isType :: Dec -> Bool
 isType (TypeDec _) = True
 isType _           = False
 
-trDec :: (Manticore w) => Dec -> w a -> w a
+trDec :: (MemM w, Manticore w) => Dec -> w a -> w a
 trDec (FunctionDec fs) w                   =
-  let env' f m   = foldr f m
-      checkFs    = env' (\(_ , params, result, body, _) w' ->
+  let checkFs    = foldr (\(_ , params, result, body, _) w' ->
                            case result of
                              Nothing -> w'
-                             Just r  -> do tyb <- env' insVar (transExp body) params
-                                           tyr <- getTipoT r 
-                                           b   <- tiposIguales tyb tyr
-                                           if b then w' 
-                                             else P.error "El valor de retorno no tiene el tipo indicado en la signatura de la función")
-  in env' insDec (checkFs w fs) fs --checkFs fs >> env' insDec w fs 
+                             Just r  -> 
+                               do (tyb, tyt) <- foldr insVar (transExp body) params
+                                  tyr        <- getTipoT r 
+                                  b          <- tiposIguales tyt tyr
+                                  if b then w' 
+                                    else P.error "El valor de retorno no tiene el tipo indicado en la signatura de la función")
+  in foldr insDec (checkFs w fs) fs  
 trDec (VarDec symb escape typ einit pos) w =
-  do (binit, tyinit') <- transExp einit --w (BExp,Tipo)
+  do (binit, tyinit') <- transExp einit 
      case typ of
-       Nothing -> --do b <- tiposIguales tyinit' TNil
-                     if isNil tyinit' then P.error "El tipo de la expresion no debe ser nil\n" 
-                                      else insertValV symb (tyinit', acc, ninit) w  --TODO: idem a insVar
+       Nothing -> if isNil tyinit' then P.error $ "La variable " ++ (unpack symb) ++ " no puede inicializarse en nil" 
+                    else do lvl <- getActualLevel
+                            acc <- Trans.allocLocal False --FIXME: ¿A donde metemos la variable?
+                            insertValV symb (tyinit', acc, lvl) w  
        Just s  -> do t' <- transTy (NameTy s) --w Tipo
                      b  <- tiposIguales tyinit' t'
                      if not b then P.error (show tyinit' ++ show t' ++ " Los tipos son distintos\n") 
-                              else insertValV symb (t', acc, ns) w --TODO: idem a insVar
+                              else do lvl <- getActualLevel
+                                      acc <- Trans.allocLocal False --FIXME: ¿A donde metemos la variable?
+                                      insertValV symb (t', acc, lvl) w 
   where isNil TNil = True
         isNil _    = False --TODO: CHEQUEAR ESTA FUNCION GRONCHA
 trDec (TypeDec ts) w                       = addTypos ts w                    
 
-insVar :: Manticore w => (Symbol, Bool, Ty) -> w a -> w a
+insVar :: (MemM w, Manticore w) => (Symbol, Bool, Ty) -> w a -> w a
 insVar (symb, _, ty) w = do ty' <- transTy ty
-                            insertValV symb (ty', acc, n) w  --ahora ValEntry es un sinonimo de (Tipo, Acces, Int)
-                            -- TODO: ver como generar el acc y n asociado a al ty'.
+                            lvl <- getActualLevel
+                            acc <- Trans.allocLocal False --FIXME: ¿A donde metemos la variable?
+                            insertValV symb (ty', acc, lvl) w
 
 -- insdec toma la tupla de una funcion y el entorno de ese momento. Devolvemos
 -- el entorno con la funcion y sus parametros agregados.
@@ -419,14 +423,19 @@ transExp (IntExp i _)             = do bexp <- intExp i
                                        return (bexp, TInt RW)
 transExp (StringExp s _)          = do bexp <- stringExp (pack s)
                                        return (bexp, TString)
-transExp (CallExp nm args p)      = 
-  do tfunc <- getTipoFunV nm
-     args' <- mapM transExp args  --TODO: revisar, si hay que hacer alguna modificacion
+--TODO: hacer esto! ¿Que hago con los argumentos?
+{-transExp (CallExp name args p)      = 
+  do tfunc <- getTipoFunV name
+     args' <- mapM transExp args  
      C.unless (length args == length (thd tfunc)) $ P.error "Difiere en la cantidad de argumentos"
-     mapM_ (\(x, y) -> C.unlessM (tiposIguales x y) $ P.error "Error en los tipos de los argumentos") (zip args' (thd tfunc))
-     return $ foth tfunc 
+     mapM_ (\((x, y), z) -> C.unlessM (tiposIguales y z) $ P.error "Error en los tipos de los argumentos") 
+           (zip args' (thd tfunc))
+     lvl  <- mapM () args'
+     cexp <- callExp name False False lvl (map fst args') --FIXME: ¿Que son los bools?
+     return $ (cexp, foth tfunc) 
   where thd  (_, _, c, _, _) = c  
         foth (_, _, _, d, _) = d
+-}
 transExp (OpExp el' oper er' p)   = 
   do -- Esta va gratis
     (bel, el) <- transExp el'
@@ -472,7 +481,7 @@ transExp(RecordExp flds rt p)     =
      e' <- mapM transExp e
      id <- getTipoT rt
      bexp <- recordExp $ zip (map fst e') [0..length e]
-     return (bexp, TRecord (zip3 sym e' [0..length e]) (getId id)) 
+     return (bexp, TRecord (zip3 sym (map snd e') [0..length e]) (getId id)) 
         where order' (sym1, _) (sym2, _) = if sym1 < sym2 then LT 
                                              else if sym1 > sym2 then GT
                                                     else EQ 
@@ -500,8 +509,10 @@ transExp(IfExp co th (Just el) p) =
      (bth', th') <- transExp th
      (bel', el') <- transExp el
      C.unlessM (tiposIguales th' el') $ P.error "Las ramas del if difieren en el tipo" 
-     if th' == TUnit then return (ifThenElseExpUnit bco' bth' bel', TUnit) 
-       else return (ifThenElseExp bco' bth' bel', if th' == TNil then el' else th')
+     if th' == TUnit then do iexp <- ifThenElseExpUnit bco' bth' bel' 
+                             return (iexp, TUnit)
+       else do iexp <- ifThenElseExp bco' bth' bel'
+               return (iexp, if th' == TNil then el' else th')
 transExp(WhileExp co body p)      =
   do (bco', co') <- transExp co
      C.unlessM (tiposIguales co' $ TInt RW) $ P.error "Error en la condición"
@@ -511,29 +522,31 @@ transExp(WhileExp co body p)      =
      posWhileforExp
      bexp <- whileExp bco' bbo
      return (bexp, TUnit)
-transExp(ForExp nv mb lo hi body p) =
+{-transExp(ForExp namev mb lo hi body p) =
   do (blo, lo') <- transExp lo
      (bhi, hi') <- transExp hi
      C.unlessM (tiposIguales lo' $ TInt RW) $ P.error "La cota inferior debe ser entera"
      C.unlessM (tiposIguales hi' $ TInt RW) $ P.error "La cota superior debe ser entera"
      preWhileforExp
-     (bbo, body1) <- insertVRO nv (transExp body)
-     C.unlessM (tiposIguales body2 TUnit) $ P.error "El cuerpo del for está retornando algun valor"
+     (bbody, tbody) <- insertVRO namev (transExp body)
+     C.unlessM (tiposIguales tbody TUnit) $ P.error "El cuerpo del for está retornando algun valor"
      posWhileforExp
      --bnv <- alguna funcion de codigo intermedio relacionado con nv revisar TODO
-     --bexp <- forExp blo' bhi' bnv  
+     fexp <- forExp blo bhi bnv bbody 
      return (bexp, TUnit) 
+-}
 transExp(LetExp dcs body p)       = transDecs dcs (transExp body)
-transExp(BreakExp p)              = return (breakExp, TUnit) -- Va gratis ;)
-transExp(ArrayExp sn cant init p) =
+transExp(BreakExp p)              = do bexp <- breakExp
+                                       return (bexp, TUnit)
+transExp(ArrayExp name cant init p) =
   do u     <- ugen
-     sn'   <- getTipoT sn
-     (bcant, cant') <- transExp cant
-     C.unlessM (tiposIguales cant' $ TInt RW) $ P.error "El índice debe ser un entero"
-     (bininit, init') <- transExp init
-     C.unlessM (tiposIguales (unwrap sn') init') $ P.error "El tipo del init debe coincidir con el de la variable"
+     name' <- getTipoT name
+     (bcant, tcant) <- transExp cant
+     C.unlessM (tiposIguales tcant $ TInt RW) $ P.error "El índice debe ser un entero"
+     (binit, tinit) <- transExp init
+     C.unlessM (tiposIguales (unwrap name') tinit) $ P.error "El tipo del init debe coincidir con el de la variable"
      bexp <- arrayExp bcant binit
-     return (bexp, sn')
+     return (bexp, name')
   where unwrap (TArray t _) = t
 
 okOp :: Tipo -> Tipo -> Oper -> Bool
