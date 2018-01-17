@@ -177,127 +177,6 @@ instance Manticore OurState where
   ugen               = do u <- get                             
                           put (u {unique = unique u + 1})
                           return $ unique u + 1 
-<<<<<<< HEAD
-  addTypos tys w  = 
-    let addL ts ht = addLoop ts ht  
-        refs e1    = foldr insRefs e1 ref
-        recs e2    = foldr (insRecs frs) e2 rs'
-        rep e3     = foldr replace e3 ref
-    in do st <- get
-          let m = tenvToList $ tEnv st
-          addL (topoSort $ sim ++ m) (M.fromList $ sim ++ m) (refs (recs (rep w)))
-    where (rs, tys')          = partition (\(x, y) -> isRecord y) (map (\(x, y, _) -> (x, y)) tys)
-          (ref, sim)          = partition (\(x,y) -> elem (name y) frs) tys'
-          rs'                 = map (\(s, ty) -> (s, sortBy ourOrder $ fList ty)) rs
-          frs                 = map fst rs
-          fList (RecordTy fl) = fl
-
-name :: Ty -> Symbol
-name (ArrayTy sym)  = sym
-name (NameTy sym)   = sym
-name _              = P.error "Error interno"                     
-
-tenvToList :: M.Map Symbol Tipo -> [(Symbol, Ty)]
-tenvToList m = map (\(symb, _) -> (symb, NameTy symb)) (M.toList m)   
-
-insRefs :: Manticore w => (Symbol, Ty) -> w a -> w a
-insRefs (symb, ty) w = trace "insRefs" $ insertTipoT symb (fromTyTipo ty (RefRecord $ name ty)) w 
-
-fromTyTipo :: Ty -> Tipo -> Tipo
-fromTyTipo (NameTy _) t2    = t2
-fromTyTipo (ArrayTy sym) t2 = TArray t2 0 
---TODO: caso de RecordTY
-
-insRecs :: Manticore w => [Symbol] -> (Symbol, [Field]) -> w a -> w a
-insRecs recs (symb, flds) w = trace "insRecs" $ do let (symbs, bools, tys) = unzip3 flds  
-                                                   ty' <- mapM (\t -> let nt = name t
-                                                                      in if elem nt recs then return $ RefRecord nt 
-                                                                                         else getTipoT nt) tys
-                                                   u   <- ugen
-                                                   insertTipoT symb (TRecord (zip3 symbs ty' [0..length $ flds]) u) w 
-
-replace :: Manticore w => (Symbol, Ty) -> w a -> w a
-replace (symb, ty) w = trace "replace" $  do t <- getTipoT $ name ty
-                                             insertTipoT symb (fromTyTipo ty t) w 
-
-isRecord :: Ty -> Bool
-isRecord (RecordTy _) = True
-isRecord _            = False
-
-addLoop :: Manticore w => [Symbol] -> M.Map Symbol Ty -> w a -> w a 
-addLoop sims m w = foldr (insTipo m) w sims
-
-insTipo :: Manticore w => M.Map Symbol Ty -> Symbol -> w a -> w a
-insTipo m symb w = do let ty = m M.! symb
-                      ty' <- transTy ty
-                      insertTipoT symb ty' w  
-                                                   
-topoSort :: [(Symbol, Ty)] -> [Symbol] 
-topoSort elems 
-  | ciclo ps elemsmap = P.error "Hay ciclo\n"
-  | otherwise       = 
-    fromEdges (G.topSort $ G.buildG (1, len) (toEdges ps m)) (M.toList m) 
-  where ps       = filter (\(x, y) -> x /= y) (concat $ map predSucc elems)
-        elemsmap = map head (group $ sort (map fst elems))
-        len      = length elemsmap
-        m        = M.fromList $ zip elemsmap [1..len]
-
-toEdges :: [(Symbol, Symbol)] -> M.Map Symbol Int -> [G.Edge]
-toEdges pares ht = map (\(x, y) -> (ht M.! x, ht M.! y)) pares
-
-fromEdges :: [G.Vertex] -> [(Symbol, Int)] -> [Symbol]
-fromEdges [] _     = []
-fromEdges (x:xs) m = case find (\y -> x == snd y) m of
-                       Nothing -> []
-                       Just v  -> fst v : (fromEdges xs m)   
-
--- Arma pares pred/succ     
-predSucc :: (Symbol, Ty) -> [(Symbol, Symbol)]
-predSucc (sym, NameTy ns)   = [(ns, sym)]
-predSucc (sym, ArrayTy as)  = [(as, sym)]
-predSucc (sym, RecordTy fl) = concat $ map (\(s, _, t) -> case t of
-                                                            RecordTy _ -> []
-                                                            _          -> [(s, sym)]) fl
-
-ciclo :: [(Symbol, Symbol)] -> [Symbol] -> Bool
-ciclo pares elems = null $ preds pares elems
-    where preds x y = y -??- map (\(f, s) -> s) x
-
-infixl -?-
-infixl -??-
-
-(-?-) :: Eq a => [a] -> a -> [a]
-[] -?- _    = []
-(h:t) -?- e = if h == e then t -?- e else h : (t -?- e)
-
-(-??-) :: Eq a => [a] -> [a] -> [a]
-l1 -??- l2 = aux l1 l2
-
-aux :: Eq a => [a] -> [a] -> [a]
-aux l1 [] = l1
-aux l1 l2 = if null rest then res1 else aux res1 rest   
-  where rest = tail l2
-        res1 = l1 -?- (head l2)
-
--- Insertamos todos los bodys de los tipos
--- FIXME: ¿Aca es donde tendriamos que hacer el topological sort?
---        Porque por ahi insertamos en desorden y me desaparece una
---        definicion antes de usarla
-insBodys :: Manticore w => M.Map Symbol Ty -> w a -> w a
-insBodys tys w =
-  foldrWithKey (\k ty man -> 
-                 do t <- getTipoT k
-                    case isRefRecord t of
-                      True  -> either (\n -> do n' <- transTy n
-                                                insertTipoT ??? n' man) 
-                                      (\f -> map () f) 
-                                      (stripTy t)  
-                      False -> w) w tys
-  where ref (RefRecord r) = r
- 
-stripTy :: Ty -> Either Symbol [Field]
-stripTy (Name name)       = Left name
-=======
   addTypos tys w     = insHeaders tys' (insBodys  tys' w)
     where tys' = M.fromList $ map (\(x, y, z) -> (x, y)) tys
   
@@ -320,7 +199,6 @@ insBodys tys w =
  
 stripTy :: Ty -> Either Symbol [Field]
 stripTy (NameTy name)     = Left name
->>>>>>> 4f04fb19cab3bae0eb0f5f18d8ce1caa7fd0208d
 stripTy (ArrayTy name)    = Left name
 stripTy (RecordTy fields) = Right fields
 
@@ -331,26 +209,11 @@ isRefRecord _             = False
 
 -- Insertamos todos los headers
 insHeaders :: Manticore w => M.Map Symbol Ty -> w a -> w a
-<<<<<<< HEAD
-insHeaders tys w = M.foldrWithKey (\k ty man -> do t <- insHeader k t tys 
-=======
 insHeaders tys w = M.foldrWithKey (\k ty man -> do t <- insHeader k ty tys 
->>>>>>> 4f04fb19cab3bae0eb0f5f18d8ce1caa7fd0208d
                                                    insertTipoT k t man) w tys
 
 -- Insertamos un unico header
 insHeader :: Manticore w => Symbol -> Ty -> M.Map Symbol Ty -> w Tipo 
-<<<<<<< HEAD
-insHeader name (NameTy sym) tys         
-  | M.member sym tys = return $ RefRecord T.empty 
-  | otherwise        = transTy name 
-insHeader name (RecordTy fields) tys w
-  | or $ map (\(x, y, z) -> x == name || M.member x tys) fields = return $ RefRecord T.empty   
-  | otherwise                                                   = transTy (RecordTy fields)  
-insHeader name (ArrayTy sym) tys w   
-  | M.member sym tys = return $ RefRecord T.empty 
-  | otherwise        = transTy name
-=======
 insHeader name nam@(NameTy sym) tys          
   | M.member sym tys = return $ RefRecord T.empty 
   | otherwise        = transTy nam 
@@ -360,41 +223,14 @@ insHeader name rec@(RecordTy fields) tys
 insHeader name arr@(ArrayTy sym) tys    
   | M.member sym tys = return $ RefRecord T.empty 
   | otherwise        = transTy arr
->>>>>>> 4f04fb19cab3bae0eb0f5f18d8ce1caa7fd0208d
 
 -- Funcion auxiliar para escribir menos
 insRefRecord :: Manticore w => Symbol -> w a -> w a
 insRefRecord name w = insertTipoT name (RefRecord T.empty) w
 
-<<<<<<< HEAD
-{-ourOrder :: (Eq a, Ord a) => (a, b, c) -> (a, b, c) -> Ordering
-ourOrder (x1, _, _) (x2, _, _) = if x1 > x2 then GT else
-                                     if x1 == x2 then EQ else LT  
--}
-
-
--- Podemos definir el estado inicial como:
-initConf :: EstadoG
-initConf = G {unique = 0
-            , tEnv = M.insert (T.pack "int") (TInt RW) (M.singleton (T.pack "string") TString)
-            , vEnv = M.fromList
-                      [(T.pack "print", Func (1,T.pack "print",[TString], TUnit, True))
-                      ,(T.pack "flush", Func (1,T.pack "flush",[],TUnit, True))
-                      ,(T.pack "getchar",Func (1,T.pack "getchar",[],TString,True))
-                      ,(T.pack "ord",Func (1,T.pack "ord",[TString],TInt RW,True)) -- Ojota con este intro...
-                      ,(T.pack "chr",Func (1,T.pack "chr",[TInt RW],TString,True))
-                      ,(T.pack "size",Func (1,T.pack "size",[TString],TInt RW,True))
-                      ,(T.pack "substring",Func (1,T.pack "substring",[TString,TInt RW, TInt RW],TString,True))
-                      ,(T.pack "concat",Func (1,T.pack "concat",[TString,TString],TString,True))
-                      ,(T.pack "not",Func (1,T.pack "not",[TInt RW],TInt RW,True))
-                      ,(T.pack "exit",Func (1,T.pack "exit",[TInt RW],TUnit,True))
-                      ]
-            , auxEnv = M.empty}
-=======
 ourOrder :: (Eq a, Ord a) => (a, b, c) -> (a, b, c) -> Ordering
 ourOrder (x1, _, _) (x2, _, _) = if x1 > x2 then GT else
                                      if x1 == x2 then EQ else LT  
->>>>>>> 4f04fb19cab3bae0eb0f5f18d8ce1caa7fd0208d
 
 -- Utilizando alguna especie de run de la monada definida, obtenemos algo así
 runLion :: Exp -> Either SEErrores Tipo
