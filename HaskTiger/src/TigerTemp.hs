@@ -25,5 +25,5 @@ detgenLabel i = pack ("L"++show i)
 
 -- | Clase generadora de temps, y labels
 class TLGenerator w where
-  newTemp :: w Temp
+  newTemp  :: w Temp
   newLabel :: w Label

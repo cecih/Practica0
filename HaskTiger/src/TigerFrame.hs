@@ -35,11 +35,11 @@ fpPrev = 0
 fpPrevLev :: Int
 fpPrevLev = 0
 
-argsGap = wSz
+argsGap  = wSz
 localsGap = 4
 
-argsInicial = 0
-regInicial = 1
+argsInicial   = 0
+regInicial    = 1
 localsInicial = 0
 
 calldefs = [rv]
@@ -47,38 +47,39 @@ specialregs = [rv, fp, sp]
 
 data Access = InFrame Int | InReg Temp
     deriving Show
+
 data Frag = Proc Stm Frame | AString Label [Symbol]
 
-sepFrag :: [Frag] -> ([Frag],[(Stm,Frame)])
+sepFrag :: [Frag] -> ([Frag], [(Stm, Frame)])
 sepFrag xs = (P.reverse ass, P.reverse stmss)
-    where
-        (ass, stmss) = P.foldl (\ (lbls,stms) x ->
-            case x of
-                Proc st fr -> (lbls, (st,fr) : stms)
-                AString {} -> (x:lbls, stms)
-                ) ([],[]) xs
+  where (ass, stmss) = 
+           P.foldl (\ (lbls,stms) x ->
+             case x of
+               Proc st fr -> (lbls, (st,fr) : stms)
+               AString {} -> (x:lbls, stms)) ([],[]) xs
 
 instance Show Frag where
-    show (Proc s f) = "Frame:" ++ show f ++ '\n': show s
+    show (Proc s f)     = "Frame:" ++ show f ++ '\n': show s
     show (AString l ts) = show l ++ ":\n" ++ (P.foldr (\t ts -> ("\n\t" ++ unpack t) ++ ts) "" ts)
 
-data Frame = Frame {
-        name        :: Symbol,
-        formals     :: [Bool], -- Argumentos
-        locals      :: [Bool],
-        actualArg   :: Int, -- Cantidad de argumentos
-        actualLocal :: Int, -- Cantidad de locales
-        actualReg   :: Int -- Cantidad de registros
-    }
+data Frame = 
+  Frame {name          :: Symbol
+         , formals     :: [Bool] -- Argumentos
+         , locals      :: [Bool]
+         , actualArg   :: Int -- Cantidad de argumentos
+         , actualLocal :: Int -- Cantidad de locales
+         , actualReg   :: Int -- Cantidad de registros
+        }
     deriving Show
 
 defaultFrame :: Frame
-defaultFrame =  Frame {name = T.empty
-                , formals = []
-                , locals = []
-                , actualArg = argsInicial
-                , actualLocal = localsInicial
-                , actualReg = regInicial}
+defaultFrame =  
+  Frame {name = T.empty
+         , formals = []
+         , locals = []
+         , actualArg = argsInicial
+         , actualLocal = localsInicial
+         , actualReg = regInicial}
 
 -- TODOS A stack por i386
 prepFormals :: Frame -> [Access]
@@ -92,21 +93,21 @@ externalCall s = Call (Name $ pack s)
 
 allocArg :: (Monad w, TLGenerator w) => Frame -> Bool -> w (Frame, Access)
 allocArg fr True =
-    let actual = actualArg fr
-        acc = InFrame $ actual + argsGap in
-    return (fr{actualArg = actual +1}, acc)
-allocArg fr False = do
-    s <- newTemp
-    return (fr, InReg s)
+  let actual = actualArg fr
+      acc = InFrame $ actual + argsGap 
+  in return (fr{actualArg = actual +1}, acc)
+allocArg fr False = 
+  do s <- newTemp
+     return (fr, InReg s)
 
 allocLocal :: (Monad w, TLGenerator w) => Frame -> Bool -> w (Frame, Access)
 allocLocal fr True =
-    let actual = actualLocal fr
-        acc = InFrame $ actual + localsGap in
-    return (fr{actualLocal= actual +1}, acc)
-allocLocal fr False = do
-    s <- newTemp
-    return (fr, InReg s)
+  let actual = actualLocal fr
+      acc    = InFrame $ actual + localsGap 
+  in return (fr{actualLocal= actual +1}, acc)
+allocLocal fr False = 
+  do s <- newTemp
+     return (fr, InReg s)
 
 auxexp :: Int -> Exp
 auxexp 0 = Temp fp

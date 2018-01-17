@@ -38,31 +38,33 @@ prettyDec  :: Dec -> Doc
 prettyDec (FunctionDec f)           = vcat $ map functionDec f
   where
     functionDec (s, f, Just r, e, _) = 
-      hang (text "function " <> 
-            (text $ unpack s) <> 
-            (parens $ prettyField f) <> 
-            text " : " <> 
-            (text $ unpack r) <> 
-            (text " = ")) tabWidth (prettyExp e)
+      hang (text "function "  
+            <> (text $ unpack s) 
+            <> (parens $ prettyField f)  
+            <> text " : "  
+            <> (text $ unpack r)  
+            <> (text " = ")) tabWidth (prettyExp e)
     functionDec (s, f, Nothing, e, _) = 
-      hang (text "function " <> 
-            (text $ unpack s) <> 
-            (parens $ prettyField f) <> 
-            (text " = ")) tabWidth (prettyExp e)
+      hang (text "function "  
+            <> (text $ unpack s)  
+            <> (parens $ prettyField f)  
+            <> (text " = ")) tabWidth (prettyExp e)
 prettyDec (VarDec s _ (Just r) e _) = 
-  (text $ unpack s) <> 
-  text " : " <> 
-  (text $ unpack r) <> 
-  text " = " <> 
-  prettyExp e
+  (text $ unpack s)  
+  <> text " : "  
+  <> (text $ unpack r)  
+  <> text " = "  
+  <> prettyExp e
 prettyDec (VarDec s _ Nothing e _)  = 
-  (text $ unpack s) <> 
-  text " = " <> 
-  prettyExp e
+  (text $ unpack s)  
+  <> text " = "  
+  <> prettyExp e
 prettyDec (TypeDec f)               = vcat $ map typeDec f
-  where typeDec (s, ty, _) = text "type " <> 
-                             (text $ unpack s) <> 
-                             text " = " <> prettyTy ty
+  where typeDec (s, ty, _) = 
+          text "type "  
+          <> (text $ unpack s)  
+          <> text " = " 
+          <> prettyTy ty
 
 prettyExp :: Exp -> Doc
 prettyExp (VarExp v _)             = prettyVar v
@@ -70,48 +72,50 @@ prettyExp (UnitExp _)              = text "()"
 prettyExp (NilExp _)               = text "nil"
 prettyExp (IntExp i _)             = text $ show i
 prettyExp (StringExp s _)          = doubleQuotes $ text s
-prettyExp (CallExp s args _)       = text (unpack s) <> 
-                                     (parens $ hcat $ punctuate comma $ map prettyExp args)
-prettyExp (OpExp e1 op e2 _)       = prettyExp e1 <> 
-                                     prettyOp op <> 
-                                     prettyExp e2
+prettyExp (CallExp s args _)       = text (unpack s)  
+                                     <> (parens $ hcat $ punctuate comma $ map prettyExp args)
+prettyExp (OpExp e1 op e2 _)       = prettyExp e1  
+                                     <> prettyOp op  
+                                     <> prettyExp e2
 prettyExp (RecordExp r n _)        = 
   text (unpack n) <>
   braces (prettyAux r)
   where prettyAux []         = empty
-        prettyAux [(x, y)]   = text (unpack x) <>
-                               text ":" <>
-                               prettyExp y
-        prettyAux ((x,y):xs) = text (unpack x) <>
-                               text ":" <>
-                               prettyExp y <>
-                               comma <>
-                               prettyAux xs
+        prettyAux [(x, y)]   = text (unpack x) 
+                               <> text ":" 
+                               <> prettyExp y
+        prettyAux ((x,y):xs) = text (unpack x) 
+                               <> text ":" 
+                               <> prettyExp y
+                               <> comma 
+                               <> prettyAux xs
 prettyExp (SeqExp e _)             = parens $ vcat $ punctuate semi (map prettyExp e)
-prettyExp (AssignExp v e _)        = prettyVar v <> 
-                                     text " = " <> 
-                                     prettyExp e
+prettyExp (AssignExp v e _)        = prettyVar v  
+                                     <> text " = "  
+                                     <> prettyExp e
 prettyExp (IfExp e e1 (Just e2) _) = 
-  (hang (text "if " <> prettyExp e <> text " then ") tabWidth (prettyExp e1)) $$ text "else " <> prettyExp e2
-prettyExp (IfExp e e1 Nothing _)   = hang (text "if " <> 
-                                           prettyExp e <> 
-                                           text " then ") tabWidth (prettyExp e1)
-prettyExp (WhileExp e e1 _)        = hang (text "while " <> 
-                                           prettyExp e) tabWidth (prettyExp e1)
-prettyExp (ForExp s _ e1 e2 e3 _)  = hang (text "for " <> 
-                                           text (unpack s) <> 
-                                           text " := " <> 
-                                           prettyExp e1 <> 
-                                           text " to " <> 
-                                           prettyExp e2) tabWidth (prettyExp e3)
-prettyExp (LetExp d e _)           = text "let " <> 
-                                     nest tabWidth (vcat (map prettyDec d)) $$ text "in " <> 
-                                     prettyExp e $$ text "end"
+  (hang (text "if " 
+         <> prettyExp e 
+         <> text " then ") tabWidth (prettyExp e1)) $$ text "else " <> prettyExp e2
+prettyExp (IfExp e e1 Nothing _)   = hang (text "if "  
+                                           <> prettyExp e  
+                                           <> text " then ") tabWidth (prettyExp e1)
+prettyExp (WhileExp e e1 _)        = hang (text "while "  
+                                           <> prettyExp e) tabWidth (prettyExp e1)
+prettyExp (ForExp s _ e1 e2 e3 _)  = hang (text "for "  
+                                           <> text (unpack s)  
+                                           <> text " := "  
+                                           <> prettyExp e1  
+                                           <> text " to "  
+                                           <> prettyExp e2) tabWidth (prettyExp e3)
+prettyExp (LetExp d e _)           = text "let "  
+                                     <> nest tabWidth (vcat (map prettyDec d)) $$ text "in "  
+                                     <> prettyExp e $$ text "end"
 prettyExp (BreakExp _)             = text "break"
-prettyExp (ArrayExp s e1 e2 _)     = text "array " <> 
-                                     brackets (prettyExp e1) <> 
-                                     text " of " <> 
-                                     prettyExp e2
+prettyExp (ArrayExp s e1 e2 _)     = text "array "  
+                                     <> brackets (prettyExp e1)  
+                                     <> text " of "  
+                                     <> prettyExp e2
 
 renderExp :: Exp -> String
 renderExp = render . prettyExp
