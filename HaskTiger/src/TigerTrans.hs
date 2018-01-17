@@ -56,16 +56,16 @@ outermost = [(newFrame (pack "_undermain") [],-1) ]
 class (Monad w, TLGenerator w, Daemon w) => MemM w where
   -- | Level management
   getActualLevel :: w Int
-  upLvl :: w ()
-  downLvl :: w ()
+  upLvl      :: w ()
+  downLvl    :: w ()
   -- | Salida management
   pushSalida :: Maybe Label -> w ()
-  topSalida :: w (Maybe Label)
-  popSalida :: w ()
+  topSalida  :: w (Maybe Label)
+  popSalida  :: w ()
   -- | Level management Cont.
-  pushLevel :: Level -> w ()
-  popLevel  :: w ()
-  topLevel  :: w Level
+  pushLevel  :: Level -> w ()
+  popLevel   :: w ()
+  topLevel   :: w Level
   -- | Pedimos memoria para una variable local
   allocLocal :: Bool -> w Access
   allocLocal b = 
@@ -76,7 +76,7 @@ class (Monad w, TLGenerator w, Daemon w) => MemM w where
        pushLevel nt
        return  acc
   -- | Pedimos memoria para un argumento
-  allocArg :: Bool -> w Access
+  allocArg   :: Bool -> w Access
   allocArg b = 
     do t <- topLevel
        popLevel
@@ -86,40 +86,40 @@ class (Monad w, TLGenerator w, Daemon w) => MemM w where
   -- | Frag management
   -- Básicamente los fragmentos van a ser un efecto
   -- lateral de la computación.
-  pushFrag  :: Frag -> w ()
-  getFrags  :: w [Frag]
+  pushFrag   :: Frag -> w ()
+  getFrags   :: w [Frag]
 
 
 class IrGen w where
-  procEntryExit :: Level -> BExp -> w ()
-  unitExp :: w BExp
-  nilExp :: w BExp
-  intExp :: Int -> w BExp
-  stringExp :: Symbol -> w BExp
-  simpleVar :: Access -> Int -> w BExp
-  varDec :: Access -> w BExp
-  fieldVar :: BExp -> Int -> w BExp
-  subscriptVar :: BExp -> BExp -> w BExp
-  recordExp :: [(BExp,Int)]  -> w BExp
-  callExp :: Label -> Bool -> Bool -> Level -> [BExp] -> w BExp
-  letExp :: [BExp] -> BExp -> w BExp
-  breakExp :: w BExp
-  seqExp :: [BExp] -> w BExp
-  preWhileforExp :: w ()
-  posWhileforExp :: w ()
-  whileExp :: BExp -> BExp -> w BExp
-  forExp :: BExp -> BExp -> BExp -> BExp -> w BExp
-  ifThenExp :: BExp -> BExp -> w BExp
-  ifThenElseExp :: BExp -> BExp -> BExp -> w BExp
+  procEntryExit     :: Level -> BExp -> w ()
+  unitExp           :: w BExp
+  nilExp            :: w BExp
+  intExp            :: Int -> w BExp
+  stringExp         :: Symbol -> w BExp
+  simpleVar         :: Access -> Int -> w BExp
+  varDec            :: Access -> w BExp
+  fieldVar          :: BExp -> Int -> w BExp
+  subscriptVar      :: BExp -> BExp -> w BExp
+  recordExp         :: [(BExp,Int)]  -> w BExp
+  callExp           :: Label -> Bool -> Bool -> Level -> [BExp] -> w BExp
+  letExp            :: [BExp] -> BExp -> w BExp
+  breakExp          :: w BExp
+  seqExp            :: [BExp] -> w BExp
+  preWhileforExp    :: w ()
+  posWhileforExp    :: w ()
+  whileExp          :: BExp -> BExp -> w BExp
+  forExp            :: BExp -> BExp -> BExp -> BExp -> w BExp
+  ifThenExp         :: BExp -> BExp -> w BExp
+  ifThenElseExp     :: BExp -> BExp -> BExp -> w BExp
   ifThenElseExpUnit :: BExp -> BExp -> BExp -> w BExp
-  assignExp :: BExp -> BExp -> w BExp
-  preFunctionDec :: Level -> w ()
-  posFunctionDec :: w ()
-  functionDec :: BExp -> Level -> Bool -> w BExp
-  binOpIntExp :: BExp -> Abs.Oper -> BExp -> w BExp
-  binOpIntRelExp :: BExp -> Abs.Oper -> BExp -> w BExp
-  binOpStrExp :: BExp -> Abs.Oper -> BExp -> w BExp
-  arrayExp :: BExp -> BExp -> w BExp
+  assignExp         :: BExp -> BExp -> w BExp
+  preFunctionDec    :: Level -> w ()
+  posFunctionDec    :: w ()
+  functionDec       :: BExp -> Level -> Bool -> w BExp
+  binOpIntExp       :: BExp -> Abs.Oper -> BExp -> w BExp
+  binOpIntRelExp    :: BExp -> Abs.Oper -> BExp -> w BExp
+  binOpStrExp       :: BExp -> Abs.Oper -> BExp -> w BExp
+  arrayExp          :: BExp -> BExp -> w BExp
 
 -- | Función helper seq
 seq :: [Stm] -> Stm
