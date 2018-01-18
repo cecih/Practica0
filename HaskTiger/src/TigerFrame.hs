@@ -104,15 +104,15 @@ allocLocal :: (Monad w, TLGenerator w) => Frame -> Bool -> w (Frame, Access)
 allocLocal fr True =
   let actual = actualLocal fr
       acc    = InFrame $ actual + localsGap 
-  in return (fr{actualLocal= actual +1}, acc)
+  in return (fr{actualLocal = actual +1}, acc)
 allocLocal fr False = 
   do s <- newTemp
      return (fr, InReg s)
 
 auxexp :: Int -> Exp
 auxexp 0 = Temp fp
-auxexp n = Mem(Binop Plus (auxexp (n-1)) (Const fpPrevLev))
+auxexp n = Mem (Binop Plus (auxexp (n-1)) (Const fpPrevLev))
 
 exp :: Access -> Int -> Exp
-exp (InFrame k) e = Mem(Binop Plus (auxexp e) (Const k))
+exp (InFrame k) e = Mem (Binop Plus (auxexp e) (Const k))
 exp (InReg l) _   = Temp l

@@ -191,22 +191,14 @@ instance (MemM w) => IrGen w where
                          return $ Move (Temp rv) e
        procEntryExit lvl (Nx body)
        return $ Ex $ Const 0
-  -- simpleVar :: Access -> Int -> w BExp
   --simpleVar :: Access -> Int -> w BExp
-  {-simpleVar acc level 
-    | deltaProf > 0 = do sl   <- genSl deltaProf
-                         tmp1 <- newTemp
-                         tmp2 <- newTemp
-                         return $ Ex $ Eseq (seq [Move (Temp tmp1) (Temp tmp2) -- ???
-                                                  , Move (Temp tmp2) (Mem (BinOp Plus (Temp tmp1) (Const $ fromFrame acc)))])
-                                            (Temp tmp1)  
-    | otherwise     = internal $ pack "La variable no se encuentra definida"
-    where deltaProf             = acc - level
-          genSl 0               = []
-          genSl n               = do temp <- newTemp
-          fromFrame (InFrame f) = f
-          fromFrame _           = P.error "No se" --FIXME 
--}
+  simpleVar acc level =
+    do alvl <- getActualLevel 
+       let deltaProf = alvl - level
+       if deltaProf < 0 then internal $ pack "La variable no se encuentra definida"
+         else do tmp1 <- newTemp
+                 tmp2 <- newTemp
+                 return $ Ex $ exp acc (alvl - level)  
   varDec acc = getActualLevel >>= simpleVar acc
   unitExp = return $ Ex (Const 0)
   nilExp = return $ Ex (Const 0)
@@ -215,9 +207,6 @@ instance (MemM w) => IrGen w where
   fieldVar be i =
     do be' <- unEx be
        tmp <- newTemp        
-       return $ Ex (Eseq (Move (Temp tmp) be') (Mem (Binop Plus (Temp tmp) (Binop Mul (Const i) (Const wSz)))))
-       tmp <- newTemp       --TODO: chequear el return. Ver lo del wSz. 
-       -- FIXME: lo puse para que tipara, hay que chequear si esta bien
        return $ Ex $ Eseq (Move (Temp tmp) be') 
                           (Mem (Binop Plus (Temp tmp) (Binop Mul (Const i) (Const wSz))))
   -- subscriptVar :: BExp -> BExp -> w BExp
