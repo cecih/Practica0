@@ -94,11 +94,20 @@ externalCall s = Call (Name $ pack s)
 allocArg :: (Monad w, TLGenerator w) => Frame -> Bool -> w (Frame, Access)
 allocArg fr True =
   let actual = actualArg fr
-      acc = InFrame $ actual + argsGap 
-  in return (fr{actualArg = actual +1}, acc)
+      acc    = InFrame $ actual + argsGap 
+  in return (fr {actualArg = actual +1}, acc)
 allocArg fr False = 
   do s <- newTemp
      return (fr, InReg s)
+
+-- Funcion auxiliar usada para alocar varios argumentos
+-- en una llamada a funcion
+allocArgs :: (Monad w, TLGenerator w) => Int -> Frame -> w [Access]
+allocArgs 0 _  = return []
+allocArgs n fr = 
+  do (newfr, acc) <- allocArg fr True
+     aArgs        <- allocArgs (n - 1) newfr
+     return $ acc : aArgs
 
 allocLocal :: (Monad w, TLGenerator w) => Frame -> Bool -> w (Frame, Access)
 allocLocal fr True =

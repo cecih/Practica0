@@ -42,29 +42,30 @@ addpos :: (Daemon w, Show b) => w a -> b -> w a
 addpos t p = E.adder t (pack $ show p)
 
 -- Un ejemplo de estado que alcanzaría para realizar todas la funciones es:
-data EstadoG = G {unique :: Int, 
-                  vEnv :: M.Map Symbol EnvEntry, 
-                  tEnv :: M.Map Symbol Tipo,
-                  auxEnv :: M.Map Symbol Tipo}
+data EstadoG = G {unique :: Int 
+                  , vEnv :: M.Map Symbol EnvEntry 
+                  , tEnv :: M.Map Symbol Tipo
+                  , auxEnv :: M.Map Symbol Tipo
+                  -- Entrega 2
+                  , actualLvl :: Int}
     deriving Show
 
 -- Podemos definir el estado inicial como:
 initConf :: EstadoG
 initConf = G {unique = 0
-            , tEnv = M.insert (T.pack "int") (TInt RW) (M.singleton (T.pack "string") TString)
-            , vEnv = M.fromList
-                      [(T.pack "print", Func (1,T.pack "print",[TString], TUnit, True))
-                      ,(T.pack "flush", Func (1,T.pack "flush",[],TUnit, True))
-                      ,(T.pack "getchar",Func (1,T.pack "getchar",[],TString,True))
-                      ,(T.pack "ord",Func (1,T.pack "ord",[TString],TInt RW,True)) -- Ojota con este intro...
-                      ,(T.pack "chr",Func (1,T.pack "chr",[TInt RW],TString,True))
-                      ,(T.pack "size",Func (1,T.pack "size",[TString],TInt RW,True))
-                      ,(T.pack "substring",Func (1,T.pack "substring",[TString,TInt RW, TInt RW],TString,True))
-                      ,(T.pack "concat",Func (1,T.pack "concat",[TString,TString],TString,True))
-                      ,(T.pack "not",Func (1,T.pack "not",[TInt RW],TInt RW,True))
-                      ,(T.pack "exit",Func (1,T.pack "exit",[TInt RW],TUnit,True))
-                      ]
-            , auxEnv = M.empty}
+              , tEnv = M.insert (T.pack "int") (TInt RW) (M.singleton (T.pack "string") TString)
+              , vEnv = M.fromList
+                       [(T.pack "print", Func (outermost, T.pack "print", [TString], TUnit, True))
+                        , (T.pack "flush", Func (outermost, T.pack "flush", [], TUnit, True))
+                        , (T.pack "getchar",Func (outermost, T.pack "getchar", [], TString, True))
+                        , (T.pack "ord",Func (outermost, T.pack "ord", [TString], TInt RW, True)) -- Ojota con este intro...
+                        , (T.pack "chr",Func (outermost, T.pack "chr", [TInt RW], TString, True))
+                        , (T.pack "size",Func (outermost, T.pack "size", [TString], TInt RW, True))
+                        , (T.pack "substring",Func (outermost, T.pack "substring", [TString,TInt RW, TInt RW], TString, True))
+                        , (T.pack "concat",Func (outermost, T.pack "concat", [TString,TString], TString, True))
+                        , (T.pack "not",Func (outermost, T.pack "not", [TInt RW], TInt RW, True))
+                        , (T.pack "exit",Func (outermost, T.pack "exit", [TInt RW], TUnit, True))]
+              , auxEnv = M.empty}
 
 
 
@@ -366,7 +367,7 @@ isType :: Dec -> Bool
 isType (TypeDec _) = True
 isType _           = False
 
-trDec :: (MemM w, Manticore w) => Dec -> w a -> w a
+trDec :: (MemM w, Manticore w) => Dec -> w BExp -> w BExp
 trDec (FunctionDec fs) w                   =
   let checkFs    = foldr (\(name , params, result, body, _) w' ->
                            case result of
@@ -379,23 +380,30 @@ trDec (FunctionDec fs) w                   =
                                     else user $ pack $ "El valor de retorno de la funcion"
                                                         ++ (unpack name) 
                                                         ++ "no tiene el tipo indicado en la signatura de la función")
-  in foldr insDec (checkFs w fs) fs  
+  in do foldr insDec (checkFs w fs) fs  
+        return Nothing
 trDec (VarDec symb escape typ einit pos) w =
   do (binit, tyinit') <- transExp einit 
      case typ of
        Nothing -> if isNil tyinit' then user $ pack $ "La variable " ++ (unpack symb) ++ " no puede inicializarse en nil" 
-                    else do lvl <- getActualLevel
-                            acc <- Trans.allocLocal False --FIXME: ¿A donde metemos la variable?
-                            insertValV symb (tyinit', acc, lvl) w  
+                    else insVarDec (symb, True, tyinit') binit w
        Just s  -> do t' <- transTy (NameTy s) --w Tipo
                      b  <- tiposIguales tyinit' t'
                      if not b then user $ pack $ show tyinit' ++ show t' ++ " Los tipos son distintos\n" 
-                              else do lvl <- getActualLevel
-                                      acc <- Trans.allocLocal False --FIXME: ¿A donde metemos la variable?
-                                      insertValV symb (t', acc, lvl) w 
+                              else insVarDec (symb, True, t') binit w 
   where isNil TNil = True
         isNil _    = False --TODO: CHEQUEAR ESTA FUNCION GRONCHA
-trDec (TypeDec ts) w                       = addTypos ts w                    
+trDec (TypeDec ts) w                       = 
+  do atyp <- addTypos ts w                    
+     return Nothing
+
+insVarDec :: (MemM w, Manticore w) => (Symbol, Bool, Tipo) -> w a -> w a
+insVarDec (symb, _, typ) init w = 
+  do lvl <- getActualLevel
+     acc <- Trans.allocLocal False --FIXME: ¿A donde metemos la variable?
+     insertValV symb (ty', acc, lvl) w
+     var <- varDec acc
+     assignExp var init 
 
 insVar :: (MemM w, Manticore w) => (Symbol, Bool, Ty) -> w a -> w a
 insVar (symb, _, ty) w = do ty' <- transTy ty
@@ -409,9 +417,10 @@ insVar (symb, _, ty) w = do ty' <- transTy ty
 insDec :: (Manticore w) => (Symbol, [Field], Maybe Symbol, Exp, Pos) -> w a -> w a
 insDec (symb, params, result, body, pos) w = 
   do params' <- mapM (\(sym,esc,ty) -> transTy ty) params
-     u       <- ugen -- TODO: debemos cambiarlo por tipo level que es una lista de [(Frame, Int)]. 
-                       -- Level seria como el stack en todo momento
-     case result of --dado que result es un Maybe, analizo que tipo debo ingresar en el entorno
+     u       <- ugen 
+     -- TODO: debemos cambiarlo por tipo level que es una lista de [(Frame, Int)]. 
+     -- Level seria como el stack en todo momento
+     case result of 
           Nothing -> insertFunV symb (u, symb, params', TUnit, False) w
           Just s  -> do t <- transTy (NameTy s)  
                         insertFunV symb (u, symb, params', t, False) w

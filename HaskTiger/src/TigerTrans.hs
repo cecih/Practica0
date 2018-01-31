@@ -229,18 +229,15 @@ instance (MemM w) => IrGen w where
                                 , Move (Temp tmp) (Temp rv)]) 
                           (Temp tmp)
   -- callExp :: Label -> Bool -> Bool -> Level -> [BExp] -> w BExp
-  -- TODO: ¿Qué ondis con el isproc? ¿Para qué me sirve?
-  -- TODO: ¿También agrego static link si es external? (página 166)
-  -- TODO: ¿Y el access para el static link?
-  -- allocArg   :: Bool -> w Access FIXME: recordar lo del bool
   callExp name external isproc lvl args = 
     do alevel <- getActualLevel
-       args'  <- mapM return args
+       let dlevel = getNlvl lvl
+       args'  <- mapM unEx args 
        return (case (external, isproc) of
                  (True, True)   -> Nx $ ExpS $ externalCall (unpack name) args'
-                 (True, False)  -> Ex $ ExpS $ externalCall (unpack name) args'
-                 (False, True)  -> Nx $ Call (Name name) (exp (alvl - lvl) args')
-                 (False, False) -> Ex $ Call (Name name) (exp (alvl - lvl) args'))
+                 (True, False)  -> Ex $ externalCall (unpack name) args'
+                 (False, True)  -> Nx $ ExpS $ Call (Name name) $ (auxexp $ alevel - dlevel) : args'
+                 (False, False) -> Ex $ Call (Name name) $ (auxexp $ alevel - dlevel) : args')
   -- letExp :: [BExp] -> BExp -> w BExp
   letExp [] e = -- Puede parecer al dope, pero no...
     do e' <- unEx e

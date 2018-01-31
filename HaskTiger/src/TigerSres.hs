@@ -1,10 +1,11 @@
 module TigerSres where
 
-import TigerTips
-import TigerTemp
 import TigerFrame
+import TigerTemp
+import TigerTips
+import TigerTrans
 
-type FunEntry = (Unique, Label, [Tipo], Tipo, Bool)
+type FunEntry = (Level, Label, [Tipo], Tipo, Bool)
 type ValEntry = (Tipo, Access, Int) -- Tipo, en memoria o registro, nivel
 
 data EnvEntry = 

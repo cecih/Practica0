@@ -1,2 +1,4 @@
 1- Los campos de los records los ordenamos de manera alfabética.
 2- Por el momento para agregar tipos no realizamos optimizaciones.
+3- Los argumentos necesarios para la llamada a una función los mandamos
+   a stack.
