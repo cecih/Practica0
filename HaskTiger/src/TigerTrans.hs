@@ -215,25 +215,32 @@ instance (MemM w) => IrGen w where
        eind <- unEx ind
        tvar <- newTemp
        tind <- newTemp
-       return $ Ex $
-            Eseq (seq [Move (Temp tvar) evar
-                      , Move (Temp tind) eind
-                      , ExpS $ externalCall "_checkIndex" [Temp tvar, Temp tind]])
-                (Mem $ Binop Plus (Temp tvar) (Binop Mul (Temp tind) (Const wSz)))
        return $ Ex $ Eseq (seq [Move (Temp tvar) evar
-                           , Move (Temp tind) eind
-                           , ExpS $ externalCall "_checkIndex" [Temp tvar, Temp tind]])
+                                , Move (Temp tind) eind
+                                , ExpS $ externalCall "_checkIndexArray" [Temp tvar, Temp tind]
+                                , ExpS $ externalCall "_checkNil" [Temp tvar]])
                           (Mem $ Binop Plus (Temp tvar) (Binop Mul (Temp tind) (Const wSz)))
   -- recordExp :: [(BExp,Int)]  -> w BExp
   -- FIXME: el primer argumento de Eseq debe ser Stm y aca es una Exp
-  recordExp flds = P.error "Nada"
-    {-do flds' <- mapM (\(x, y) -> unEx x) flds -- FIXME: hecho para tipar, ver si esta bien
-         tmp   <- newTemp
-         return $ Ex $ Eseq (seq [externalCall "_initRecord" [Const (Prelude.length flds), flds']
-                                  , Move (Temp tmp) (Temp rv)]) (Temp tmp)
-    -}
+  recordExp flds = 
+    do flds' <- mapM (\(x, y) -> unEx x) flds -- FIXME: hecho para tipar, ver si esta bien
+       tmp   <- newTemp
+       return $ Ex $ Eseq (seq [ExpS $ externalCall "_allocRecord" (Const (Prelude.length flds) : flds')
+                                , Move (Temp tmp) (Temp rv)]) 
+                          (Temp tmp)
   -- callExp :: Label -> Bool -> Bool -> Level -> [BExp] -> w BExp
-  callExp name external isproc lvl args = P.error "COMPLETAR"
+  -- TODO: ¿Qué ondis con el isproc? ¿Para qué me sirve?
+  -- TODO: ¿También agrego static link si es external? (página 166)
+  -- TODO: ¿Y el access para el static link?
+  -- allocArg   :: Bool -> w Access FIXME: recordar lo del bool
+  callExp name external isproc lvl args = 
+    do alevel <- getActualLevel
+       args'  <- mapM return args
+       return (case (external, isproc) of
+                 (True, True)   -> Nx $ ExpS $ externalCall (unpack name) args'
+                 (True, False)  -> Ex $ ExpS $ externalCall (unpack name) args'
+                 (False, True)  -> Nx $ Call (Name name) (exp (alvl - lvl) args')
+                 (False, False) -> Ex $ Call (Name name) (exp (alvl - lvl) args'))
   -- letExp :: [BExp] -> BExp -> w BExp
   letExp [] e = -- Puede parecer al dope, pero no...
     do e' <- unEx e
@@ -273,6 +280,7 @@ instance (MemM w) => IrGen w where
   -- posWhileforExp :: w ()
   posWhileforExp = popSalida
   -- whileExp :: BExp -> BExp -> Level -> w BExp
+  -- TODO: break statement, libro, página 165
   whileExp cond body = 
     do test <- unCx cond
        cody <- unNx body
@@ -282,36 +290,36 @@ instance (MemM w) => IrGen w where
        case lastM of
          Just last ->
            return $ Nx $ seq
-                    [Label init      -- TODO: el init que define, no tendra confusion con la funcion init de listas definida??
+                    [Label init     
                     , test (bd,last)
                     , Label bd
                     , cody
                     , Jump (Name init) init
                     , Label last]
-         _ -> internal $ pack "no label in salida"
+         _ -> internal $ pack "No label in salida"
   -- forExp :: BExp -> BExp -> BExp -> BExp -> w BExp
   forExp lo hi var body = 
     do sigue  <- newLabel                   
        sigue1 <- newLabel
        salida <- topSalida
-       var'   <- unEx var 
        lo'    <- unEx lo
        hi'    <- unEx hi
+       var'   <- unEx var 
        body'  <- unNx body
        tmp    <- newTemp
        case salida of
          Just s -> 
            return $ Nx (seq [Move var' lo' 
                              , Move (Temp tmp) hi' 
-                             , CJump LE var' (Temp tmp) sigue s 
+                             , CJump LE lo' hi' sigue s 
                              , Label sigue 
                              , body'
-                             , CJump EQ var' (Temp tmp) s sigue1
+                             , CJump LT var' (Temp tmp) sigue1 s
                              , Label sigue1 
                              , Move var' (Binop Plus var' (Const 1))
                              , Jump (Name sigue) sigue 
                              , Label s])    
-         _     -> internal $ pack "No se puede hacer el for"     --TODO: revisar esta ultima parte, sobre todo
+         _     -> internal $ pack "No label in salida"    
   -- ifThenExp :: BExp -> BExp -> w BExp
   ifThenExp cond bod = 
     do t <- newLabel                             

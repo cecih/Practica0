@@ -4,3 +4,9 @@
 3- ¿Cómo crear un frame para callExp de TigerTrans?
 4- ¿Qué son las bexp del forExp de TigerTrans?
 5- ¿Qué pasa si en simpleVar en TigerTrans la variable no está en el frame?
+
+-- NEW preguntas
+6- ¿Por qué es necesario isProc en callExp de TigerTrans?
+7- ¿Necesito el static link si la función es externa?
+8- ¿Cuál es el access para seguir el static link en callExp?
+9- ¿Qué pasa con los breaks de los whileExp? (página 165)
