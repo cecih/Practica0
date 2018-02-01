@@ -293,6 +293,7 @@ fromTy _          = user $ pack "No debería haber una definición de tipos en l
 -- Traduccion de declaraciones --
 -- /////////////////////////// --
 
+transDecs :: (Daemon w, Manticore w, MemM w) => [Dec] -> w a -> w a
 transDecs dcs w 
   | isInterrupted dcs             = user $ pack "Se corta el batch de definiciones consecutivas" 
   | or $ map hasRepeatedNames dcs = user $ pack "Hay nombres repetidos en algun batch de definiciones consecutivas"
@@ -367,8 +368,8 @@ isType :: Dec -> Bool
 isType (TypeDec _) = True
 isType _           = False
 
-trDec :: (MemM w, Manticore w) => Dec -> w BExp -> w BExp
-trDec (FunctionDec fs) w                   =
+trDec :: (MemM w, Manticore w) => Dec -> w a -> w a
+{-trDec (FunctionDec fs) w                   =
   let checkFs    = foldr (\(name , params, result, body, _) w' ->
                            case result of
                              Nothing -> w'
@@ -380,8 +381,15 @@ trDec (FunctionDec fs) w                   =
                                     else user $ pack $ "El valor de retorno de la funcion"
                                                         ++ (unpack name) 
                                                         ++ "no tiene el tipo indicado en la signatura de la función")
-  in do foldr insDec (checkFs w fs) fs  
-        return Nothing
+  in foldr insDec (checkFs w fs) fs
+  do alevel <- getActualLevel
+     procEntryExit alevel ??? TODO: completar Paso 1
+     flab <- newLabel -- Paso 2
+     let nframe = newFrame flab (replicate True (length params)) -- Paso 3
+     args' <- ??? TODO: completar
+     bargs <- callExp flab False ??? alevel ??? -- Paso 4
+       
+-}
 trDec (VarDec symb escape typ einit pos) w =
   do (binit, tyinit') <- transExp einit 
      case typ of
@@ -393,17 +401,15 @@ trDec (VarDec symb escape typ einit pos) w =
                               else insVarDec (symb, True, t') binit w 
   where isNil TNil = True
         isNil _    = False --TODO: CHEQUEAR ESTA FUNCION GRONCHA
-trDec (TypeDec ts) w                       = 
-  do atyp <- addTypos ts w                    
-     return Nothing
+trDec (TypeDec ts) w                       = addTypos ts w                    
 
-insVarDec :: (MemM w, Manticore w) => (Symbol, Bool, Tipo) -> w a -> w a
+insVarDec :: (MemM w, Manticore w) => (Symbol, Bool, Tipo) -> BExp -> w a -> w a
 insVarDec (symb, _, typ) init w = 
   do lvl <- getActualLevel
      acc <- Trans.allocLocal False --FIXME: ¿A donde metemos la variable?
-     insertValV symb (ty', acc, lvl) w
      var <- varDec acc
      assignExp var init 
+     insertValV symb (typ, acc, lvl) w -- FIXME: este insert ¿Va aca al final?
 
 insVar :: (MemM w, Manticore w) => (Symbol, Bool, Ty) -> w a -> w a
 insVar (symb, _, ty) w = do ty' <- transTy ty
@@ -414,7 +420,7 @@ insVar (symb, _, ty) w = do ty' <- transTy ty
 -- insdec toma la tupla de una funcion y el entorno de ese momento. Devolvemos
 -- el entorno con la funcion y sus parametros agregados.
 --type FunEntry = (Level, Label, [Tipo], Tipo, Bool)
-insDec :: (Manticore w) => (Symbol, [Field], Maybe Symbol, Exp, Pos) -> w a -> w a
+{-insDec :: (Manticore w) => (Symbol, [Field], Maybe Symbol, Exp, Pos) -> w a -> w a
 insDec (symb, params, result, body, pos) w = 
   do params' <- mapM (\(sym,esc,ty) -> transTy ty) params
      u       <- ugen 
@@ -424,7 +430,7 @@ insDec (symb, params, result, body, pos) w =
           Nothing -> insertFunV symb (u, symb, params', TUnit, False) w
           Just s  -> do t <- transTy (NameTy s)  
                         insertFunV symb (u, symb, params', t, False) w
-                          
+-}                        
 -- \\\\\\\\\\\\\\\\\\\\\\\\\ --
 -- Traduccion de expresiones --
 -- ///////////////////////// --
