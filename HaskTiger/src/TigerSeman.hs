@@ -455,13 +455,14 @@ transExp (StringExp s _)          = do bexp <- stringExp (pack s)
      C.unless (length args == length (thd tfunc)) $ P.error "Difiere en la cantidad de argumentos"
      mapM_ (\((x, y), z) -> C.unlessM (tiposIguales y z) $ P.error "Error en los tipos de los argumentos") 
            (zip args' (thd tfunc))
-     lvl  <- mapM () args'
      cexp <- if typ == TUNit then callExp name False True lvl (map fst args')
                else callExp name False False lvl (map fst args')
      return $ (cexp, foth tfunc) 
-  where thd  (_, _, c, _, _) = c  
+  where fir  (a, _, _, _, _) = a
+        thd  (_, _, c, _, _) = c  
         foth (_, _, _, d, _) = d
         typ                  = foth tfunc
+        lvl                  = fir tfunc
 -}
 transExp (OpExp el' oper er' p)   = 
   do -- Esta va gratis
