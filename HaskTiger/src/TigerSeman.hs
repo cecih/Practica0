@@ -47,7 +47,7 @@ data EstadoG = G {unique :: Int
                   , tEnv :: M.Map Symbol Tipo
                   , auxEnv :: M.Map Symbol Tipo
                   -- Entrega 2
-                  , actualLvl :: Int}
+                  , actualLvl :: Level}
     deriving Show
 
 -- Podemos definir el estado inicial como:
@@ -383,11 +383,13 @@ trDec :: (MemM w, Manticore w) => Dec -> w a -> w a
                                                         ++ "no tiene el tipo indicado en la signatura de la función")
   in foldr insDec (checkFs w fs) fs
   do alevel <- getActualLevel
-     procEntryExit alevel ??? TODO: completar Paso 1
      flab <- newLabel -- Paso 2
      let nframe = newFrame flab (replicate True (length params)) -- Paso 3
      args' <- ??? TODO: completar
      bargs <- callExp flab False ??? alevel ??? -- Paso 4
+     -- Paso 5
+     (bbody, tbody) <- transExp body -- Paso 6
+     res <- saveResult bbody -- Paso 7
        
 -}
 trDec (VarDec symb escape typ einit pos) w =
@@ -431,6 +433,7 @@ insDec (symb, params, result, body, pos) w =
           Just s  -> do t <- transTy (NameTy s)  
                         insertFunV symb (u, symb, params', t, False) w
 -}                        
+
 -- \\\\\\\\\\\\\\\\\\\\\\\\\ --
 -- Traduccion de expresiones --
 -- ///////////////////////// --
@@ -453,10 +456,12 @@ transExp (StringExp s _)          = do bexp <- stringExp (pack s)
      mapM_ (\((x, y), z) -> C.unlessM (tiposIguales y z) $ P.error "Error en los tipos de los argumentos") 
            (zip args' (thd tfunc))
      lvl  <- mapM () args'
-     cexp <- callExp name False False lvl (map fst args') --FIXME: ¿Que son los bools?
+     cexp <- if typ == TUNit then callExp name False True lvl (map fst args')
+               else callExp name False False lvl (map fst args')
      return $ (cexp, foth tfunc) 
   where thd  (_, _, c, _, _) = c  
         foth (_, _, _, d, _) = d
+        typ                  = foth tfunc
 -}
 transExp (OpExp el' oper er' p)   = 
   do -- Esta va gratis

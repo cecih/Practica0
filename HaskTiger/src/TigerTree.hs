@@ -12,7 +12,7 @@ data Exp
     | Mem Exp
     | Call Exp [Exp]
     | Eseq Stm Exp
-    deriving Show
+ deriving Show
 
 data Stm
     = Move Exp Exp
@@ -21,7 +21,7 @@ data Stm
     | CJump Relop Exp Exp Temp.Label Temp.Label
     | Seq Stm Stm
     | Label Temp.Label
-    deriving Show
+ deriving Show
 
 data BOp = Plus | Minus | Mul | Div | And | Or | LShift | RShift
     | ARShift | XOr

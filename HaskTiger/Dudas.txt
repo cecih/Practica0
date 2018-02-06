@@ -14,3 +14,4 @@
      ¿O es el estado actual del stack?
 11- ¿Qué son los formals? (en TigerFrame, por ejemplo)
 12- ¿Deberíamos guardar espacio para los argumentos en el frame?
+13- Páginas 167-169

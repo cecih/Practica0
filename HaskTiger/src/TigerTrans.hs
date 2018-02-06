@@ -276,7 +276,7 @@ instance (MemM w) => IrGen w where
        pushSalida (Just l)
   -- posWhileforExp :: w ()
   posWhileforExp = popSalida
-  -- whileExp :: BExp -> BExp -> Level -> w BExp
+  -- whileExp :: BExp -> BExp -> w BExp
   -- TODO: break statement, libro, página 165
   whileExp cond body = 
     do test <- unCx cond
@@ -411,3 +411,9 @@ instance (MemM w) => IrGen w where
        return $ Ex $ Eseq (seq [ExpS $ externalCall "_allocArray" [sz,ini]
                                 , Move (Temp t) (Temp rv)]) 
                           (Temp t)
+
+-- Guarda el resultado de una funcion en el registro correspondiente
+saveResult :: (Monad w, TLGenerator w) => BExp -> w BExp
+saveResult x = 
+  do x' <- unEx x
+     return $ Nx $ Move (Temp rv) x' 
