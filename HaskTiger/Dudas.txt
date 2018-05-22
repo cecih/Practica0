@@ -6,8 +6,7 @@
 5- ¿Qué pasa si en simpleVar en TigerTrans la variable no está en el frame?
 6- ¿Por qué es necesario isProc en callExp de TigerTrans?
 7- ¿Necesito el static link si la función es externa?
-
--- NEW preguntas
+   Rta: noup.
 8- ¿Cuál es el access para seguir el static link en callExp?
 9- ¿Qué pasa con los breaks de los whileExp? (página 165)
 10 - El lvl de callExp ¿Es el lvl en el cual se definió la función?
@@ -15,3 +14,9 @@
 11- ¿Qué son los formals? (en TigerFrame, por ejemplo)
 12- ¿Deberíamos guardar espacio para los argumentos en el frame?
 13- Páginas 167-169
+
+-- NEW preguntas
+14- Al definir munchExp y munchStm ¿Podemos hacerlo con la "granularidad"
+    deseada? ¿Por qué nos conviene ser más específicos?
+15- Página 191, caso munchStm (MOVE(TEMP i, e2)) = (munchExp e2; emit "ADD") 
+16- ¿Qué es la opción del jump en el tipo Instr de TigerAssem?

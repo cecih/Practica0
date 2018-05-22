@@ -449,21 +449,20 @@ transExp (IntExp i _)             = do bexp <- intExp i
 transExp (StringExp s _)          = do bexp <- stringExp (pack s)
                                        return (bexp, TString)
 --TODO: hacer esto! ¿Que hago con los argumentos?
-{-transExp (CallExp name args p)      = 
+transExp (CallExp name args p)      = 
   do tfunc <- getTipoFunV name
+     let lvl = fir tfunc
+     let typ = foth tfunc
      args' <- mapM transExp args  
      C.unless (length args == length (thd tfunc)) $ P.error "Difiere en la cantidad de argumentos"
      mapM_ (\((x, y), z) -> C.unlessM (tiposIguales y z) $ P.error "Error en los tipos de los argumentos") 
            (zip args' (thd tfunc))
-     cexp <- if typ == TUNit then callExp name False True lvl (map fst args')
+     cexp <- if typ == TUnit then callExp name False True lvl (map fst args')
                else callExp name False False lvl (map fst args')
      return $ (cexp, foth tfunc) 
   where fir  (a, _, _, _, _) = a
         thd  (_, _, c, _, _) = c  
         foth (_, _, _, d, _) = d
-        typ                  = foth tfunc
-        lvl                  = fir tfunc
--}
 transExp (OpExp el' oper er' p)   = 
   do -- Esta va gratis
     (bel, el) <- transExp el'
