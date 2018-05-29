@@ -60,15 +60,47 @@ emit x ref =
 -- --- Maximal munch algorithm --- --
 -------------------------------------
 
+-- La referencia en munchExp es para que emit pueda ir
+-- concatenando los resultados
 -- munchExp :: Tree.Exp -> w Tem
+munchExp (Tree.Const i) ref =
+  do nt <- Temp.newTemp
+     emit (Oper {assem = "ADDI ´d0 , r0 , " ++ show i ++ "\n",
+                 dsto = [nt],
+                 srco = [],
+                 jump = Nothing}) ref
+     return nt
+-- FIJAR SI PODEMOS USAR LI
+munchExp (Tree.Name l) ref =
+  do nt <- newTemp
+     emit (Oper {assem = "li ´d0 , " ++ unpack l ++ "\n",
+                 dsto = [nt],
+                 srco = [],
+                 jump = Nothing}) ref
+     return nt
 munchExp (Tree.Binop Tree.Plus e1 e2) ref = 
   do nt <- Temp.newTemp
      ne1 <- munchExp e1 ref
      ne2 <- munchExp e2 ref
-     emit (Oper {assem = "ADD dst, src1, src2", 
+     emit (Oper {assem = "ADD ´d0 , ´s0 , ´s1 \n", 
                  dsto = [nt], 
                  srco = [ne1, ne2], 
-                 jump = Nothing}) ref -- Completar 
+                 jump = Nothing}) ref  
      return nt
-
+munchExp (Tree.Binop Tree.Plus (Const i) e2) ref =
+  do nt <- Temp.newTemp
+     ne2 <- munchExp e2
+     emit (Oper {assem = "ADDI ´d0 , ´s0 , " ++ show i ++ "\n"}),
+                 dsto= [nt],
+                 srco = [ne2],
+                 jump = Nothing}) ref
+     return nt
+munchExp (Tree.Binop Tree.Plus e1 (Const i)) ref =
+  do nt <- Temp.newTemp
+     ne2 <- munchExp e1
+     emit (Oper {assem = "ADDI ´d0 , ´s0 , " ++ show i ++ "\n"}),
+                 dsto= [nt],
+                 srco = [ne1],
+                 jump = Nothing}) ref
+     return nt
 -- munchStm :: Tree.Stm -> ()

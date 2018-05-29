@@ -14,15 +14,21 @@
 11- ¿Qué son los formals? (en TigerFrame, por ejemplo)
 12- ¿Deberíamos guardar espacio para los argumentos en el frame?
 13- Páginas 167-169
-
--- NEW preguntas
 14- Al definir munchExp y munchStm ¿Podemos hacerlo con la "granularidad"
     deseada? ¿Por qué nos conviene ser más específicos?
-15- Página 191, caso munchStm (MOVE(TEMP i, e2)) = (munchExp e2; emit "ADD") 
 16- ¿Qué es la opción del jump en el tipo Instr de TigerAssem?
+    *Si saltamos o no.
 17- ¿Para qué nos sirve la función format? 
+    *Es tipo un pretty printer, lo vamos a usar más adelante del capítulo 9.
 18- ¿Qué pasa si tenemos una lista vacía de labels en el tipo
      Instr de TigerAssem? (función format)
 19- ¿Qué pasa si tenemos muchos labels en la lista de labels en el tipo
      Instr de TigerAssem? (función format)
+     *Es un error interno, tenemos que tener un único elementito.
+
+-- NEW preguntas
+15- Página 191, caso munchStm (MOVE(TEMP i, e2)) = (munchExp e2; emit "ADD") 
 20- ¿Qué hacemos con el label que nos viene en el tipo Instr? (función format)
+21- Cuando dejamos los registros del assem ¿El símbolo de la comilla es por
+    arbitraria, podemos poner el simbolito que se nos cante?
+22- ¿Cómo ir testeando en lo que llevamos hecho?
