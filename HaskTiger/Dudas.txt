@@ -16,6 +16,8 @@
 13- Páginas 167-169
 14- Al definir munchExp y munchStm ¿Podemos hacerlo con la "granularidad"
     deseada? ¿Por qué nos conviene ser más específicos?
+15- Página 191, caso munchStm (MOVE(TEMP i, e2)) = (munchExp e2; emit "ADD") 
+    *Probablemente sea una máquina de stack
 16- ¿Qué es la opción del jump en el tipo Instr de TigerAssem?
     *Si saltamos o no.
 17- ¿Para qué nos sirve la función format? 
@@ -25,10 +27,15 @@
 19- ¿Qué pasa si tenemos muchos labels en la lista de labels en el tipo
      Instr de TigerAssem? (función format)
      *Es un error interno, tenemos que tener un único elementito.
-
--- NEW preguntas
-15- Página 191, caso munchStm (MOVE(TEMP i, e2)) = (munchExp e2; emit "ADD") 
-20- ¿Qué hacemos con el label que nos viene en el tipo Instr? (función format)
 21- Cuando dejamos los registros del assem ¿El símbolo de la comilla es por
     arbitraria, podemos poner el simbolito que se nos cante?
+    *Si, elegimos el simbolito que se nos cante
 22- ¿Cómo ir testeando en lo que llevamos hecho?
+    *Generamos el código como venga, y a mano completamos con los registros
+     para probar el programa.
+
+-- NEW preguntas
+20- ¿Qué hacemos con el label que nos viene en el tipo Instr? (función format)
+23- ¿munchExp (Tree.Name) debería volver una Instr Oper o Move?
+    *Instr Oper porque LI es una pseudoinstrucción, y hace operaciones extras,
+     aparte de cargar los datos.

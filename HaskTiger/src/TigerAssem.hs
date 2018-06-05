@@ -70,23 +70,16 @@ munchExp (Tree.Const i) ref =
                  srco = [],
                  jump = Nothing}) ref
      return nt
--- FIJAR SI PODEMOS USAR LI
+-- FIJARNOS SI PODEMOS USAR LI
+-- Acá la instr ¿Debería ser Oper o Move?
 munchExp (Tree.Name l) ref =
   do nt <- newTemp
-     emit (Oper {assem = "li ´d0 , " ++ unpack l ++ "\n",
+     emit (Oper {assem = "LI ´d0 , " ++ unpack l ++ "\n",
                  dsto = [nt],
                  srco = [],
                  jump = Nothing}) ref
      return nt
-munchExp (Tree.Binop Tree.Plus e1 e2) ref = 
-  do nt <- Temp.newTemp
-     ne1 <- munchExp e1 ref
-     ne2 <- munchExp e2 ref
-     emit (Oper {assem = "ADD ´d0 , ´s0 , ´s1 \n", 
-                 dsto = [nt], 
-                 srco = [ne1, ne2], 
-                 jump = Nothing}) ref  
-     return nt
+munchExp (Tree.Temp t) ref = return t 
 munchExp (Tree.Binop Tree.Plus (Const i) e2) ref =
   do nt <- Temp.newTemp
      ne2 <- munchExp e2
@@ -103,4 +96,27 @@ munchExp (Tree.Binop Tree.Plus e1 (Const i)) ref =
                  srco = [ne1],
                  jump = Nothing}) ref
      return nt
+munchExp (Tree.Binop Tree.Plus e1 e2) ref = 
+  do nt <- Temp.newTemp
+     ne1 <- munchExp e1 ref
+     ne2 <- munchExp e2 ref
+     emit (Oper {assem = "ADD ´d0 , ´s0 , ´s1 \n", 
+                 dsto = [nt], 
+                 srco = [ne1, ne2], 
+                 jump = Nothing}) ref  
+     return nt
+--munchExp (Tree.Binop ...) ref
+munchExp (Tree.Mem e) ref = 
+  do nt <- Temp.newTemp
+     ne <- munchExp e ref
+     emit (Move {assem = "LW ´d0 , 0( ´s0 )\n",
+                 dstm = [nt],
+                 srcm = [ne]}) ref
+     return nt
+--PONER MENSAJE DE ERROR
+--munchExp (Tree.Call e exps) ref
+--PONER MENSAJE DE ERROR
+--munchExp (Tree.Eseq st e) ref =
+
+
 -- munchStm :: Tree.Stm -> ()
